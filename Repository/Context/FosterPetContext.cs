@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.DTO;
+using Microsoft.EntityFrameworkCore;
+using Repository.Config;
 
 namespace Repository.Context
 {
@@ -11,7 +13,13 @@ namespace Repository.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<Login>();
+
+            modelBuilder.ApplyConfiguration(new LoginConfiguration());
+
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<Login> Login { get; set; }
     }
 }

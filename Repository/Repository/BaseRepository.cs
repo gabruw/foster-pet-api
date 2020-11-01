@@ -7,44 +7,44 @@ namespace Repository.Repository
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        protected readonly ApiContext ApiContext;
+        protected readonly FosterPetContext FosterPetContext;
 
-        public BaseRepository(ApiContext apiContext)
+        public BaseRepository(FosterPetContext fosterPetContext)
         {
-            ApiContext = apiContext;
+            FosterPetContext = fosterPetContext;
         }
 
         public void Incluid(TEntity entity)
         {
-            ApiContext.Set<TEntity>().Add(entity);
-            ApiContext.SaveChanges();
+            FosterPetContext.Set<TEntity>().Add(entity);
+            FosterPetContext.SaveChanges();
         }
 
         public void Update(TEntity entity)
         {
-            ApiContext.Set<TEntity>().Update(entity);
-            ApiContext.SaveChanges();
+            FosterPetContext.Set<TEntity>().Update(entity);
+            FosterPetContext.SaveChanges();
         }
 
         public void Remove(TEntity entity)
         {
-            ApiContext.Remove(entity);
-            ApiContext.SaveChanges();
+            FosterPetContext.Remove(entity);
+            FosterPetContext.SaveChanges();
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            return ApiContext.Set<TEntity>().ToList();
+            return FosterPetContext.Set<TEntity>().ToList();
         }
 
         public TEntity GetbyId(long Id)
         {
-            return ApiContext.Set<TEntity>().Find(Id);
+            return FosterPetContext.Set<TEntity>().Find(Id);
         }
 
         public void Dispose()
         {
-            ApiContext.Dispose();
+            FosterPetContext.Dispose();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.IO;
+using Domain.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repository.Context;
+using Repository.Repository;
 
 namespace FosterPet
 {
@@ -33,6 +35,7 @@ namespace FosterPet
                     migration.MigrationsAssembly("Repository")));
 
             // Scope's
+            services.AddScoped<ILoginRepository, LoginRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
