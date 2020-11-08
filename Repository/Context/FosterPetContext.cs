@@ -1,4 +1,4 @@
-﻿using Domain.DTO;
+﻿using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Repository.Config;
 
@@ -17,9 +17,16 @@ namespace Repository.Context
 
             modelBuilder.ApplyConfiguration(new LoginConfiguration());
 
+            modelBuilder.Ignore<Animal>();
+
+            modelBuilder.ApplyConfiguration(new AnimalConfiguration());
+
+
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Login> Login { get; set; }
+        public DbSet<Animal> Animal { get; set; }
+
     }
 }
