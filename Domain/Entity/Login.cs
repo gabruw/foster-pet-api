@@ -1,6 +1,6 @@
 ﻿using Domain.Entity;
 
-namespace Domain.DTO
+namespace Domain.Entity
 {
     public class Login : Base
     {
