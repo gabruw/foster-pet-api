@@ -1,4 +1,4 @@
-﻿using Domain.Entity;
+using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Repository.Config;
 
@@ -14,18 +14,18 @@ namespace Repository.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<Login>();
-
-            modelBuilder.ApplyConfiguration(new LoginConfiguration());
-
+            modelBuilder.Ignore<Animal>();
             modelBuilder.Ignore<Processo>();
 
+            modelBuilder.ApplyConfiguration(new LoginConfiguration());
+            modelBuilder.ApplyConfiguration(new AnimalConfiguration());
             modelBuilder.ApplyConfiguration(new ProcessoConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Login> Login { get; set; }
-
+        public DbSet<Animal> Animal { get; set; }
         public DbSet<Processo> Processo { get; set; }
     }
 }
