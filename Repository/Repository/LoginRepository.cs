@@ -1,4 +1,4 @@
-﻿using Domain.DTO;
+﻿using Domain.Entity;
 using Domain.IRepository;
 using Repository.Context;
 

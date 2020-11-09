@@ -2,7 +2,7 @@
 
 namespace Domain.IRepository
 {
-    public interface ILoginRepository : IBaseRepository<Login>
+    public interface IAnimalRepository : IBaseRepository<Animal>
     {
 
     }
