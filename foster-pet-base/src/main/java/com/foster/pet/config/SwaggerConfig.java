@@ -16,15 +16,15 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Profile("dev")
 public class SwaggerConfig {
 
-	final String EMAIL = "";
-	final String LICENSE = "";
-	final String WEB_PAGE = "";
-	final String VERSION = "0.1";
-	final String LICENSE_URL = "";
-	final String TERMS_OF_SERVICE_URL = "";
-	final String TITLE = "Foster Pet";
-	final String DESCRIPTION = "Serviço - {{SERVICE}}";
-	final Contact CONTRACT = new Contact(TITLE, EMAIL, WEB_PAGE);
+	private final String EMAIL = "";
+	private final String LICENSE = "";
+	private final String WEB_PAGE = "";
+	private final String VERSION = "0.1";
+	private final String LICENSE_URL = "";
+	private final String TERMS_OF_SERVICE_URL = "";
+	private final String TITLE = "Foster Pet";
+	private final String DESCRIPTION = "Serviço - {{SERVICE}}";
+	private final Contact CONTRACT = new Contact(TITLE, EMAIL, WEB_PAGE);
 
 	@Bean
 	public Docket api() {
