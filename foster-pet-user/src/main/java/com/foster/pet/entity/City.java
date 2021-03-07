@@ -1,32 +1,41 @@
 package com.foster.pet.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @Table(name = "city")
 @Entity(name = "city")
 public class City implements Serializable {
+
 	private static final long serialVersionUID = 3259874520308167531L;
 
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "city", unique = true, nullable = false)
+	@Column(name = "name", unique = true, nullable = false)
 	@Size(min = 1, max = 70, message = "O campo 'Cidade' deve conter entre 1 e 70 caracteres.")
-	private String city;
+	private String name;
+
+	@OneToMany(mappedBy = "city")
+	private List<Address> addresses;
+
+	@ManyToOne
+	@JoinColumn(name = "state_id", referencedColumnName = "id", nullable = false)
+	private State state;
 }
