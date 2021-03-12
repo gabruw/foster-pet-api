@@ -17,11 +17,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-import com.foster.pet.constant.RoleEnum;
+import com.foster.pet.constant.AuthenticationRoleEnum;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Table(name = "authentication")
 @Entity(name = "authentication")
 public class Authentication implements Serializable {
@@ -44,7 +46,7 @@ public class Authentication implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false)
-	private RoleEnum role;
+	private AuthenticationRoleEnum role;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinTable(name = "person_authentication", joinColumns = {

@@ -11,15 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Table(name = "company")
 @Entity(name = "company")
 public class Company implements Serializable {
@@ -48,6 +49,6 @@ public class Company implements Serializable {
 	@JoinTable(name = "company_employee", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
 	private List<Employee> employee;
 
-	@OneToMany(mappedBy = "company")
+	@ManyToMany(mappedBy = "company")
 	private List<Address> addresses;
 }

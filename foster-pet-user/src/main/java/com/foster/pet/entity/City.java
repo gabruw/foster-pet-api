@@ -15,8 +15,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Table(name = "city")
 @Entity(name = "city")
 public class City implements Serializable {

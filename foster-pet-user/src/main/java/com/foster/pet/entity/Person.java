@@ -22,8 +22,10 @@ import org.hibernate.validator.constraints.br.CPF;
 import com.foster.pet.constant.GenderEnum;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Table(name = "person")
 @Entity(name = "person")
 public class Person implements Serializable {
@@ -47,6 +49,10 @@ public class Person implements Serializable {
 	@Column(name = "cpf", unique = true, nullable = false)
 	@Size(min = 14, max = 14, message = "O campo 'CPF' deve conter 14 caracteres.")
 	private String cpf;
+
+	@Column(name = "cell", nullable = true)
+	@Size(min = 14, max = 14, message = "O campo 'Nº de Celular' deve conter 14 caracteres.")
+	private String cell;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "gender", nullable = false)

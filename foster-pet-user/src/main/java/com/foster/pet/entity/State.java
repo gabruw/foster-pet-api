@@ -15,8 +15,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Table(name = "state")
 @Entity(name = "state")
 public class State implements Serializable {
