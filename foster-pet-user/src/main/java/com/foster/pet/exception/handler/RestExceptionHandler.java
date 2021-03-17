@@ -16,9 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(PersonNotFoundException.class)
-	public final ResponseEntity<Object> handle(PersonNotFoundException exception) {
+	public final ResponseEntity<Object> handlePersonNotFoundException(PersonNotFoundException exception) {
 		log.error("PersonNotFoundException - Message: {}", exception);
-		
+
 		Response<Void> response = new Response<Void>();
 		response.addError(exception.getMessage());
 
