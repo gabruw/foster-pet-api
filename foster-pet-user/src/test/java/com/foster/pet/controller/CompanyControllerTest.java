@@ -64,7 +64,7 @@ public class CompanyControllerTest extends CompanyProperties {
 
         this.mockMvc.perform(get(BASE_URL)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].cnpj", equalTo(CNPJ)))
-                .andExpect(jsonPath("$.data[0].tradName", equalTo(TRADE_NAME)))
+                .andExpect(jsonPath("$.data[0].tradeName", equalTo(TRADE_NAME)))
                 .andExpect(jsonPath("$.data[0].companyName", equalTo(COMPANY_NAME)))
                 .andExpect(jsonPath("$.errors").isEmpty());
     }
@@ -74,9 +74,9 @@ public class CompanyControllerTest extends CompanyProperties {
         when(this.companyService.findById(ID)).thenReturn(this.company);
 
         this.mockMvc.perform(get(BASE_URL).param("id", String.valueOf(ID)))
-                .andExpect(jsonPath("$.data[0].cnpj", equalTo(CNPJ)))
-                .andExpect(jsonPath("$.data[0].tradName", equalTo(TRADE_NAME)))
-                .andExpect(jsonPath("$.data[0].companyName", equalTo(COMPANY_NAME)))
+                .andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
+                .andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
+                .andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
                 .andExpect(jsonPath("$.errors").isEmpty());
     }
 
@@ -85,9 +85,9 @@ public class CompanyControllerTest extends CompanyProperties {
         when(this.companyService.findByCnpj(CNPJ)).thenReturn(this.company);
 
         this.mockMvc.perform(get(BASE_URL).param("cnpj", CNPJ))
-                .andExpect(jsonPath("$.data[0].cnpj", equalTo(CNPJ)))
-                .andExpect(jsonPath("$.data[0].tradName", equalTo(TRADE_NAME)))
-                .andExpect(jsonPath("$.data[0].companyName", equalTo(COMPANY_NAME)))
+                .andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
+                .andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
+                .andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
                 .andExpect(jsonPath("$.errors").isEmpty());
     }
 
@@ -96,9 +96,9 @@ public class CompanyControllerTest extends CompanyProperties {
         when(this.companyService.deleteById(ID)).thenReturn(this.companyDTO);
 
         this.mockMvc.perform(delete(BASE_URL).param("id", String.valueOf(ID)))
-                .andExpect(jsonPath("$.data[0].cnpj", equalTo(CNPJ)))
-                .andExpect(jsonPath("$.data[0].tradName", equalTo(TRADE_NAME)))
-                .andExpect(jsonPath("$.data[0].companyName", equalTo(COMPANY_NAME)))
+                .andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
+                .andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
+                .andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
                 .andExpect(jsonPath("$.errors").isEmpty());
     }
 }

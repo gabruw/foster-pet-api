@@ -41,7 +41,7 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("Start - CompanyServiceImpl.findById - Id: {}", id);
 
         Optional<Company> optCompany = this.companyRepository.findById(id);
-        if (optCompany.isPresent()) {
+        if (optCompany.isEmpty()) {
             log.error("CompanyNotFoundException - Id: {}", id);
             throw new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
         }
@@ -55,7 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("Start - CompanyServiceImpl.findByCpf - CNPJ: {}", cnpj);
 
         Optional<Company> optCompany = this.companyRepository.findByCnpj(cnpj);
-        if (optCompany.isPresent()) {
+        if (optCompany.isEmpty()) {
             log.error("CompanyNotFoundException - CNPJ: {}", cnpj);
             throw new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
         }
@@ -75,7 +75,7 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("Start - CompanyServiceImpl.deleteById - Id: {}", id);
 
         Optional<Company> optCompany = this.companyRepository.findById(id);
-        if (optCompany.isPresent()) {
+        if (optCompany.isEmpty()) {
             log.error("CompanyNotFoundException - Id: {}", id);
             throw new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
         }

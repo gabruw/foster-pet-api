@@ -23,7 +23,6 @@ import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.CompanyDTO;
 import com.foster.pet.entity.Company;
 import com.foster.pet.exception.CompanyNotFoundException;
-import com.foster.pet.exception.PersonNotFoundException;
 import com.foster.pet.properties.company.CompanyInstance;
 import com.foster.pet.properties.company.CompanyProperties;
 import com.foster.pet.repository.CompanyRepository;
@@ -98,8 +97,8 @@ public class CompanyServiceImpTest extends CompanyProperties {
     }
 
     @Test
-    public void findByCnpjWithNotFoundPerson() {
-        Exception exception = assertThrows(PersonNotFoundException.class, () -> {
+    public void findByCnpjWithNotFoundCompany() {
+        Exception exception = assertThrows(CompanyNotFoundException.class, () -> {
             String invalidCnpj = "123.456.789/0123-45";
             when(this.companyRepository.findByCnpj(CNPJ)).thenReturn(Optional.of(this.company));
 
