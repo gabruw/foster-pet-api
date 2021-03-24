@@ -22,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.PersonDTO;
 import com.foster.pet.entity.Person;
+import com.foster.pet.exception.PersonAlreadyExistsException;
 import com.foster.pet.exception.PersonNotFoundException;
 import com.foster.pet.properties.person.PersonInstance;
 import com.foster.pet.properties.person.PersonProperties;
@@ -123,6 +124,17 @@ public class PersonServiceImplTest extends PersonProperties {
 		assertEquals(CELL, returnedPerson.getCell());
 		assertEquals(BIRTH, returnedPerson.getBirth());
 		assertEquals(GENDER, returnedPerson.getGender());
+	}
+
+	@Test
+	public void persistWithAlreadyExistsCpf() {
+		Exception exception = assertThrows(PersonAlreadyExistsException.class, () -> {
+			when(this.personRepository.findByCpf(CPF)).thenReturn(Optional.of(this.person));
+
+			this.personService.persist(this.person);
+		});
+
+		assertEquals(ErrorCode.PERSON_ALREADY_EXISTS.getMessage(), exception.getMessage());
 	}
 
 	@Test

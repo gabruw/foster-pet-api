@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.PersonDTO;
 import com.foster.pet.entity.Person;
+import com.foster.pet.exception.PersonAlreadyExistsException;
 import com.foster.pet.exception.PersonNotFoundException;
 import com.foster.pet.repository.PersonRepository;
 import com.foster.pet.service.PersonService;
@@ -66,7 +67,15 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public Person persist(Person person) {
-		log.info("PersonServiceImpl.persist - Person: {}", person.toString());
+		log.info("Start - PersonServiceImpl.persist - Person: {}", person.toString());
+
+		Optional<Person> optPerson = this.personRepository.findByCpf(person.getCpf());
+		if (optPerson.isPresent()) {
+			log.error("PersonAlreadyExistsException - CPF: {}", person.getCpf());
+			throw new PersonAlreadyExistsException(ErrorCode.PERSON_ALREADY_EXISTS.getMessage());
+		}
+
+		log.debug("End - PersonServiceImpl.persist - Person: {}", person.toString());
 		return this.personRepository.save(person);
 	}
 
