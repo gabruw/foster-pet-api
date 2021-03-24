@@ -57,7 +57,7 @@ public class CompanyController {
     @Cacheable("company")
     @GetMapping(params = "cnpj")
     public ResponseEntity<Response<Company>> getByCnpj(@RequestParam String cnpj) {
-        log.info("Start - CompanyController.findByCnpj - Id: {}", cnpj);
+        log.info("Start - CompanyController.findByCnpj - CNPJ: {}", cnpj);
         Response<Company> response = new Response<Company>();
 
         Company company = this.companyService.findByCnpj(cnpj);

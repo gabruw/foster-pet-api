@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.CompanyDTO;
 import com.foster.pet.entity.Company;
+import com.foster.pet.exception.CompanyAlreadyExistsException;
 import com.foster.pet.exception.CompanyNotFoundException;
 import com.foster.pet.repository.CompanyRepository;
 import com.foster.pet.service.CompanyService;
@@ -66,7 +68,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company persist(Company company) {
-        log.debug("End - CompanyServiceImpl.persist - Company {}", company.toString());
+        log.info("Start - CompanyServiceImpl.persist - Company {}", company.toString());
+        Optional<Company> optCompany = this.companyRepository.findByCnpj(company.getCnpj());
+        if (optCompany.isEmpty()) {
+            log.error("CompanyNotFoundException - CNPJ: {}", company.getCnpj());
+            throw new CompanyAlreadyExistsException(ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
+        }
+
         return this.companyRepository.save(company);
     }
 
