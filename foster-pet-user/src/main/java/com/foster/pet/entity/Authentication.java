@@ -53,4 +53,10 @@ public class Authentication implements Serializable {
 			@JoinColumn(name = "person_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "authentication_id", referencedColumnName = "id") })
 	private Person person;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinTable(name = "company_authentication", joinColumns = {
+			@JoinColumn(name = "company_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "authentication_id", referencedColumnName = "id") })
+	private Company company;
 }

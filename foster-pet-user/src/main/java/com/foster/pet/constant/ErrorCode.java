@@ -5,7 +5,9 @@ public enum ErrorCode {
 	INTERNAL_SERVER_ERROR("Erro interno do servidor"), INVALID_REQUEST("Requisição inválida"),
 	VALIDATION_FAILED("A validação falhou"), PERSON_NOT_FOUND("A pessoa não foi encontrada"),
 	PERSON_ALREADY_EXISTS("A pessoa já foi cadastrada"), COMPANY_NOT_FOUND("A empresa não foi encontrada"),
-	COMPANY_ALREADY_EXISTS("A empresa já foi cadastrada");
+	COMPANY_ALREADY_EXISTS("A empresa já foi cadastrada"),
+	AUTHENTICATION_NOT_FOUND("A autenticação não foi encontrada"),
+	AUTHENTICATION_ALREADY_EXISTS("A autenticação já foi cadastrada");
 
 	private final String message;
 

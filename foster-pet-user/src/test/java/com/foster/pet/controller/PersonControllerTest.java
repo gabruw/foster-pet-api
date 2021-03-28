@@ -22,11 +22,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foster.pet.dto.PersonDTO;
+import com.foster.pet.dto.person.PersonRDTO;
 import com.foster.pet.entity.Person;
-import com.foster.pet.properties.person.PersonInstance;
-import com.foster.pet.properties.person.PersonProperties;
 import com.foster.pet.service.PersonService;
+
+import properties.person.PersonInstance;
+import properties.person.PersonProperties;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,19 +47,19 @@ public class PersonControllerTest extends PersonProperties {
 	private Person person;
 
 	@Mock
-	private PersonDTO personDTO;
+	private PersonRDTO personDTO;
 
 	private final String BASE_URL = "/person";
 
 	@BeforeEach
 	public void init() {
 		this.person = PersonInstance.instace();
-		this.personDTO = this.mapper.map(this.person, PersonDTO.class);
+		this.personDTO = this.mapper.map(this.person, PersonRDTO.class);
 	}
 
 	@Test
 	public void getAll() throws Exception {
-		List<PersonDTO> persons = new ArrayList<>();
+		List<PersonRDTO> persons = new ArrayList<>();
 		persons.add(this.personDTO);
 
 		when(this.personService.findAll()).thenReturn(persons);

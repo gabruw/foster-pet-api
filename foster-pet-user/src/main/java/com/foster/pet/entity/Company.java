@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -51,4 +52,7 @@ public class Company implements Serializable {
 
 	@ManyToMany(mappedBy = "company")
 	private List<Address> addresses;
+
+	@OneToOne(mappedBy = "company")
+	private Authentication authentication;
 }

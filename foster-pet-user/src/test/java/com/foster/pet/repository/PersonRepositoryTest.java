@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,11 +19,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.foster.pet.entity.Person;
-import com.foster.pet.properties.person.PersonInstance;
-import com.foster.pet.properties.person.PersonProperties;
+
+import properties.person.PersonInstance;
+import properties.person.PersonProperties;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@DisplayName("Repository - Person")
 public class PersonRepositoryTest extends PersonProperties {
 
 	@MockBean
@@ -37,6 +40,7 @@ public class PersonRepositoryTest extends PersonProperties {
 	}
 
 	@Test
+	@DisplayName("Find all persons")
 	public void findAll() {
 		List<Person> persons = new ArrayList<>();
 		persons.add(this.person);
@@ -55,6 +59,7 @@ public class PersonRepositoryTest extends PersonProperties {
 	}
 
 	@Test
+	@DisplayName("Find a person by Id")
 	public void findById() {
 		when(this.personRepository.findById(ID)).thenReturn(Optional.of(this.person));
 
@@ -68,6 +73,7 @@ public class PersonRepositoryTest extends PersonProperties {
 	}
 
 	@Test
+	@DisplayName("Find a person by CPF")
 	public void findByCpf() {
 		when(this.personRepository.findByCpf(CPF)).thenReturn(Optional.of(this.person));
 
@@ -81,6 +87,7 @@ public class PersonRepositoryTest extends PersonProperties {
 	}
 
 	@Test
+	@DisplayName("Persist a person")
 	public void persist() {
 		when(this.personRepository.save(this.person)).thenReturn(this.person);
 
@@ -94,6 +101,7 @@ public class PersonRepositoryTest extends PersonProperties {
 	}
 
 	@Test
+	@DisplayName("Delete a person by Id")
 	public void deleteById() {
 		doNothing().when(this.personRepository).deleteById(ID);
 		when(this.personRepository.findById(ID)).thenReturn(Optional.of(this.person));

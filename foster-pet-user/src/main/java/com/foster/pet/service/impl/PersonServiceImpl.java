@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.foster.pet.constant.ErrorCode;
-import com.foster.pet.dto.PersonDTO;
+import com.foster.pet.dto.person.PersonRDTO;
 import com.foster.pet.entity.Person;
-import com.foster.pet.exception.PersonAlreadyExistsException;
-import com.foster.pet.exception.PersonNotFoundException;
+import com.foster.pet.exception.person.PersonNotFoundException;
 import com.foster.pet.repository.PersonRepository;
 import com.foster.pet.service.PersonService;
 
@@ -29,12 +28,12 @@ public class PersonServiceImpl implements PersonService {
 	private PersonRepository personRepository;
 
 	@Override
-	public List<PersonDTO> findAll() {
+	public List<PersonRDTO> findAll() {
 		log.info("Start - PersonServiceImpl.findAll");
 		List<Person> persons = this.personRepository.findAll();
 
-		log.debug("End - PersonServiceImpl.findAll - List<Person>: {}", persons.toString());
-		return persons.stream().map(person -> mapper.map(person, PersonDTO.class)).collect(Collectors.toList());
+		log.info("End - PersonServiceImpl.findAll - List<Person>: {}", persons.toString());
+		return persons.stream().map(person -> mapper.map(person, PersonRDTO.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class PersonServiceImpl implements PersonService {
 			throw new PersonNotFoundException(ErrorCode.PERSON_NOT_FOUND.getMessage());
 		}
 
-		log.debug("End - PersonServiceImpl.findById - Person {}", optPerson.get().toString());
+		log.info("End - PersonServiceImpl.findById - Person {}", optPerson.get().toString());
 		return optPerson.get();
 	}
 
@@ -61,26 +60,12 @@ public class PersonServiceImpl implements PersonService {
 			throw new PersonNotFoundException(ErrorCode.PERSON_NOT_FOUND.getMessage());
 		}
 
-		log.debug("End - PersonServiceImpl.findByCpf - Person: {}", optPerson.get().toString());
+		log.info("End - PersonServiceImpl.findByCpf - Person: {}", optPerson.get().toString());
 		return optPerson.get();
 	}
 
 	@Override
-	public Person persist(Person person) {
-		log.info("Start - PersonServiceImpl.persist - Person: {}", person.toString());
-
-		Optional<Person> optPerson = this.personRepository.findByCpf(person.getCpf());
-		if (optPerson.isPresent()) {
-			log.error("PersonAlreadyExistsException - CPF: {}", person.getCpf());
-			throw new PersonAlreadyExistsException(ErrorCode.PERSON_ALREADY_EXISTS.getMessage());
-		}
-
-		log.debug("End - PersonServiceImpl.persist - Person: {}", person.toString());
-		return this.personRepository.save(person);
-	}
-
-	@Override
-	public PersonDTO deleteById(Long id) {
+	public PersonRDTO deleteById(Long id) {
 		log.info("Start - PersonServiceImpl.deleteById - Id: {}", id);
 
 		Optional<Person> optPerson = this.personRepository.findById(id);
@@ -90,9 +75,9 @@ public class PersonServiceImpl implements PersonService {
 		}
 
 		this.personRepository.deleteById(id);
-		PersonDTO personDTO = this.mapper.map(optPerson.get(), PersonDTO.class);
+		PersonRDTO personDTO = this.mapper.map(optPerson.get(), PersonRDTO.class);
 
-		log.debug("End - PersonServiceImpl.deleteById - Person: {}", personDTO.toString());
+		log.info("End - PersonServiceImpl.deleteById - PersonDTO: {}", personDTO.toString());
 		return personDTO;
 	}
 }

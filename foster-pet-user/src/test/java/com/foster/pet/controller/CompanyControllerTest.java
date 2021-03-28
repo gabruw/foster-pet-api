@@ -21,11 +21,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foster.pet.dto.CompanyDTO;
+import com.foster.pet.dto.company.CompanyRDTO;
 import com.foster.pet.entity.Company;
-import com.foster.pet.properties.company.CompanyInstance;
-import com.foster.pet.properties.company.CompanyProperties;
 import com.foster.pet.service.CompanyService;
+
+import properties.company.CompanyInstance;
+import properties.company.CompanyProperties;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -45,19 +46,19 @@ public class CompanyControllerTest extends CompanyProperties {
     private Company company;
 
     @Mock
-    private CompanyDTO companyDTO;
+    private CompanyRDTO companyDTO;
 
     private final String BASE_URL = "/company";
 
     @BeforeEach
     public void init() {
         this.company = CompanyInstance.instace();
-        this.companyDTO = this.mapper.map(this.company, CompanyDTO.class);
+        this.companyDTO = this.mapper.map(this.company, CompanyRDTO.class);
     }
 
     @Test
     public void getAll() throws Exception {
-        List<CompanyDTO> companyDTOS = new ArrayList<>();
+        List<CompanyRDTO> companyDTOS = new ArrayList<>();
         companyDTOS.add(this.companyDTO);
 
         when(this.companyService.findAll()).thenReturn(companyDTOS);

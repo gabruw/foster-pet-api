@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.foster.pet.constant.ErrorCode;
-import com.foster.pet.dto.CompanyDTO;
+import com.foster.pet.dto.company.CompanyRDTO;
 import com.foster.pet.entity.Company;
-import com.foster.pet.exception.CompanyAlreadyExistsException;
-import com.foster.pet.exception.CompanyNotFoundException;
+import com.foster.pet.exception.company.CompanyNotFoundException;
 import com.foster.pet.repository.CompanyRepository;
 import com.foster.pet.service.CompanyService;
 
@@ -29,12 +28,12 @@ public class CompanyServiceImpl implements CompanyService {
 	private CompanyRepository companyRepository;
 
 	@Override
-	public List<CompanyDTO> findAll() {
+	public List<CompanyRDTO> findAll() {
 		log.info("Start - CompanyServiceImpl.findAll");
 		List<Company> companies = this.companyRepository.findAll();
 
-		log.debug("End - CompanyServiceImpl.findAll - List<Company>");
-		return companies.stream().map(company -> mapper.map(company, CompanyDTO.class)).collect(Collectors.toList());
+		log.info("End - CompanyServiceImpl.findAll - List<Company>");
+		return companies.stream().map(company -> mapper.map(company, CompanyRDTO.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class CompanyServiceImpl implements CompanyService {
 			throw new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
 		}
 
-		log.debug("End - CompanyServiceImpl.findById - Company {}", optCompany.get().toString());
+		log.info("End - CompanyServiceImpl.findById - Company {}", optCompany.get().toString());
 		return optCompany.get();
 	}
 
@@ -61,26 +60,12 @@ public class CompanyServiceImpl implements CompanyService {
 			throw new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
 		}
 
-		log.debug("End - CompanyServiceImpl.findByCnpj - Company {}", optCompany.get().toString());
+		log.info("End - CompanyServiceImpl.findByCnpj - Company {}", optCompany.get().toString());
 		return optCompany.get();
 	}
 
 	@Override
-	public Company persist(Company company) {
-		log.info("Start - CompanyServiceImpl.persist - Company {}", company.toString());
-
-		Optional<Company> optCompany = this.companyRepository.findByCnpj(company.getCnpj());
-		if (optCompany.isEmpty()) {
-			log.error("CompanyNotFoundException - CNPJ: {}", company.getCnpj());
-			throw new CompanyAlreadyExistsException(ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
-		}
-
-		log.debug("End - CompanyServiceImpl.persist - Company {}", company.toString());
-		return this.companyRepository.save(company);
-	}
-
-	@Override
-	public CompanyDTO deleteById(Long id) {
+	public CompanyRDTO deleteById(Long id) {
 		log.info("Start - CompanyServiceImpl.deleteById - Id: {}", id);
 
 		Optional<Company> optCompany = this.companyRepository.findById(id);
@@ -90,9 +75,9 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 
 		this.companyRepository.deleteById(id);
-		CompanyDTO companyDTO = this.mapper.map(optCompany.get(), CompanyDTO.class);
+		CompanyRDTO companyDTO = this.mapper.map(optCompany.get(), CompanyRDTO.class);
 
-		log.debug("End - CompanyServiceImpl.deleteById - Company {}", companyDTO.toString());
+		log.info("End - CompanyServiceImpl.deleteById - Company {}", companyDTO.toString());
 		return companyDTO;
 	}
 }

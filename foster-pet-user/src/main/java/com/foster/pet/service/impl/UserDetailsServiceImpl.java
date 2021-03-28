@@ -1,7 +1,5 @@
 package com.foster.pet.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,11 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<Authentication> authentication = this.authenticationService.findByEmail(email);
-		if (authentication.isPresent()) {
-			return JwtUser.authenticationTojwtUser(authentication.get());
-		}
-
-		throw new UsernameNotFoundException("Email não encontrado.");
+		Authentication authentication = this.authenticationService.findByEmail(email);
+		return JwtUser.authenticationTojwtUser(authentication);
 	}
 }
