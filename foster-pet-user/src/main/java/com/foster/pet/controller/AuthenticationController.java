@@ -1,5 +1,8 @@
 package com.foster.pet.controller;
 
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
@@ -11,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.foster.pet.constant.ErrorCode;
+import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
+import com.foster.pet.exception.token.TokenEmptyException;
+import com.foster.pet.security.config.JwtTokenUtil;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.util.Response;
 
@@ -23,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @RequestMapping("/authentication")
 public class AuthenticationController {
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
 	private AuthenticationService authenticationService;
@@ -50,6 +60,24 @@ public class AuthenticationController {
 		response.setData(authentication);
 
 		log.info("End - AuthenticationController.getByEmail - Authentication: {}", authentication.toString());
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping
+	public ResponseEntity<Response<TokenRDTO>> refresh(HttpServletRequest request) {
+		log.info("Start - AuthenticationController.refresh - HttpServletRequest: {}", request.toString());
+		Response<TokenRDTO> response = new Response<TokenRDTO>();
+
+		Optional<String> token = Optional.ofNullable(request.getHeader(jwtTokenUtil.getHeader()));
+		if (token.isEmpty()) {
+			log.error("TokenEmptyException - HttpServletRequest: {}", request.toString());
+			throw new TokenEmptyException(ErrorCode.TOKEN_EMPTY.getMessage());
+		}
+
+		TokenRDTO returnedToken = this.authenticationService.refresh(token.get());
+		response.setData(returnedToken);
+
+		log.info("End - AuthenticationController.refresh - TokenRDTO: {}", returnedToken.toString());
 		return ResponseEntity.ok(response);
 	}
 }

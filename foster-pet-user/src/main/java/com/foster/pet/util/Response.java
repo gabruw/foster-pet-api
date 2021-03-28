@@ -28,6 +28,6 @@ public class Response<T> {
 	}
 
 	public boolean hasErrors() {
-		return this.errors.size() > 0;
+		return !this.errors.isEmpty();
 	}
 }

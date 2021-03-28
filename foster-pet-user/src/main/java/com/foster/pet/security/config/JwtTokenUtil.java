@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
 
 @Component
 @PropertySource("classpath:security.properties")
@@ -26,6 +27,14 @@ public class JwtTokenUtil {
 
 	@Value("${jwt.secret}")
 	private String secret;
+
+	@Getter
+	@Value("${token.type}")
+	private String type;
+
+	@Getter
+	@Value("${token.header}")
+	private String header;
 
 	private Date getExpirationDate() {
 		return new Date(System.currentTimeMillis() + expiration * 1000);
