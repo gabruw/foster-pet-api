@@ -188,6 +188,7 @@
 						<exclude>**/dto/**</exclude>
 						<exclude>**/entity/**</exclude>
 						<exclude>**/security/**</exclude>
+						<exclude>**/repository/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
