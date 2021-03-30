@@ -26,6 +26,7 @@ import com.foster.pet.dto.person.PersonRDTO;
 import com.foster.pet.entity.Person;
 import com.foster.pet.service.PersonService;
 
+import properties.Routes;
 import properties.person.PersonInstance;
 import properties.person.PersonProperties;
 
@@ -49,8 +50,6 @@ public class PersonControllerTest extends PersonProperties {
 	@Mock
 	private PersonRDTO personDTO;
 
-	private final String BASE_URL = "/person";
-
 	@BeforeEach
 	public void init() {
 		this.person = PersonInstance.instace();
@@ -64,7 +63,7 @@ public class PersonControllerTest extends PersonProperties {
 
 		when(this.personService.findAll()).thenReturn(persons);
 
-		this.mockMvc.perform(get(BASE_URL)).andExpect(status().isOk())
+		this.mockMvc.perform(get(Routes.PERSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data[0].cpf", equalTo(CPF))).andExpect(jsonPath("$.data[0].name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data[0].cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data[0].birth", isA(String.class)))
@@ -76,8 +75,7 @@ public class PersonControllerTest extends PersonProperties {
 	public void findById() throws Exception {
 		when(this.personService.findById(ID)).thenReturn(this.person);
 
-		System.out.println("BIRTH " + BIRTH);
-		this.mockMvc.perform(get(BASE_URL).param("id", String.valueOf(ID)))
+		this.mockMvc.perform(get(Routes.PERSON).param("id", String.valueOf(ID)))
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))
@@ -89,7 +87,7 @@ public class PersonControllerTest extends PersonProperties {
 	public void getByCpf() throws Exception {
 		when(this.personService.findByCpf(CPF)).thenReturn(this.person);
 
-		this.mockMvc.perform(get(BASE_URL).param("cpf", CPF)).andExpect(jsonPath("$.data.cpf", equalTo(CPF)))
+		this.mockMvc.perform(get(Routes.PERSON).param("cpf", CPF)).andExpect(jsonPath("$.data.cpf", equalTo(CPF)))
 				.andExpect(jsonPath("$.data.name", equalTo(NAME))).andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))
 				.andExpect(jsonPath("$.data.gender", equalTo(GENDER.toString()))).andExpect(status().isOk())
@@ -100,7 +98,7 @@ public class PersonControllerTest extends PersonProperties {
 	public void remove() throws Exception {
 		when(this.personService.deleteById(ID)).thenReturn(this.personDTO);
 
-		this.mockMvc.perform(delete(BASE_URL).param("id", String.valueOf(ID)))
+		this.mockMvc.perform(delete(Routes.PERSON).param("id", String.valueOf(ID)))
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))

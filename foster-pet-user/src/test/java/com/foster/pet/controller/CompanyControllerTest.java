@@ -25,6 +25,7 @@ import com.foster.pet.dto.company.CompanyRDTO;
 import com.foster.pet.entity.Company;
 import com.foster.pet.service.CompanyService;
 
+import properties.Routes;
 import properties.company.CompanyInstance;
 import properties.company.CompanyProperties;
 
@@ -33,73 +34,70 @@ import properties.company.CompanyProperties;
 @ActiveProfiles("test")
 public class CompanyControllerTest extends CompanyProperties {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ModelMapper mapper;
+	@Autowired
+	private ModelMapper mapper;
 
-    @MockBean
-    private CompanyService companyService;
+	@MockBean
+	private CompanyService companyService;
 
-    @Mock
-    private Company company;
+	@Mock
+	private Company company;
 
-    @Mock
-    private CompanyRDTO companyDTO;
+	@Mock
+	private CompanyRDTO companyDTO;
 
-    private final String BASE_URL = "/company";
+	@BeforeEach
+	public void init() {
+		this.company = CompanyInstance.instace();
+		this.companyDTO = this.mapper.map(this.company, CompanyRDTO.class);
+	}
 
-    @BeforeEach
-    public void init() {
-        this.company = CompanyInstance.instace();
-        this.companyDTO = this.mapper.map(this.company, CompanyRDTO.class);
-    }
+	@Test
+	public void getAll() throws Exception {
+		List<CompanyRDTO> companyDTOS = new ArrayList<>();
+		companyDTOS.add(this.companyDTO);
 
-    @Test
-    public void getAll() throws Exception {
-        List<CompanyRDTO> companyDTOS = new ArrayList<>();
-        companyDTOS.add(this.companyDTO);
+		when(this.companyService.findAll()).thenReturn(companyDTOS);
 
-        when(this.companyService.findAll()).thenReturn(companyDTOS);
+		this.mockMvc.perform(get(Routes.COMPANY)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.data[0].cnpj", equalTo(CNPJ)))
+				.andExpect(jsonPath("$.data[0].tradeName", equalTo(TRADE_NAME)))
+				.andExpect(jsonPath("$.data[0].companyName", equalTo(COMPANY_NAME)))
+				.andExpect(jsonPath("$.errors").isEmpty());
+	}
 
-        this.mockMvc.perform(get(BASE_URL)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].cnpj", equalTo(CNPJ)))
-                .andExpect(jsonPath("$.data[0].tradeName", equalTo(TRADE_NAME)))
-                .andExpect(jsonPath("$.data[0].companyName", equalTo(COMPANY_NAME)))
-                .andExpect(jsonPath("$.errors").isEmpty());
-    }
+	@Test
+	public void findById() throws Exception {
+		when(this.companyService.findById(ID)).thenReturn(this.company);
 
-    @Test
-    public void findById() throws Exception {
-        when(this.companyService.findById(ID)).thenReturn(this.company);
+		this.mockMvc.perform(get(Routes.COMPANY).param("id", String.valueOf(ID)))
+				.andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
+				.andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
+				.andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
+				.andExpect(jsonPath("$.errors").isEmpty());
+	}
 
-        this.mockMvc.perform(get(BASE_URL).param("id", String.valueOf(ID)))
-                .andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
-                .andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
-                .andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
-                .andExpect(jsonPath("$.errors").isEmpty());
-    }
+	@Test
+	public void getByCpf() throws Exception {
+		when(this.companyService.findByCnpj(CNPJ)).thenReturn(this.company);
 
-    @Test
-    public void getByCpf() throws Exception {
-        when(this.companyService.findByCnpj(CNPJ)).thenReturn(this.company);
+		this.mockMvc.perform(get(Routes.COMPANY).param("cnpj", CNPJ)).andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
+				.andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
+				.andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
+				.andExpect(jsonPath("$.errors").isEmpty());
+	}
 
-        this.mockMvc.perform(get(BASE_URL).param("cnpj", CNPJ))
-                .andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
-                .andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
-                .andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
-                .andExpect(jsonPath("$.errors").isEmpty());
-    }
+	@Test
+	public void remove() throws Exception {
+		when(this.companyService.deleteById(ID)).thenReturn(this.companyDTO);
 
-    @Test
-    public void remove() throws Exception {
-        when(this.companyService.deleteById(ID)).thenReturn(this.companyDTO);
-
-        this.mockMvc.perform(delete(BASE_URL).param("id", String.valueOf(ID)))
-                .andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
-                .andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
-                .andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
-                .andExpect(jsonPath("$.errors").isEmpty());
-    }
+		this.mockMvc.perform(delete(Routes.COMPANY).param("id", String.valueOf(ID)))
+				.andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
+				.andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
+				.andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
+				.andExpect(jsonPath("$.errors").isEmpty());
+	}
 }

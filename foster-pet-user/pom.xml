@@ -164,19 +164,44 @@
 				<version>0.8.6</version>
 				<executions>
 					<execution>
-						<id>default-prepare-agent</id>
+						<id>pre-unit-test</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
+						<configuration>
+							<propertyName>surefireArgLine</propertyName>
+						</configuration>
 					</execution>
 					<execution>
-						<id>default-repor</id>
-						<phase>prepare-package</phase>
+						<id>post-unit-test</id>
+						<phase>test</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
+						<configuration>
+							<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>**/dto/**</exclude>
+						<exclude>**/entity/**</exclude>
+						<exclude>**/security/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<reportFormat>plain</reportFormat>
+					<includes>
+						<include>**/*Test*.java</include>
+					</includes>
+					<argLine>${surefireArgLine}</argLine>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -214,7 +239,7 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 	<reporting>
 		<plugins>
 			<plugin>
