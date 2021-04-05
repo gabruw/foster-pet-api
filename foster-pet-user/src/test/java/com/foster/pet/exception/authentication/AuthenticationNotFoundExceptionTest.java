@@ -17,8 +17,23 @@ public class AuthenticationNotFoundExceptionTest {
 	@Test
 	@DisplayName("Throw authentication not found")
 	public void authenticationNotFoundException() {
+		AuthenticationNotFoundException exception = new AuthenticationNotFoundException();
+		assertEquals(exception.getMessage(), ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage());
+	}
+
+	@Test
+	@DisplayName("Throw authentication not found with message")
+	public void authenticationNotFoundExceptionWithMessage() {
 		AuthenticationNotFoundException exception = new AuthenticationNotFoundException(
-				ErrorCode.AUTHENTICATION_NOT_FOUND.toString());
-		assertEquals(exception.getMessage(), ErrorCode.AUTHENTICATION_NOT_FOUND.toString());
+				ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage());
+		assertEquals(exception.getMessage(), ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage());
+	}
+
+	@Test
+	@DisplayName("Throw authentication not found with error code")
+	public void authenticationNotFoundExceptionWithErrorCode() {
+		AuthenticationNotFoundException exception = new AuthenticationNotFoundException(
+				ErrorCode.AUTHENTICATION_NOT_FOUND);
+		assertEquals(exception.getMessage(), ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage());
 	}
 }

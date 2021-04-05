@@ -1,4 +1,4 @@
-package com.foster.pet.exception.person;
+package com.foster.pet.exception.token;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,18 +12,18 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@DisplayName("ExceptionHandler - PersonNotFound")
-public class PersonNotFoundExceptionHandlerTest {
+@DisplayName("ExceptionHandler - TokenEmpty")
+public class TokenEmptyExceptionHandlerTest {
 
 	@Autowired
-	private PersonNotFoundExceptionHandler personNotFoundExceptionHandler;
+	private TokenEmptyExceptionHandler tokenEmptyExceptionHandler;
 
 	@Test
-	@DisplayName("Handler to throw person not found")
+	@DisplayName("Handler to throw token empty is invalid")
 	public void exceptionHandler() {
-		PersonNotFoundException exception = new PersonNotFoundException();
+		TokenEmptyException exception = new TokenEmptyException();
 
-		ResponseEntity<Object> response = this.personNotFoundExceptionHandler.exceptionHandler(exception);
-		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+		ResponseEntity<Object> response = this.tokenEmptyExceptionHandler.exceptionHandler(exception);
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
 }

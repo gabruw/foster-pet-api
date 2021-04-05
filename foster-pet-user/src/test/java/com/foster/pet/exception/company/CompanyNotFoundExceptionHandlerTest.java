@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.foster.pet.constant.ErrorCode;
-
 @SpringBootTest
 @ActiveProfiles("test")
 @DisplayName("ExceptionHandler - CompanyNotFound")
@@ -23,9 +21,9 @@ public class CompanyNotFoundExceptionHandlerTest {
 	@Test
 	@DisplayName("Handler to throw company not found")
 	public void exceptionHandler() {
-		CompanyNotFoundException exception = new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.toString());
+		CompanyNotFoundException exception = new CompanyNotFoundException();
 
-		ResponseEntity<Object> response = companyNotFoundExceptionHandler.exceptionHandler(exception);
+		ResponseEntity<Object> response = this.companyNotFoundExceptionHandler.exceptionHandler(exception);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 	}
 }

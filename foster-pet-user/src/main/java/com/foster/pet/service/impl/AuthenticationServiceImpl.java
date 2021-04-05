@@ -6,19 +6,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.authentication.AuthenticationDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
 import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.authentication.AuthenticationAlreadyExistsException;
 import com.foster.pet.exception.authentication.AuthenticationNotFoundException;
-import com.foster.pet.exception.token.TokenInvalidException;
-import com.foster.pet.exception.token.TokenInvalidTypeException;
 import com.foster.pet.repository.AuthenticationRepository;
-import com.foster.pet.security.config.JwtTokenUtil;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.util.Encryptor;
+import com.foster.pet.util.JwtUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private ModelMapper mapper;
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private JwtUtil jwtTokenUtil;
 
 	@Autowired
 	private AuthenticationRepository authenticationRepository;
@@ -42,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		Optional<Authentication> optAuthentication = this.authenticationRepository.findById(id);
 		if (optAuthentication.isEmpty()) {
 			log.error("AuthenticationNotFoundException - Id: {}", id);
-			throw new AuthenticationNotFoundException(ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage());
+			throw new AuthenticationNotFoundException();
 		}
 
 		log.info("End - AuthenticationServiceImpl.findById - Authentication: {}", optAuthentication.get().toString());
@@ -56,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		Optional<Authentication> optAuthentication = this.authenticationRepository.findByEmail(email);
 		if (optAuthentication.isEmpty()) {
 			log.error("AuthenticationNotFoundException - Email: {}", email);
-			throw new AuthenticationNotFoundException(ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage());
+			throw new AuthenticationNotFoundException();
 		}
 
 		log.info("End - AuthenticationServiceImpl.findByEmail - Authentication: {}",
@@ -74,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				.findByEmail(authentication.getEmail());
 		if (optAuthentication.isPresent()) {
 			log.error("AuthenticationAlreadyExistsException - Email: {}", authentication.getEmail());
-			throw new AuthenticationAlreadyExistsException(ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage());
+			throw new AuthenticationAlreadyExistsException();
 		}
 
 		String encodedPassword = Encryptor.encode(authentication.getPassword());
@@ -88,18 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	public TokenRDTO refresh(String token) {
 		log.info("Start - AuthenticationServiceImpl.refresh - Token: {}", token);
 
-		if (!token.startsWith(this.jwtTokenUtil.getType())) {
-			log.error("TokenInvalidTypeException - Token: {}", token);
-			throw new TokenInvalidTypeException(ErrorCode.TOKEN_TYPE_INVALID.getMessage());
-		}
-
 		token = token.substring(7);
-
-		if (!this.jwtTokenUtil.isValid(token)) {
-			log.error("TokenInvalidException - Token: {}", token);
-			throw new TokenInvalidException(ErrorCode.TOKEN_INVALID.getMessage());
-		}
-
 		String refreshedToken = this.jwtTokenUtil.refresh(token);
 
 		TokenRDTO returnedToken = new TokenRDTO();
@@ -116,7 +102,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		Optional<Authentication> optAuthentication = this.authenticationRepository.findById(id);
 		if (optAuthentication.isEmpty()) {
 			log.error("AuthenticationNotFoundException - Id: {}", id);
-			throw new AuthenticationNotFoundException(ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage());
+			throw new AuthenticationNotFoundException();
 		}
 
 		this.authenticationRepository.deleteById(id);

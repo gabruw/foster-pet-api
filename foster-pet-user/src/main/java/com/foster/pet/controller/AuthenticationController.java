@@ -18,8 +18,8 @@ import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.token.TokenEmptyException;
-import com.foster.pet.security.config.JwtTokenUtil;
 import com.foster.pet.service.AuthenticationService;
+import com.foster.pet.util.JwtUtil;
 import com.foster.pet.util.Response;
 
 import lombok.NoArgsConstructor;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthenticationController {
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private JwtUtil jwtTokenUtil;
 
 	@Autowired
 	private AuthenticationService authenticationService;
@@ -63,7 +63,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping
+	@GetMapping(value = "/refresh")
 	public ResponseEntity<Response<TokenRDTO>> refresh(HttpServletRequest request) {
 		log.info("Start - AuthenticationController.refresh - HttpServletRequest: {}", request.toString());
 		Response<TokenRDTO> response = new Response<TokenRDTO>();
@@ -71,7 +71,7 @@ public class AuthenticationController {
 		Optional<String> token = Optional.ofNullable(request.getHeader(jwtTokenUtil.getHeader()));
 		if (token.isEmpty()) {
 			log.error("TokenEmptyException - HttpServletRequest: {}", request.toString());
-			throw new TokenEmptyException(ErrorCode.TOKEN_EMPTY.getMessage());
+			throw new TokenEmptyException(ErrorCode.TOKEN_EMPTY);
 		}
 
 		TokenRDTO returnedToken = this.authenticationService.refresh(token.get());

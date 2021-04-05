@@ -1,4 +1,4 @@
-package com.foster.pet.security.util;
+package com.foster.pet.security.filter;
 
 import java.io.IOException;
 
@@ -9,13 +9,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import com.foster.pet.constant.ErrorCode;
+
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-				"Acesso negado. Você deve estar autenticado no sistema para acessar o serviço solicitado.");
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ErrorCode.ACCESS_DENIED.getMessage());
 	}
 }

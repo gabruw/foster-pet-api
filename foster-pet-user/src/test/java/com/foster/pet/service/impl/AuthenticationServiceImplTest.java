@@ -27,9 +27,11 @@ import com.foster.pet.dto.authentication.AuthenticationRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.authentication.AuthenticationAlreadyExistsException;
 import com.foster.pet.exception.authentication.AuthenticationNotFoundException;
+import com.foster.pet.exception.token.TokenInvalidException;
 import com.foster.pet.repository.AuthenticationRepository;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.util.Encryptor;
+import com.foster.pet.util.JwtUtil;
 
 import properties.authentication.AuthenticationInstance;
 import properties.authentication.AuthenticationProperties;
@@ -41,6 +43,9 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 
 	@Autowired
 	private ModelMapper mapper;
+
+	@Autowired
+	private JwtUtil jwtTokenUtil;
 
 	@MockBean
 	private AuthenticationRepository authenticationRepository;
@@ -136,6 +141,18 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 				});
 
 		assertEquals(ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage(), exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("Refresh token with a invalid token")
+	public void refreshWithTokenInvalid() {
+		TokenInvalidException exception = assertThrows(TokenInvalidException.class, () -> {
+			when(this.jwtTokenUtil.isExpired(INVALID_TOKEN_TYPE)).thenReturn(false);
+
+			this.authenticationService.refresh(INVALID_TOKEN);
+		});
+
+		assertEquals(ErrorCode.TOKEN_INVALID.getMessage(), exception.getMessage());
 	}
 
 	@Test

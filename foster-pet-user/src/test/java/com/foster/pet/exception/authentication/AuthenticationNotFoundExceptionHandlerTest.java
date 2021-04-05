@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.foster.pet.constant.ErrorCode;
-
 @SpringBootTest
 @ActiveProfiles("test")
 @DisplayName("ExceptionHandler - AuthenticationNotFound")
@@ -22,10 +20,9 @@ public class AuthenticationNotFoundExceptionHandlerTest {
 
 	@Test
 	public void exceptionHandler() {
-		AuthenticationNotFoundException exception = new AuthenticationNotFoundException(
-				ErrorCode.AUTHENTICATION_NOT_FOUND.toString());
+		AuthenticationNotFoundException exception = new AuthenticationNotFoundException();
 
-		ResponseEntity<Object> response = authenticationNotFoundExceptionHandler.exceptionHandler(exception);
+		ResponseEntity<Object> response = this.authenticationNotFoundExceptionHandler.exceptionHandler(exception);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 	}
 }

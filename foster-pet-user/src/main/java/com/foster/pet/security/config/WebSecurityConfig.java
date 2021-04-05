@@ -18,8 +18,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.foster.pet.security.filter.JwtAuthenticationEntryPoint;
 import com.foster.pet.security.filter.JwtAuthenticationTokenFilter;
-import com.foster.pet.security.util.JwtAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -59,7 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/v2/api-docs", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html",
-						"/webjars/**", "/authentication/**", "/person/**", "/company/**")
+						"/webjars/**",
+						"/authentication/refresh",
+						"/authentication/**", 
+						"/person/**", 
+						"/company/**"
+						)
 				.permitAll().anyRequest().authenticated();
 
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
@@ -73,11 +78,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		config.setAllowCredentials(true);
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
-		config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("GET");
-		config.addAllowedMethod("POST");
 		config.addAllowedMethod("PUT");
+		config.addAllowedMethod("POST");
+		config.addAllowedMethod("PATCH");
 		config.addAllowedMethod("DELETE");
+		config.addAllowedMethod("OPTIONS");
 		source.registerCorsConfiguration("/**", config);
 
 		return new CorsFilter(source);

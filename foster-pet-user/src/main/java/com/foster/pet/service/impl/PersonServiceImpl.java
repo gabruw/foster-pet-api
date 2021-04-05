@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.person.PersonRDTO;
 import com.foster.pet.entity.Person;
 import com.foster.pet.exception.person.PersonNotFoundException;
@@ -43,7 +42,7 @@ public class PersonServiceImpl implements PersonService {
 		Optional<Person> optPerson = this.personRepository.findById(id);
 		if (optPerson.isEmpty()) {
 			log.error("PersonNotFoundException - Id: {}", id);
-			throw new PersonNotFoundException(ErrorCode.PERSON_NOT_FOUND.getMessage());
+			throw new PersonNotFoundException();
 		}
 
 		log.info("End - PersonServiceImpl.findById - Person {}", optPerson.get().toString());
@@ -57,7 +56,7 @@ public class PersonServiceImpl implements PersonService {
 		Optional<Person> optPerson = this.personRepository.findByCpf(cpf);
 		if (optPerson.isEmpty()) {
 			log.error("PersonNotFoundException - CPF: {}", cpf);
-			throw new PersonNotFoundException(ErrorCode.PERSON_NOT_FOUND.getMessage());
+			throw new PersonNotFoundException();
 		}
 
 		log.info("End - PersonServiceImpl.findByCpf - Person: {}", optPerson.get().toString());
@@ -71,7 +70,7 @@ public class PersonServiceImpl implements PersonService {
 		Optional<Person> optPerson = this.personRepository.findById(id);
 		if (optPerson.isEmpty()) {
 			log.error("PersonNotFoundException - Id: {}", id);
-			throw new PersonNotFoundException(ErrorCode.PERSON_NOT_FOUND.getMessage());
+			throw new PersonNotFoundException();
 		}
 
 		this.personRepository.deleteById(id);

@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.company.CompanyRDTO;
 import com.foster.pet.entity.Company;
 import com.foster.pet.exception.company.CompanyNotFoundException;
@@ -30,9 +29,10 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public List<CompanyRDTO> findAll() {
 		log.info("Start - CompanyServiceImpl.findAll");
+
 		List<Company> companies = this.companyRepository.findAll();
 
-		log.info("End - CompanyServiceImpl.findAll - List<Company>");
+		log.info("End - CompanyServiceImpl.findAll - List<Company>: {}", companies.toString());
 		return companies.stream().map(company -> mapper.map(company, CompanyRDTO.class)).collect(Collectors.toList());
 	}
 
@@ -43,7 +43,7 @@ public class CompanyServiceImpl implements CompanyService {
 		Optional<Company> optCompany = this.companyRepository.findById(id);
 		if (optCompany.isEmpty()) {
 			log.error("CompanyNotFoundException - Id: {}", id);
-			throw new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
+			throw new CompanyNotFoundException();
 		}
 
 		log.info("End - CompanyServiceImpl.findById - Company {}", optCompany.get().toString());
@@ -57,7 +57,7 @@ public class CompanyServiceImpl implements CompanyService {
 		Optional<Company> optCompany = this.companyRepository.findByCnpj(cnpj);
 		if (optCompany.isEmpty()) {
 			log.error("CompanyNotFoundException - CNPJ: {}", cnpj);
-			throw new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
+			throw new CompanyNotFoundException();
 		}
 
 		log.info("End - CompanyServiceImpl.findByCnpj - Company {}", optCompany.get().toString());
@@ -71,7 +71,7 @@ public class CompanyServiceImpl implements CompanyService {
 		Optional<Company> optCompany = this.companyRepository.findById(id);
 		if (optCompany.isEmpty()) {
 			log.error("CompanyNotFoundException - Id: {}", id);
-			throw new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
+			throw new CompanyNotFoundException();
 		}
 
 		this.companyRepository.deleteById(id);

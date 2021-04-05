@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.entity.Company;
 import com.foster.pet.exception.company.CompanyAlreadyExistsException;
 import com.foster.pet.repository.CompanyRepository;
@@ -25,7 +24,7 @@ public class CompanyProcessor {
 		Optional<Company> optCompany = this.companyRepository.findByCnpj(company.getCnpj());
 		if (optCompany.isPresent()) {
 			log.error("CompanyAlreadyExistsException - CNPJ: {}", company.getCnpj());
-			throw new CompanyAlreadyExistsException(ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
+			throw new CompanyAlreadyExistsException();
 		}
 
 		log.info("End - CompanyProcessor.validateToPersist - Company {}", company.toString());

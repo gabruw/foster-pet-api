@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.foster.pet.constant.ErrorCode;
-
 @SpringBootTest
 @ActiveProfiles("test")
 @DisplayName("ExceptionHandler - AuthenticationAlreadyExists")
@@ -23,10 +21,9 @@ public class AuthenticationAlreadyExistsExceptionHandlerTest {
 	@Test
 	@DisplayName("Handler to throw authentication not found")
 	public void exceptionHandler() {
-		AuthenticationAlreadyExistsException exception = new AuthenticationAlreadyExistsException(
-				ErrorCode.AUTHENTICATION_ALREADY_EXISTS.toString());
+		AuthenticationAlreadyExistsException exception = new AuthenticationAlreadyExistsException();
 
-		ResponseEntity<Object> response = authenticationAlreadyExistsExceptionHandler.exceptionHandler(exception);
+		ResponseEntity<Object> response = this.authenticationAlreadyExistsExceptionHandler.exceptionHandler(exception);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 	}
 }

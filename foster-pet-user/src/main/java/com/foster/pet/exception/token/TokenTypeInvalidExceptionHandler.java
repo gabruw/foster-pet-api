@@ -12,11 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ControllerAdvice
-public class TokenInvalidTypeExceptionHandler extends ResponseEntityExceptionHandler {
+public class TokenTypeInvalidExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(TokenInvalidTypeException.class)
-	public final ResponseEntity<Object> exceptionHandler(TokenInvalidTypeException exception) {
-		log.error("TokenInvalidTypeException - Message: {}", exception);
+	@ExceptionHandler(TokenTypeInvalidException.class)
+	public final ResponseEntity<Object> exceptionHandler(TokenTypeInvalidException exception) {
+		log.error("TokenTypeInvalidExceptionHandler - Message: {}", exception.getMessage());
 
 		Response<Void> response = new Response<Void>();
 		response.addError(exception.getMessage());

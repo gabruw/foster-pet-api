@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.foster.pet.constant.ErrorCode;
-
 @SpringBootTest
 @ActiveProfiles("test")
 @DisplayName("ExceptionHandler - PersonAlreadyExists")
@@ -23,10 +21,9 @@ public class PersonAlreadyExistsExceptionHandlerTest {
 	@Test
 	@DisplayName("Handler to throw person already exists")
 	public void exceptionHandler() {
-		PersonAlreadyExistsException exception = new PersonAlreadyExistsException(
-				ErrorCode.PERSON_ALREADY_EXISTS.toString());
+		PersonAlreadyExistsException exception = new PersonAlreadyExistsException();
 
-		ResponseEntity<Object> response = personAlreadyExistsExceptionHandler.exceptionHandler(exception);
+		ResponseEntity<Object> response = this.personAlreadyExistsExceptionHandler.exceptionHandler(exception);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 	}
 }

@@ -1,6 +1,7 @@
 package com.foster.pet.security.filter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -15,14 +16,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.foster.pet.security.config.JwtTokenUtil;
+import com.foster.pet.constant.ErrorCode;
+import com.foster.pet.exception.token.TokenTypeInvalidException;
+import com.foster.pet.util.JwtUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
-	private static final String BEARER_PREFIX = "Bearer ";
-	private static final String AUTH_HEADER = "Authorization";
 
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private JwtUtil jwtTokenUtil;
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -30,16 +34,21 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		String token = request.getHeader(AUTH_HEADER);
-		if (token != null && token.startsWith(BEARER_PREFIX)) {
+		String token = request.getHeader(jwtTokenUtil.getHeader());
+		if (Objects.nonNull(token)) {
+			if (!token.startsWith(jwtTokenUtil.getType())) {
+				log.error("TokenInvalidTypeException - Token: {}", token);
+				throw new TokenTypeInvalidException(ErrorCode.TOKEN_TYPE_INVALID);
+			}
+
 			token = token.substring(7);
-		}
 
-		String username = jwtTokenUtil.getUsername(token);
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+			Boolean isTokenValid = this.jwtTokenUtil.isValid(token);
+			String username = this.jwtTokenUtil.getUsername(token);
+			if (isTokenValid && Objects.nonNull(username)
+					&& Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+				UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-			if (jwtTokenUtil.isValid(token)) {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 

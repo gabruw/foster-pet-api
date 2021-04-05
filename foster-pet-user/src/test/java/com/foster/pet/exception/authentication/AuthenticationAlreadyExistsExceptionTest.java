@@ -17,8 +17,23 @@ public class AuthenticationAlreadyExistsExceptionTest {
 	@Test
 	@DisplayName("Throw authentication already exists")
 	public void authenticationAlreadyExistsException() {
+		AuthenticationAlreadyExistsException exception = new AuthenticationAlreadyExistsException();
+		assertEquals(exception.getMessage(), ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage());
+	}
+
+	@Test
+	@DisplayName("Throw authentication already exists with message")
+	public void authenticationAlreadyExistsExceptionWithMessage() {
 		AuthenticationAlreadyExistsException exception = new AuthenticationAlreadyExistsException(
-				ErrorCode.AUTHENTICATION_ALREADY_EXISTS.toString());
-		assertEquals(exception.getMessage(), ErrorCode.AUTHENTICATION_ALREADY_EXISTS.toString());
+				ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage());
+		assertEquals(exception.getMessage(), ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage());
+	}
+
+	@Test
+	@DisplayName("Throw authentication already exists with error code")
+	public void authenticationAlreadyExistsExceptionWithErrorCode() {
+		AuthenticationAlreadyExistsException exception = new AuthenticationAlreadyExistsException(
+				ErrorCode.AUTHENTICATION_ALREADY_EXISTS);
+		assertEquals(exception.getMessage(), ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage());
 	}
 }

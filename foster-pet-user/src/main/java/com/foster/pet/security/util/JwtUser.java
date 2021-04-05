@@ -1,15 +1,11 @@
 package com.foster.pet.security.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.foster.pet.entity.Authentication;
-
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -18,14 +14,12 @@ import lombok.Setter;
 public class JwtUser implements UserDetails {
 	private static final long serialVersionUID = -268046329085485932L;
 
+	@Getter
 	private Long id;
+
 	private String email;
 	private String password;
 	private Collection<? extends GrantedAuthority> authorities;
-
-	public Long getId() {
-		return id;
-	}
 
 	@Override
 	public String getUsername() {
@@ -60,24 +54,5 @@ public class JwtUser implements UserDetails {
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
-	}
-
-	public static JwtUser authenticationTojwtUser(Authentication authentication) {
-		JwtUser jwt = new JwtUser();
-		jwt.setId(authentication.getId());
-		jwt.setEmail(authentication.getEmail());
-		jwt.setPassword(authentication.getPassword());
-
-		List<GrantedAuthority> authorities = mapToGrantedAuthorities(authentication.getRole().toString());
-		jwt.setAuthorities(authorities);
-
-		return jwt;
-	}
-
-	private static List<GrantedAuthority> mapToGrantedAuthorities(String role) {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority(role));
-
-		return authorities;
 	}
 }

@@ -8,7 +8,8 @@ public enum ErrorCode {
 	PERSON_NOT_FOUND("A pessoa não foi encontrada"), PERSON_ALREADY_EXISTS("A pessoa já foi cadastrada"),
 	COMPANY_NOT_FOUND("A empresa não foi encontrada"), COMPANY_ALREADY_EXISTS("A empresa já foi cadastrada"),
 	AUTHENTICATION_NOT_FOUND("A autenticação não foi encontrada"),
-	AUTHENTICATION_ALREADY_EXISTS("A autenticação já foi cadastrada");
+	AUTHENTICATION_ALREADY_EXISTS("A autenticação já foi cadastrada"),
+	ACCESS_DENIED("Acesso negado. Você deve estar autenticado no sistema para acessar o serviço solicitado.");
 
 	private final String message;
 

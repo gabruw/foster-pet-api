@@ -13,13 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class PersonProcessor {
+public class AddressProcessor {
 
 	@Autowired
 	private PersonRepository personRepository;
 
 	public void validateToPersist(Person person) {
-		log.info("Start - PersonProcessor.validateToPersist - Person: {}", person.toString());
+		log.info("Start - AddressProcessor.validateToPersist - Person: {}", person.toString());
 
 		Optional<Person> optPerson = this.personRepository.findByCpf(person.getCpf());
 		if (optPerson.isPresent()) {
@@ -27,6 +27,6 @@ public class PersonProcessor {
 			throw new PersonAlreadyExistsException();
 		}
 
-		log.info("End - PersonProcessor.validateToPersist - Person: {}", person.toString());
+		log.info("End - AddressProcessor.validateToPersist - Person: {}", person.toString());
 	}
 }

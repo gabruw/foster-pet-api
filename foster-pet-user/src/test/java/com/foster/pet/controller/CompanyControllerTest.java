@@ -73,7 +73,7 @@ public class CompanyControllerTest extends CompanyProperties {
 	public void findById() throws Exception {
 		when(this.companyService.findById(ID)).thenReturn(this.company);
 
-		this.mockMvc.perform(get(Routes.COMPANY).param("id", String.valueOf(ID)))
+		this.mockMvc.perform(get(Routes.COMPANY).param("id", String.valueOf(ID))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
 				.andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
 				.andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
@@ -84,7 +84,8 @@ public class CompanyControllerTest extends CompanyProperties {
 	public void getByCpf() throws Exception {
 		when(this.companyService.findByCnpj(CNPJ)).thenReturn(this.company);
 
-		this.mockMvc.perform(get(Routes.COMPANY).param("cnpj", CNPJ)).andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
+		this.mockMvc.perform(get(Routes.COMPANY).param("cnpj", CNPJ)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
 				.andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
 				.andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))
 				.andExpect(jsonPath("$.errors").isEmpty());
@@ -94,7 +95,7 @@ public class CompanyControllerTest extends CompanyProperties {
 	public void remove() throws Exception {
 		when(this.companyService.deleteById(ID)).thenReturn(this.companyDTO);
 
-		this.mockMvc.perform(delete(Routes.COMPANY).param("id", String.valueOf(ID)))
+		this.mockMvc.perform(delete(Routes.COMPANY).param("id", String.valueOf(ID))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
 				.andExpect(jsonPath("$.data.tradeName", equalTo(TRADE_NAME)))
 				.andExpect(jsonPath("$.data.companyName", equalTo(COMPANY_NAME)))

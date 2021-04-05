@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.foster.pet.constant.ErrorCode;
-
 @SpringBootTest
 @ActiveProfiles("test")
 @DisplayName("ExceptionHandler - CompanyAlreadyExists")
@@ -23,8 +21,7 @@ public class CompanyAlreadyExistsExceptionHandlerTest {
 	@Test
 	@DisplayName("Handler to throw company already exists")
 	public void exceptionHandler() {
-		CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException(
-				ErrorCode.COMPANY_ALREADY_EXISTS.toString());
+		CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException();
 
 		ResponseEntity<Object> response = this.companyAlreadyExistsExceptionHandler.exceptionHandler(exception);
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());

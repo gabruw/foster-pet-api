@@ -75,7 +75,7 @@ public class PersonControllerTest extends PersonProperties {
 	public void findById() throws Exception {
 		when(this.personService.findById(ID)).thenReturn(this.person);
 
-		this.mockMvc.perform(get(Routes.PERSON).param("id", String.valueOf(ID)))
+		this.mockMvc.perform(get(Routes.PERSON).param("id", String.valueOf(ID))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))
@@ -87,8 +87,9 @@ public class PersonControllerTest extends PersonProperties {
 	public void getByCpf() throws Exception {
 		when(this.personService.findByCpf(CPF)).thenReturn(this.person);
 
-		this.mockMvc.perform(get(Routes.PERSON).param("cpf", CPF)).andExpect(jsonPath("$.data.cpf", equalTo(CPF)))
-				.andExpect(jsonPath("$.data.name", equalTo(NAME))).andExpect(jsonPath("$.data.cell", equalTo(CELL)))
+		this.mockMvc.perform(get(Routes.PERSON).param("cpf", CPF)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
+				.andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))
 				.andExpect(jsonPath("$.data.gender", equalTo(GENDER.toString()))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.errors").isEmpty());
@@ -98,7 +99,7 @@ public class PersonControllerTest extends PersonProperties {
 	public void remove() throws Exception {
 		when(this.personService.deleteById(ID)).thenReturn(this.personDTO);
 
-		this.mockMvc.perform(delete(Routes.PERSON).param("id", String.valueOf(ID)))
+		this.mockMvc.perform(delete(Routes.PERSON).param("id", String.valueOf(ID))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))

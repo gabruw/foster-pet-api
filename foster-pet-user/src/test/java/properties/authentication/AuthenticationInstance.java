@@ -1,5 +1,6 @@
 package properties.authentication;
 
+import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 
 public class AuthenticationInstance extends AuthenticationProperties {
@@ -12,5 +13,12 @@ public class AuthenticationInstance extends AuthenticationProperties {
 		authentication.setPassword(PASSWORD);
 
 		return authentication;
+	}
+	
+	public static TokenRDTO tokenRDTOInstance() {
+		TokenRDTO tokenRDTO = new TokenRDTO();
+		tokenRDTO.setToken(TOKEN);
+		
+		return tokenRDTO;
 	}
 }

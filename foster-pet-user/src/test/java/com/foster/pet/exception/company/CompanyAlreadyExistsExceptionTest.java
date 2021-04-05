@@ -14,10 +14,25 @@ import com.foster.pet.constant.ErrorCode;
 @DisplayName("Exception - CompanyAlreadyExists")
 public class CompanyAlreadyExistsExceptionTest {
 
-    @Test
-    @DisplayName("Throw company already exists")
-    public void companyAlreadyExistsExceptionTest() {
-        CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException(ErrorCode.COMPANY_ALREADY_EXISTS.toString());
-        assertEquals(exception.getMessage(), ErrorCode.COMPANY_ALREADY_EXISTS.toString());
-    }
+	@Test
+	@DisplayName("Throw company already exists")
+	public void companyAlreadyExistsExceptionTest() {
+		CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException();
+		assertEquals(exception.getMessage(), ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
+	}
+
+	@Test
+	@DisplayName("Throw company already exists with message")
+	public void companyAlreadyExistsExceptionTestWithMessage() {
+		CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException(
+				ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
+		assertEquals(exception.getMessage(), ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
+	}
+
+	@Test
+	@DisplayName("Throw company already exists with error code")
+	public void companyAlreadyExistsExceptionTestWithErrorCode() {
+		CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException(ErrorCode.COMPANY_ALREADY_EXISTS);
+		assertEquals(exception.getMessage(), ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
+	}
 }
