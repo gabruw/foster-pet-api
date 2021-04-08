@@ -81,7 +81,7 @@ public class CompanyServiceImpTest extends CompanyProperties {
 	@Test
 	@DisplayName("Find a company by Id with invalid Id")
 	public void findByIdWithNotFoundCompany() {
-		Exception exception = assertThrows(CompanyNotFoundException.class, () -> {
+		CompanyNotFoundException exception = assertThrows(CompanyNotFoundException.class, () -> {
 			Long invalidId = 2L;
 			when(this.companyRepository.findById(ID)).thenReturn(Optional.of(this.company));
 

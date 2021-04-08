@@ -50,18 +50,18 @@ public class PersonControllerTest extends PersonProperties {
 	private Person person;
 
 	@Mock
-	private PersonRDTO personDTO;
+	private PersonRDTO personRDTO;
 
 	@BeforeEach
 	public void init() {
 		this.person = PersonInstance.instace();
-		this.personDTO = this.mapper.map(this.person, PersonRDTO.class);
+		this.personRDTO = this.mapper.map(this.person, PersonRDTO.class);
 	}
 
 	@Test
 	public void getAll() throws Exception {
 		List<PersonRDTO> persons = new ArrayList<>();
-		persons.add(this.personDTO);
+		persons.add(this.personRDTO);
 
 		when(this.personService.findAll()).thenReturn(persons);
 
@@ -99,7 +99,7 @@ public class PersonControllerTest extends PersonProperties {
 
 	@Test
 	public void remove() throws Exception {
-		when(this.personService.deleteById(ID)).thenReturn(this.personDTO);
+		when(this.personService.deleteById(ID)).thenReturn(this.personRDTO);
 
 		this.mockMvc.perform(delete(Routes.PERSON).param("id", String.valueOf(ID))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))

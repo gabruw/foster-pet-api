@@ -84,7 +84,7 @@ public class PersonServiceImplTest extends PersonProperties {
 	@Test
 	@DisplayName("Find a person by Id with invalid Id")
 	public void findByIdWithNotFoundPerson() {
-		Exception exception = assertThrows(PersonNotFoundException.class, () -> {
+		PersonNotFoundException exception = assertThrows(PersonNotFoundException.class, () -> {
 			Long invalidId = 2L;
 			when(this.personRepository.findById(ID)).thenReturn(Optional.of(this.person));
 

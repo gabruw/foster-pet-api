@@ -49,18 +49,18 @@ public class CompanyControllerTest extends CompanyProperties {
 	private Company company;
 
 	@Mock
-	private CompanyRDTO companyDTO;
+	private CompanyRDTO companyRDTO;
 
 	@BeforeEach
 	public void init() {
 		this.company = CompanyInstance.instace();
-		this.companyDTO = this.mapper.map(this.company, CompanyRDTO.class);
+		this.companyRDTO = this.mapper.map(this.company, CompanyRDTO.class);
 	}
 
 	@Test
 	public void getAll() throws Exception {
 		List<CompanyRDTO> companies = new ArrayList<>();
-		companies.add(this.companyDTO);
+		companies.add(this.companyRDTO);
 
 		when(this.companyService.findAll()).thenReturn(companies);
 
@@ -95,7 +95,7 @@ public class CompanyControllerTest extends CompanyProperties {
 
 	@Test
 	public void remove() throws Exception {
-		when(this.companyService.deleteById(ID)).thenReturn(this.companyDTO);
+		when(this.companyService.deleteById(ID)).thenReturn(this.companyRDTO);
 
 		this.mockMvc.perform(delete(Routes.COMPANY).param("id", String.valueOf(ID))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
