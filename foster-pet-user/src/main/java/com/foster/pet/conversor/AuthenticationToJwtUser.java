@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.foster.pet.entity.Authentication;
-import com.foster.pet.security.util.JwtUser;
+import com.foster.pet.security.entity.JwtUser;
 
 public class AuthenticationToJwtUser implements Converter<Authentication, JwtUser> {
 

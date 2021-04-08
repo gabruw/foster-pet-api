@@ -1,4 +1,4 @@
-package com.foster.pet.security.util;
+package com.foster.pet.security.entity;
 
 import java.util.Collection;
 

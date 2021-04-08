@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.foster.pet.entity.Authentication;
-import com.foster.pet.security.util.JwtUser;
+import com.foster.pet.security.entity.JwtUser;
 import com.foster.pet.service.AuthenticationService;
 
 @Service
