@@ -64,13 +64,13 @@ public class Address implements Serializable {
 	@JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
 	private City city;
 
-	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
-	private Person person;
-
 	@ManyToMany
 	@JoinTable(name = "ngo_address", joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "ngo_id", referencedColumnName = "id"))
 	private List<NGO> ngo;
+
+	@ManyToMany
+	@JoinTable(name = "person_address", joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id"))
+	private List<Person> person;
 
 	@ManyToMany
 	@JoinTable(name = "company_address", joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"))

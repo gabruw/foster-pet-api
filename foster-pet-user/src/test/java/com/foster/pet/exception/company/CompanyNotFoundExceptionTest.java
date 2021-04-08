@@ -16,21 +16,21 @@ public class CompanyNotFoundExceptionTest {
 
 	@Test
 	@DisplayName("Throw company not found")
-	public void companyNotFoundExceptionTest() {
+	public void companyNotFoundException() {
 		CompanyNotFoundException exception = new CompanyNotFoundException();
 		assertEquals(exception.getMessage(), ErrorCode.COMPANY_NOT_FOUND.getMessage());
 	}
 
 	@Test
 	@DisplayName("Throw company not found with message")
-	public void companyNotFoundExceptionTestWithMessage() {
+	public void companyNotFoundExceptiontWithMessage() {
 		CompanyNotFoundException exception = new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND.getMessage());
 		assertEquals(exception.getMessage(), ErrorCode.COMPANY_NOT_FOUND.getMessage());
 	}
 
 	@Test
 	@DisplayName("Throw company not found with error code")
-	public void companyNotFoundExceptionTestWithErrorCode() {
+	public void companyNotFoundExceptionWithErrorCode() {
 		CompanyNotFoundException exception = new CompanyNotFoundException(ErrorCode.COMPANY_NOT_FOUND);
 		assertEquals(exception.getMessage(), ErrorCode.COMPANY_NOT_FOUND.getMessage());
 	}

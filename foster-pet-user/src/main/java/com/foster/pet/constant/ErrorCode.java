@@ -9,7 +9,8 @@ public enum ErrorCode {
 	COMPANY_NOT_FOUND("A empresa não foi encontrada"), COMPANY_ALREADY_EXISTS("A empresa já foi cadastrada"),
 	AUTHENTICATION_NOT_FOUND("A autenticação não foi encontrada"),
 	AUTHENTICATION_ALREADY_EXISTS("A autenticação já foi cadastrada"),
-	ACCESS_DENIED("Acesso negado. Você deve estar autenticado no sistema para acessar o serviço solicitado.");
+	ACCESS_DENIED("Acesso negado. Você deve estar autenticado no sistema para acessar o serviço solicitado."),
+	CITY_NOT_FOUND("A cidade não foi encontrada."), STATE_NOT_FOUND("A estado não foi encontrada.");
 
 	private final String message;
 

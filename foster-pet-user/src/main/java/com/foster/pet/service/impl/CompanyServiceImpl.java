@@ -75,9 +75,9 @@ public class CompanyServiceImpl implements CompanyService {
 		}
 
 		this.companyRepository.deleteById(id);
-		CompanyRDTO companyDTO = this.mapper.map(optCompany.get(), CompanyRDTO.class);
+		CompanyRDTO companyRDTO = this.mapper.map(optCompany.get(), CompanyRDTO.class);
 
-		log.info("End - CompanyServiceImpl.deleteById - Company {}", companyDTO.toString());
-		return companyDTO;
+		log.info("End - CompanyServiceImpl.deleteById - Company {}", companyRDTO.toString());
+		return companyRDTO;
 	}
 }

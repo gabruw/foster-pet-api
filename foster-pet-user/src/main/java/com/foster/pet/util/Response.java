@@ -15,12 +15,8 @@ public class Response<T> {
 
 	public Response() {
 		if (this.errors == null) {
-			this.errors = new ArrayList<String>();
+			this.errors = new ArrayList<>();
 		}
-	}
-
-	public List<String> getErrors() {
-		return this.errors;
 	}
 
 	public void addError(String error) {

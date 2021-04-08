@@ -16,14 +16,14 @@ public class CompanyAlreadyExistsExceptionTest {
 
 	@Test
 	@DisplayName("Throw company already exists")
-	public void companyAlreadyExistsExceptionTest() {
+	public void companyAlreadyExistsException() {
 		CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException();
 		assertEquals(exception.getMessage(), ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
 	}
 
 	@Test
 	@DisplayName("Throw company already exists with message")
-	public void companyAlreadyExistsExceptionTestWithMessage() {
+	public void companyAlreadyExistsExceptionWithMessage() {
 		CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException(
 				ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
 		assertEquals(exception.getMessage(), ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
@@ -31,7 +31,7 @@ public class CompanyAlreadyExistsExceptionTest {
 
 	@Test
 	@DisplayName("Throw company already exists with error code")
-	public void companyAlreadyExistsExceptionTestWithErrorCode() {
+	public void companyAlreadyExistsExceptionWithErrorCode() {
 		CompanyAlreadyExistsException exception = new CompanyAlreadyExistsException(ErrorCode.COMPANY_ALREADY_EXISTS);
 		assertEquals(exception.getMessage(), ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
 	}

@@ -15,14 +15,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.foster.pet.constant.ErrorCode;
-import com.foster.pet.dto.authentication.AuthenticationDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.authentication.AuthenticationAlreadyExistsException;
@@ -42,9 +40,6 @@ import properties.authentication.AuthenticationProperties;
 public class AuthenticationServiceImplTest extends AuthenticationProperties {
 
 	@Autowired
-	private ModelMapper mapper;
-
-	@Autowired
 	private JwtUtil jwtTokenUtil;
 
 	@MockBean
@@ -56,13 +51,9 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 	@Mock
 	private Authentication authentication;
 
-	@Mock
-	private AuthenticationDTO authenticationDTO;
-
 	@BeforeEach
 	public void init() {
 		this.authentication = AuthenticationInstance.instace();
-		this.authenticationDTO = this.mapper.map(this.authentication, AuthenticationDTO.class);
 	}
 
 	@Test
@@ -118,12 +109,9 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 	@Test
 	@DisplayName("Persist an authentication")
 	public void persist() {
-		String encryptedPassword = Encryptor.encode(this.authentication.getPassword());
-		this.authentication.setPassword(encryptedPassword);
-
 		when(this.authenticationRepository.save(any(Authentication.class))).thenReturn(this.authentication);
 
-		Authentication returnedAuthentication = this.authenticationService.persist(this.authenticationDTO);
+		Authentication returnedAuthentication = this.authenticationService.persist(this.authentication);
 		assertEquals(ID, returnedAuthentication.getId());
 		assertEquals(ROLE, returnedAuthentication.getRole());
 		assertEquals(EMAIL, returnedAuthentication.getEmail());
@@ -137,7 +125,7 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 				() -> {
 					when(this.authenticationRepository.findByEmail(EMAIL)).thenReturn(Optional.of(this.authentication));
 
-					this.authenticationService.persist(this.authenticationDTO);
+					this.authenticationService.persist(this.authentication);
 				});
 
 		assertEquals(ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage(), exception.getMessage());

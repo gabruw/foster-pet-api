@@ -11,7 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -61,7 +61,7 @@ public class Person implements Serializable {
 	@OneToOne(mappedBy = "person")
 	private Employee employee;
 
-	@OneToMany(mappedBy = "person")
+	@ManyToMany(mappedBy = "person")
 	private List<Address> addresses;
 
 	@OneToOne(mappedBy = "person")

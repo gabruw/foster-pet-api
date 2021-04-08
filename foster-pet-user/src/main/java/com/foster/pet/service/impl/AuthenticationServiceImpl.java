@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.foster.pet.dto.authentication.AuthenticationDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
 import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
@@ -62,10 +61,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	@Override
-	public Authentication persist(AuthenticationDTO authenticationDTO) {
-		log.info("Start - AuthenticationServiceImpl.persist - AuthenticationDTO: {}", authenticationDTO.toString());
-
-		Authentication authentication = this.mapper.map(authenticationDTO, Authentication.class);
+	public Authentication persist(Authentication authentication) {
+		log.info("Start - AuthenticationServiceImpl.persist - Authentication: {}", authentication.toString());
 
 		Optional<Authentication> optAuthentication = this.authenticationRepository
 				.findByEmail(authentication.getEmail());
@@ -106,9 +103,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		}
 
 		this.authenticationRepository.deleteById(id);
-		AuthenticationRDTO authenticationDTO = this.mapper.map(optAuthentication.get(), AuthenticationRDTO.class);
+		AuthenticationRDTO authenticationRDTO = this.mapper.map(optAuthentication.get(), AuthenticationRDTO.class);
 
-		log.info("End - AuthenticationServiceImpl.deleteById - AuthenticationDTO: {}", authenticationDTO.toString());
-		return authenticationDTO;
+		log.info("End - AuthenticationServiceImpl.deleteById - AuthenticationRDTO: {}", authenticationRDTO.toString());
+		return authenticationRDTO;
 	}
 }

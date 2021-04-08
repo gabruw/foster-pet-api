@@ -41,7 +41,7 @@ public class AuthenticationController {
 	@GetMapping(params = "id")
 	public ResponseEntity<Response<Authentication>> getById(@RequestParam Long id) {
 		log.info("Start - AuthenticationController.getById - Id: {}", id);
-		Response<Authentication> response = new Response<Authentication>();
+		Response<Authentication> response = new Response<>();
 
 		Authentication authentication = this.authenticationService.findById(id);
 		response.setData(authentication);
@@ -54,7 +54,7 @@ public class AuthenticationController {
 	@GetMapping(params = "email")
 	public ResponseEntity<Response<Authentication>> getByEmail(@RequestParam @Email @Valid String email) {
 		log.info("Start - AuthenticationController.getByEmail - Email: {}", email);
-		Response<Authentication> response = new Response<Authentication>();
+		Response<Authentication> response = new Response<>();
 
 		Authentication authentication = this.authenticationService.findByEmail(email);
 		response.setData(authentication);
@@ -66,7 +66,7 @@ public class AuthenticationController {
 	@GetMapping(value = "/refresh")
 	public ResponseEntity<Response<TokenRDTO>> refresh(HttpServletRequest request) {
 		log.info("Start - AuthenticationController.refresh - HttpServletRequest: {}", request.toString());
-		Response<TokenRDTO> response = new Response<TokenRDTO>();
+		Response<TokenRDTO> response = new Response<>();
 
 		Optional<String> token = Optional.ofNullable(request.getHeader(jwtTokenUtil.getHeader()));
 		if (token.isEmpty()) {

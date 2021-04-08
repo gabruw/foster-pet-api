@@ -9,17 +9,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.foster.pet.constant.AuthenticationRoleEnum;
-import com.foster.pet.entity.Company;
-import com.foster.pet.entity.Person;
+import com.foster.pet.dto.company.CompanyPDTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AuthenticationDTO implements Serializable {
+public class AuthenticationCompanyPDTO implements Serializable {
 
-	private static final long serialVersionUID = 2932728917392452591L;
+	private static final long serialVersionUID = -1005444019593483919L;
 
 	@Email(message = "O campo 'Email' é inválido")
 	@Size(min = 6, max = 80, message = "O campo 'Email' deve conter entre 6 e 80 caracteres.")
@@ -32,8 +31,5 @@ public class AuthenticationDTO implements Serializable {
 	private AuthenticationRoleEnum role;
 
 	@NotNull
-	private Person person;
-
-	@NotNull
-	private Company company;
+	private CompanyPDTO company;
 }
