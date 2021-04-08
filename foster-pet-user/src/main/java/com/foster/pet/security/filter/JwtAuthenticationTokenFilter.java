@@ -34,9 +34,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		String token = request.getHeader(jwtTokenUtil.getHeader());
+		String token = request.getHeader(this.jwtTokenUtil.getHeader());
 		if (Objects.nonNull(token)) {
-			if (!token.startsWith(jwtTokenUtil.getType())) {
+			if (!token.startsWith(this.jwtTokenUtil.getType())) {
 				log.error("TokenInvalidTypeException - Token: {}", token);
 				throw new TokenTypeInvalidException(ErrorCode.TOKEN_TYPE_INVALID);
 			}
