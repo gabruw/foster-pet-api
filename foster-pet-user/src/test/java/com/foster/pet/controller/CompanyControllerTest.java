@@ -59,10 +59,10 @@ public class CompanyControllerTest extends CompanyProperties {
 
 	@Test
 	public void getAll() throws Exception {
-		List<CompanyRDTO> companyDTOS = new ArrayList<>();
-		companyDTOS.add(this.companyDTO);
+		List<CompanyRDTO> companies = new ArrayList<>();
+		companies.add(this.companyDTO);
 
-		when(this.companyService.findAll()).thenReturn(companyDTOS);
+		when(this.companyService.findAll()).thenReturn(companies);
 
 		this.mockMvc.perform(get(Routes.COMPANY)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data[0].cnpj", equalTo(CNPJ)))
