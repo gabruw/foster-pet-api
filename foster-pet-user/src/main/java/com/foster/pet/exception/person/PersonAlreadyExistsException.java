@@ -9,12 +9,4 @@ public class PersonAlreadyExistsException extends RuntimeException {
 	public PersonAlreadyExistsException() {
 		super(ErrorCode.PERSON_ALREADY_EXISTS.getMessage());
 	}
-
-	public PersonAlreadyExistsException(String message) {
-		super(message);
-	}
-
-	public PersonAlreadyExistsException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

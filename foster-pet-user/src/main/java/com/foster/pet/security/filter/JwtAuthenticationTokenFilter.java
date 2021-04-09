@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.exception.token.TokenTypeInvalidException;
 import com.foster.pet.util.JwtUtil;
 
@@ -38,7 +37,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 		if (Objects.nonNull(token)) {
 			if (!token.startsWith(this.jwtTokenUtil.getType())) {
 				log.error("TokenInvalidTypeException - Token: {}", token);
-				throw new TokenTypeInvalidException(ErrorCode.TOKEN_TYPE_INVALID);
+				throw new TokenTypeInvalidException();
 			}
 
 			token = token.substring(7);

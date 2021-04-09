@@ -9,12 +9,4 @@ public class PersonNotFoundException extends RuntimeException {
 	public PersonNotFoundException() {
 		super(ErrorCode.PERSON_NOT_FOUND.getMessage());
 	}
-
-	public PersonNotFoundException(String message) {
-		super(message);
-	}
-
-	public PersonNotFoundException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

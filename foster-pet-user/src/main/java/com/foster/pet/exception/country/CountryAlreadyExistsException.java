@@ -9,12 +9,4 @@ public class CountryAlreadyExistsException extends RuntimeException {
 	public CountryAlreadyExistsException() {
 		super(ErrorCode.COUNTRY_ALREADY_EXISTS.getMessage());
 	}
-
-	public CountryAlreadyExistsException(String message) {
-		super(message);
-	}
-
-	public CountryAlreadyExistsException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

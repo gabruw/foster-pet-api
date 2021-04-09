@@ -9,12 +9,4 @@ public class TokenTypeInvalidException extends RuntimeException {
 	public TokenTypeInvalidException() {
 		super(ErrorCode.TOKEN_TYPE_INVALID.getMessage());
 	}
-
-	public TokenTypeInvalidException(String message) {
-		super(message);
-	}
-
-	public TokenTypeInvalidException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

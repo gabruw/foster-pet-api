@@ -20,19 +20,4 @@ public class PersonAlreadyExistsExceptionTest {
 		PersonAlreadyExistsException exception = new PersonAlreadyExistsException();
 		assertEquals(exception.getMessage(), ErrorCode.PERSON_ALREADY_EXISTS.getMessage());
 	}
-
-	@Test
-	@DisplayName("Throw person already exists with message")
-	public void personNotFoundExceptionWithMessage() {
-		PersonAlreadyExistsException exception = new PersonAlreadyExistsException(
-				ErrorCode.PERSON_ALREADY_EXISTS.getMessage());
-		assertEquals(exception.getMessage(), ErrorCode.PERSON_ALREADY_EXISTS.getMessage());
-	}
-
-	@Test
-	@DisplayName("Throw person already exists with error code")
-	public void personNotFoundExceptionWithErrorCode() {
-		PersonAlreadyExistsException exception = new PersonAlreadyExistsException(ErrorCode.PERSON_ALREADY_EXISTS);
-		assertEquals(exception.getMessage(), ErrorCode.PERSON_ALREADY_EXISTS.getMessage());
-	}
 }

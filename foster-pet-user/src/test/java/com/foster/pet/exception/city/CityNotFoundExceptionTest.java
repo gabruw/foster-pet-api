@@ -20,18 +20,4 @@ public class CityNotFoundExceptionTest {
 		CityNotFoundException exception = new CityNotFoundException();
 		assertEquals(exception.getMessage(), ErrorCode.CITY_NOT_FOUND.getMessage());
 	}
-
-	@Test
-	@DisplayName("Throw city not found with message")
-	public void cityNotFoundExceptionWithMessage() {
-		CityNotFoundException exception = new CityNotFoundException(ErrorCode.CITY_NOT_FOUND.getMessage());
-		assertEquals(exception.getMessage(), ErrorCode.CITY_NOT_FOUND.getMessage());
-	}
-
-	@Test
-	@DisplayName("Throw city not found with error code")
-	public void cityNotFoundExceptionWithErrorCode() {
-		CityNotFoundException exception = new CityNotFoundException(ErrorCode.CITY_NOT_FOUND);
-		assertEquals(exception.getMessage(), ErrorCode.CITY_NOT_FOUND.getMessage());
-	}
 }

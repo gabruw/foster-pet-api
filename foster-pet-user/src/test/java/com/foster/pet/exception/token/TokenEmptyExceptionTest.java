@@ -20,18 +20,4 @@ public class TokenEmptyExceptionTest {
 		TokenEmptyException exception = new TokenEmptyException();
 		assertEquals(exception.getMessage(), ErrorCode.TOKEN_EMPTY.getMessage());
 	}
-
-	@Test
-	@DisplayName("Throw token is empty with message")
-	public void tokenEmptyExceptionWithMessage() {
-		TokenEmptyException exception = new TokenEmptyException(ErrorCode.TOKEN_EMPTY.getMessage());
-		assertEquals(exception.getMessage(), ErrorCode.TOKEN_EMPTY.getMessage());
-	}
-
-	@Test
-	@DisplayName("Throw token is empty with error code")
-	public void tokenEmptyExceptionWithErrorCode() {
-		TokenEmptyException exception = new TokenEmptyException(ErrorCode.TOKEN_EMPTY);
-		assertEquals(exception.getMessage(), ErrorCode.TOKEN_EMPTY.getMessage());
-	}
 }

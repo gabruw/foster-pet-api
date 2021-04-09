@@ -20,18 +20,4 @@ public class PersonNotFoundExceptionTest {
 		PersonNotFoundException exception = new PersonNotFoundException();
 		assertEquals(exception.getMessage(), ErrorCode.PERSON_NOT_FOUND.getMessage());
 	}
-
-	@Test
-	@DisplayName("Throw person not found with message")
-	public void personNotFoundExceptionWithMesage() {
-		PersonNotFoundException exception = new PersonNotFoundException(ErrorCode.PERSON_NOT_FOUND.getMessage());
-		assertEquals(exception.getMessage(), ErrorCode.PERSON_NOT_FOUND.getMessage());
-	}
-
-	@Test
-	@DisplayName("Throw person not found with error code")
-	public void personNotFoundExceptionWithErrorCode() {
-		PersonNotFoundException exception = new PersonNotFoundException(ErrorCode.PERSON_NOT_FOUND);
-		assertEquals(exception.getMessage(), ErrorCode.PERSON_NOT_FOUND.getMessage());
-	}
 }

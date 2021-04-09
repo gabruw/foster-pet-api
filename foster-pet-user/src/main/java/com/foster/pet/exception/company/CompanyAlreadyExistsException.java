@@ -9,12 +9,4 @@ public class CompanyAlreadyExistsException extends RuntimeException {
 	public CompanyAlreadyExistsException() {
 		super(ErrorCode.COMPANY_ALREADY_EXISTS.getMessage());
 	}
-
-	public CompanyAlreadyExistsException(String message) {
-		super(message);
-	}
-
-	public CompanyAlreadyExistsException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

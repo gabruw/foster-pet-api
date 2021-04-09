@@ -9,12 +9,4 @@ public class TokenEmptyException extends RuntimeException {
 	public TokenEmptyException() {
 		super(ErrorCode.TOKEN_EMPTY.getMessage());
 	}
-
-	public TokenEmptyException(String message) {
-		super(message);
-	}
-
-	public TokenEmptyException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

@@ -9,12 +9,4 @@ public class CompanyNotFoundException extends RuntimeException {
     public CompanyNotFoundException() {
 		super(ErrorCode.COMPANY_NOT_FOUND.getMessage());
 	}
-
-	public CompanyNotFoundException(String message) {
-		super(message);
-	}
-
-	public CompanyNotFoundException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

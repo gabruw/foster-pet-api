@@ -20,18 +20,4 @@ public class TokenInvalidExceptionTest {
 		TokenInvalidException exception = new TokenInvalidException();
 		assertEquals(exception.getMessage(), ErrorCode.TOKEN_INVALID.getMessage());
 	}
-
-	@Test
-	@DisplayName("Throw token is invalid with message")
-	public void tokenInvalidExceptionWithMessage() {
-		TokenInvalidException exception = new TokenInvalidException(ErrorCode.TOKEN_INVALID.getMessage());
-		assertEquals(exception.getMessage(), ErrorCode.TOKEN_INVALID.getMessage());
-	}
-
-	@Test
-	@DisplayName("Throw token is invalid with error code")
-	public void tokenInvalidExceptionWithErrorCode() {
-		TokenInvalidException exception = new TokenInvalidException(ErrorCode.TOKEN_INVALID);
-		assertEquals(exception.getMessage(), ErrorCode.TOKEN_INVALID.getMessage());
-	}
 }

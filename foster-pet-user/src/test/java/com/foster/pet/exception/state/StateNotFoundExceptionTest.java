@@ -20,18 +20,4 @@ public class StateNotFoundExceptionTest {
 		StateNotFoundException exception = new StateNotFoundException();
 		assertEquals(exception.getMessage(), ErrorCode.STATE_NOT_FOUND.getMessage());
 	}
-
-	@Test
-	@DisplayName("Throw state not found with message")
-	public void stateNotFoundExceptionWithMessage() {
-		StateNotFoundException exception = new StateNotFoundException(ErrorCode.STATE_NOT_FOUND.getMessage());
-		assertEquals(exception.getMessage(), ErrorCode.STATE_NOT_FOUND.getMessage());
-	}
-
-	@Test
-	@DisplayName("Throw state not found with error code")
-	public void stateNotFoundExceptionWithErrorCode() {
-		StateNotFoundException exception = new StateNotFoundException(ErrorCode.STATE_NOT_FOUND);
-		assertEquals(exception.getMessage(), ErrorCode.STATE_NOT_FOUND.getMessage());
-	}
 }

@@ -9,12 +9,4 @@ public class AuthenticationAlreadyExistsException extends RuntimeException {
     public AuthenticationAlreadyExistsException() {
 		super(ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage());
 	}
-
-	public AuthenticationAlreadyExistsException(String message) {
-		super(message);
-	}
-
-	public AuthenticationAlreadyExistsException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

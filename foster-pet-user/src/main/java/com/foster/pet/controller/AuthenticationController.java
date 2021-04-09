@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.token.TokenEmptyException;
@@ -71,7 +70,7 @@ public class AuthenticationController {
 		Optional<String> token = Optional.ofNullable(request.getHeader(jwtTokenUtil.getHeader()));
 		if (token.isEmpty()) {
 			log.error("TokenEmptyException - HttpServletRequest: {}", request.toString());
-			throw new TokenEmptyException(ErrorCode.TOKEN_EMPTY);
+			throw new TokenEmptyException();
 		}
 
 		TokenRDTO returnedToken = this.authenticationService.refresh(token.get());

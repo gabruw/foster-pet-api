@@ -9,12 +9,4 @@ public class AuthenticationNotFoundException extends RuntimeException {
 	public AuthenticationNotFoundException() {
 		super(ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage());
 	}
-
-	public AuthenticationNotFoundException(String message) {
-		super(message);
-	}
-
-	public AuthenticationNotFoundException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

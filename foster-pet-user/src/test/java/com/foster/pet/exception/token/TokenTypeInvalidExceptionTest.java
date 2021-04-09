@@ -20,18 +20,4 @@ public class TokenTypeInvalidExceptionTest {
 		TokenTypeInvalidException exception = new TokenTypeInvalidException();
 		assertEquals(exception.getMessage(), ErrorCode.TOKEN_TYPE_INVALID.getMessage());
 	}
-
-	@Test
-	@DisplayName("Throw token type is invalid with message")
-	public void tokenTypeInvalidExceptionWithMessage() {
-		TokenTypeInvalidException exception = new TokenTypeInvalidException(ErrorCode.TOKEN_TYPE_INVALID.getMessage());
-		assertEquals(exception.getMessage(), ErrorCode.TOKEN_TYPE_INVALID.getMessage());
-	}
-
-	@Test
-	@DisplayName("Throw token type is invalid with error code")
-	public void tokenTypeInvalidExceptionWithErrorCode() {
-		TokenTypeInvalidException exception = new TokenTypeInvalidException(ErrorCode.TOKEN_TYPE_INVALID);
-		assertEquals(exception.getMessage(), ErrorCode.TOKEN_TYPE_INVALID.getMessage());
-	}
 }

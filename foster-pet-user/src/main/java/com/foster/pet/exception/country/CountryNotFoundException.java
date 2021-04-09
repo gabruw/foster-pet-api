@@ -9,12 +9,4 @@ public class CountryNotFoundException extends RuntimeException {
 	public CountryNotFoundException() {
 		super(ErrorCode.COUNTRY_NOT_FOUND.getMessage());
 	}
-
-	public CountryNotFoundException(String message) {
-		super(message);
-	}
-
-	public CountryNotFoundException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

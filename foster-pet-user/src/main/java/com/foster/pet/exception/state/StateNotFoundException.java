@@ -9,12 +9,4 @@ public class StateNotFoundException extends RuntimeException {
 	public StateNotFoundException() {
 		super(ErrorCode.STATE_NOT_FOUND.getMessage());
 	}
-
-	public StateNotFoundException(String message) {
-		super(message);
-	}
-
-	public StateNotFoundException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }

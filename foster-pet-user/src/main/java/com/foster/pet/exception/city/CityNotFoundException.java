@@ -9,12 +9,4 @@ public class CityNotFoundException extends RuntimeException {
 	public CityNotFoundException() {
 		super(ErrorCode.CITY_NOT_FOUND.getMessage());
 	}
-
-	public CityNotFoundException(String message) {
-		super(message);
-	}
-
-	public CityNotFoundException(ErrorCode error) {
-		super(error.getMessage());
-	}
 }
