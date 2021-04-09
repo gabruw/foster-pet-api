@@ -57,10 +57,10 @@ public class CompanyController {
 		log.info("Start - CompanyController.getAll");
 		Response<List<CompanyRDTO>> response = new Response<>();
 
-		List<CompanyRDTO> companyDTOS = this.companyService.findAll();
-		response.setData(companyDTOS);
+		List<CompanyRDTO> companies = this.companyService.findAll();
+		response.setData(companies);
 
-		log.info("End - CompanyController.getAll - List<CompanyDTO>: {}", companyDTOS.toString());
+		log.info("End - CompanyController.getAll - List<CompanyDTO>: {}", companies.toString());
 		return ResponseEntity.ok(response);
 	}
 
@@ -116,10 +116,10 @@ public class CompanyController {
 		log.info("Start - CompanyController.remove - Id: {}", id);
 		Response<CompanyRDTO> response = new Response<>();
 
-		CompanyRDTO companyDTO = this.companyService.deleteById(id);
-		response.setData(companyDTO);
+		CompanyRDTO company = this.companyService.deleteById(id);
+		response.setData(company);
 
-		log.info("End - CompanyController.remove - Company: {}", companyDTO.toString());
+		log.info("End - CompanyController.remove - Company: {}", company.toString());
 		return ResponseEntity.ok(response);
 	}
 }

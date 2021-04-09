@@ -103,9 +103,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		}
 
 		this.authenticationRepository.deleteById(id);
-		AuthenticationRDTO authenticationRDTO = this.mapper.map(optAuthentication.get(), AuthenticationRDTO.class);
+		AuthenticationRDTO authentication = this.mapper.map(optAuthentication.get(), AuthenticationRDTO.class);
 
-		log.info("End - AuthenticationServiceImpl.deleteById - AuthenticationRDTO: {}", authenticationRDTO.toString());
-		return authenticationRDTO;
+		log.info("End - AuthenticationServiceImpl.deleteById - AuthenticationRDTO: {}", authentication.toString());
+		return authentication;
 	}
 }

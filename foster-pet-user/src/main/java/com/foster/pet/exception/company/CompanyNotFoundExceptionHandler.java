@@ -18,7 +18,7 @@ public class CompanyNotFoundExceptionHandler extends ResponseEntityExceptionHand
 	public final ResponseEntity<Object> exceptionHandler(CompanyNotFoundException exception) {
 		log.error("CompanyNotFoundException - Message: {}", exception);
 
-		Response<Void> response = new Response<Void>();
+		Response<Void> response = new Response<>();
 		response.addError(exception.getMessage());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

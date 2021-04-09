@@ -74,9 +74,9 @@ public class PersonServiceImpl implements PersonService {
 		}
 
 		this.personRepository.deleteById(id);
-		PersonRDTO personRDTO = this.mapper.map(optPerson.get(), PersonRDTO.class);
+		PersonRDTO person = this.mapper.map(optPerson.get(), PersonRDTO.class);
 
-		log.info("End - PersonServiceImpl.deleteById - PersonRDTO: {}", personRDTO.toString());
-		return personRDTO;
+		log.info("End - PersonServiceImpl.deleteById - PersonRDTO: {}", person.toString());
+		return person;
 	}
 }
