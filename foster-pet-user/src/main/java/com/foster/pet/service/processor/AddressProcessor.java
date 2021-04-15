@@ -9,11 +9,12 @@ import org.springframework.stereotype.Component;
 
 import com.foster.pet.entity.Address;
 import com.foster.pet.entity.City;
+import com.foster.pet.entity.Country;
 import com.foster.pet.entity.State;
 import com.foster.pet.exception.city.CityNotFoundException;
+import com.foster.pet.exception.country.CountryNotFoundException;
 import com.foster.pet.exception.state.StateNotFoundException;
-import com.foster.pet.repository.CityRepository;
-import com.foster.pet.repository.StateRepository;
+import com.foster.pet.repository.CountryRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,30 +23,41 @@ import lombok.extern.slf4j.Slf4j;
 public class AddressProcessor {
 
 	@Autowired
-	private CityRepository cityRepository;
-
-	@Autowired
-	private StateRepository stateRepository;
+	private CountryRepository countryRepository;
 
 	public List<Address> validateToPersist(List<Address> addresses) {
 		log.info("Start - AddressProcessor.validateToPersist - List<Address>: {}", addresses);
 
 		List<Address> validatedAddresses = addresses.stream().map(address -> {
-			Optional<City> optCity = this.cityRepository.findById(address.getCity().getId());
-			if (optCity.isEmpty()) {
-				log.error("CityNotFoundException - Id: {}", address.getCity().getId());
-				throw new CityNotFoundException();
+			Long countryId = address.getCity().getState().getCountry().getId();
+
+			Optional<Country> optCountry = this.countryRepository.findById(countryId);
+			if (optCountry.isEmpty()) {
+				log.error("CountryNotFoundException - Id: {}", countryId);
+				throw new CountryNotFoundException();
 			}
 
-			address.setCity(optCity.get());
+			address.getCity().getState().setCountry(optCountry.get());
 
-			Optional<State> optState = this.stateRepository.findById(optCity.get().getState().getId());
+			Long stateId = address.getCity().getState().getId();
+			Optional<State> optState = optCountry.get().getState().stream()
+					.filter(state -> state.getId().equals(stateId)).findFirst();
 			if (optState.isEmpty()) {
-				log.error("StateNotFoundException - Id: {}", optCity.get().getState().getId());
+				log.error("StateNotFoundException - Id: {}", stateId);
 				throw new StateNotFoundException();
 			}
 
 			address.getCity().setState(optState.get());
+
+			Long cityId = address.getCity().getId();
+			Optional<City> optCity = optState.get().getCity().stream().filter(city -> city.getId().equals(cityId))
+					.findFirst();
+			if (optCity.isEmpty()) {
+				log.error("CityNotFoundException - Id: {}", cityId);
+				throw new CityNotFoundException();
+			}
+
+			address.setCity(optCity.get());
 			return address;
 		}).collect(Collectors.toList());
 

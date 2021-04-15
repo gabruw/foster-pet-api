@@ -2,18 +2,24 @@ package com.foster.pet.service;
 
 import java.util.List;
 
-import com.foster.pet.dto.country.CountryDTO;
-import com.foster.pet.entity.Country;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.foster.pet.dto.OptionDTO;
+import com.foster.pet.dto.country.CountryFRPDTO;
+import com.foster.pet.dto.country.CountryRPDTO;
 
 public interface CountryService {
 
-	List<CountryDTO> findAll();
-
-	Country findById(Long id);
-
-	Country findByName(String name);
-
-	Country persist(Country country);
+	Page<CountryRPDTO> findAll(Pageable pageable);
 	
-	CountryDTO deleteById(Long id);
+	List<OptionDTO<Long>> findOptions();
+
+	CountryFRPDTO findById(Long id);
+
+	CountryFRPDTO findByName(String name);
+
+	CountryRPDTO persist(CountryRPDTO countryRPDTO);
+
+	CountryRPDTO deleteById(Long id);
 }

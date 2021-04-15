@@ -5,14 +5,14 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.foster.pet.dto.state.StateAddressPDTO;
+import com.foster.pet.dto.state.StateHPDTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CityAddressPDTO implements Serializable {
+public class CityHPDTO implements Serializable {
 
 	private static final long serialVersionUID = -5731823478681620809L;
 
@@ -20,5 +20,5 @@ public class CityAddressPDTO implements Serializable {
 	private Long id;
 
 	@NotNull
-	private StateAddressPDTO state;
+	private StateHPDTO state;
 }

@@ -18,7 +18,7 @@ public class TokenInvalidExceptionHandler extends ResponseEntityExceptionHandler
 	public final ResponseEntity<Object> exceptionHandler(TokenInvalidException exception) {
 		log.error("TokenInvalidException - Message: {}", exception);
 
-		Response<Void> response = new Response<Void>();
+		Response<Void> response = new Response<>();
 		response.addError(exception.getMessage());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

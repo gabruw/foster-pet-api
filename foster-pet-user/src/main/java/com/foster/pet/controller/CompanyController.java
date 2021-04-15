@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.authentication.AuthenticationCompanyPDTO;
+import com.foster.pet.dto.company.CompanyFRDTO;
 import com.foster.pet.dto.company.CompanyRDTO;
 import com.foster.pet.entity.Address;
 import com.foster.pet.entity.Authentication;
-import com.foster.pet.entity.Company;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.CompanyService;
 import com.foster.pet.service.processor.AddressProcessor;
@@ -53,40 +55,40 @@ public class CompanyController {
 
 	@GetMapping
 	@Cacheable("company")
-	public ResponseEntity<Response<List<CompanyRDTO>>> getAll() {
-		log.info("Start - CompanyController.getAll");
-		Response<List<CompanyRDTO>> response = new Response<>();
+	public ResponseEntity<Response<Page<CompanyRDTO>>> findAll(Pageable pageable) {
+		log.info("Start - CompanyController.findAll");
+		Response<Page<CompanyRDTO>> response = new Response<>();
 
-		List<CompanyRDTO> companies = this.companyService.findAll();
+		Page<CompanyRDTO> companies = this.companyService.findAll(pageable);
 		response.setData(companies);
 
-		log.info("End - CompanyController.getAll - List<CompanyDTO>: {}", companies.toString());
+		log.info("End - CompanyController.findAll - Page<CompanyRDTO>: {}", companies.toString());
 		return ResponseEntity.ok(response);
 	}
 
 	@Cacheable("company")
 	@GetMapping(params = "id")
-	public ResponseEntity<Response<Company>> getById(@RequestParam Long id) {
-		log.info("Start - CompanyController.getById - Id: {}", id);
-		Response<Company> response = new Response<>();
+	public ResponseEntity<Response<CompanyFRDTO>> findById(@RequestParam Long id) {
+		log.info("Start - CompanyController.findById - Id: {}", id);
+		Response<CompanyFRDTO> response = new Response<>();
 
-		Company company = this.companyService.findById(id);
+		CompanyFRDTO company = this.companyService.findById(id);
 		response.setData(company);
 
-		log.info("End - CompanyController.getById - Company: {}", company.toString());
+		log.info("End - CompanyController.findById - CompanyFRDTO: {}", company.toString());
 		return ResponseEntity.ok(response);
 	}
 
 	@Cacheable("company")
 	@GetMapping(params = "cnpj")
-	public ResponseEntity<Response<Company>> getByCnpj(@RequestParam String cnpj) {
-		log.info("Start - CompanyController.getByCnpj - CNPJ: {}", cnpj);
-		Response<Company> response = new Response<>();
+	public ResponseEntity<Response<CompanyFRDTO>> findByCnpj(@RequestParam String cnpj) {
+		log.info("Start - CompanyController.findByCnpj - CNPJ: {}", cnpj);
+		Response<CompanyFRDTO> response = new Response<>();
 
-		Company company = this.companyService.findByCnpj(cnpj);
+		CompanyFRDTO company = this.companyService.findByCnpj(cnpj);
 		response.setData(company);
 
-		log.info("End - CompanyController.getByCnpj - Company: {}", company.toString());
+		log.info("End - CompanyController.findByCnpj - CompanyFRDTO: {}", company.toString());
 		return ResponseEntity.ok(response);
 	}
 
@@ -119,7 +121,7 @@ public class CompanyController {
 		CompanyRDTO company = this.companyService.deleteById(id);
 		response.setData(company);
 
-		log.info("End - CompanyController.remove - Company: {}", company.toString());
+		log.info("End - CompanyController.remove - CompanyRDTO: {}", company.toString());
 		return ResponseEntity.ok(response);
 	}
 }

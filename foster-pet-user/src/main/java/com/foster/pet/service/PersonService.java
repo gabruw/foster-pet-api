@@ -1,17 +1,18 @@
 package com.foster.pet.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import com.foster.pet.dto.person.PersonFRDTO;
 import com.foster.pet.dto.person.PersonRDTO;
-import com.foster.pet.entity.Person;
 
 public interface PersonService {
 
-	List<PersonRDTO> findAll();
+	Page<PersonRDTO> findAll(Pageable pageable);
 
-	Person findById(Long id);
+	PersonFRDTO findById(Long id);
 
-	Person findByCpf(String cpf);
+	PersonFRDTO findByCpf(String cpf);
 
 	PersonRDTO deleteById(Long id);
 }

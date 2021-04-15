@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CountryDTO implements Serializable {
+public class CountryRPDTO implements Serializable {
 
 	private static final long serialVersionUID = -4980773142709854080L;
 

@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
+import com.foster.pet.dto.person.PersonFRDTO;
 import com.foster.pet.dto.person.PersonRDTO;
 import com.foster.pet.entity.Address;
 import com.foster.pet.entity.Authentication;
-import com.foster.pet.entity.Person;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.PersonService;
 import com.foster.pet.service.processor.AddressProcessor;
@@ -53,47 +55,47 @@ public class PersonController {
 
 	@GetMapping
 	@Cacheable("person")
-	public ResponseEntity<Response<List<PersonRDTO>>> getAll() {
-		log.info("Start - PersonController.getAll");
-		Response<List<PersonRDTO>> response = new Response<>();
+	public ResponseEntity<Response<Page<PersonRDTO>>> findAll(Pageable pageable) {
+		log.info("Start - PersonController.findAll = Pageable: {}", pageable);
+		Response<Page<PersonRDTO>> response = new Response<>();
 
-		List<PersonRDTO> persons = this.personService.findAll();
+		Page<PersonRDTO> persons = this.personService.findAll(pageable);
 		response.setData(persons);
 
-		log.info("End - PersonController.getAll - List<PersonDTO>: {}", persons.toString());
+		log.info("End - PersonController.findAll - Page<PersonRDTO>: {}", persons.toString());
 		return ResponseEntity.ok(response);
 	}
 
 	@Cacheable("person")
 	@GetMapping(params = "id")
-	public ResponseEntity<Response<Person>> getById(@RequestParam Long id) {
-		log.info("Start - PersonController.getById - Id: {}", id);
-		Response<Person> response = new Response<>();
+	public ResponseEntity<Response<PersonFRDTO>> findById(@RequestParam Long id) {
+		log.info("Start - PersonController.findById - Id: {}", id);
+		Response<PersonFRDTO> response = new Response<>();
 
-		Person person = this.personService.findById(id);
+		PersonFRDTO person = this.personService.findById(id);
 		response.setData(person);
 
-		log.info("End - PersonController.getById - Person: {}", person.toString());
+		log.info("End - PersonController.findById - PersonFRDTO: {}", person.toString());
 		return ResponseEntity.ok(response);
 	}
 
 	@Cacheable("person")
 	@GetMapping(params = "cpf")
-	public ResponseEntity<Response<Person>> getByCpf(@RequestParam String cpf) {
-		log.info("Start - PersonController.getByCpf - CPF: {}", cpf);
-		Response<Person> response = new Response<>();
+	public ResponseEntity<Response<PersonFRDTO>> findByCpf(@RequestParam String cpf) {
+		log.info("Start - PersonController.findByCpf - CPF: {}", cpf);
+		Response<PersonFRDTO> response = new Response<>();
 
-		Person person = this.personService.findByCpf(cpf);
+		PersonFRDTO person = this.personService.findByCpf(cpf);
 		response.setData(person);
 
-		log.info("End - PersonController.getByCpf - Person: {}", person.toString());
+		log.info("End - PersonController.findByCpf - PersonFRDTO: {}", person.toString());
 		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
 	public ResponseEntity<Response<Authentication>> register(
 			@RequestBody @Valid AuthenticationPersonPDTO authenticationPersonPDTO) {
-		log.info("Start - PersonController.persist - AuthenticationPersonPDTO: {}",
+		log.info("Start - PersonController.register - AuthenticationPersonPDTO: {}",
 				authenticationPersonPDTO.toString());
 		Response<Authentication> response = new Response<>();
 
@@ -107,7 +109,7 @@ public class PersonController {
 		authentication = this.authenticationService.persist(authentication);
 		response.setData(authentication);
 
-		log.info("End - PersonController.persist - Authentication: {}", authentication.toString());
+		log.info("End - PersonController.register - Authentication: {}", authentication.toString());
 		return ResponseEntity.ok(response);
 	}
 
@@ -119,7 +121,7 @@ public class PersonController {
 		PersonRDTO person = this.personService.deleteById(id);
 		response.setData(person);
 
-		log.info("End - PersonController.remove - PersonDTO: {}", person.toString());
+		log.info("End - PersonController.remove - PersonRDTO: {}", person.toString());
 		return ResponseEntity.ok(response);
 	}
 }

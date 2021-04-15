@@ -1,13 +1,14 @@
 package com.foster.pet.service.impl;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.foster.pet.dto.person.PersonFRDTO;
 import com.foster.pet.dto.person.PersonRDTO;
 import com.foster.pet.entity.Person;
 import com.foster.pet.exception.person.PersonNotFoundException;
@@ -27,16 +28,18 @@ public class PersonServiceImpl implements PersonService {
 	private PersonRepository personRepository;
 
 	@Override
-	public List<PersonRDTO> findAll() {
+	public Page<PersonRDTO> findAll(Pageable pageable) {
 		log.info("Start - PersonServiceImpl.findAll");
-		List<Person> persons = this.personRepository.findAll();
 
-		log.info("End - PersonServiceImpl.findAll - List<Person>: {}", persons.toString());
-		return persons.stream().map(person -> mapper.map(person, PersonRDTO.class)).collect(Collectors.toList());
+		Page<Person> persons = this.personRepository.findAll(pageable);
+		Page<PersonRDTO> personRDTO = persons.map(person -> this.mapper.map(person, PersonRDTO.class));
+
+		log.info("End - PersonServiceImpl.findAll - Page<PersonRDTO>: {}", personRDTO.toString());
+		return personRDTO;
 	}
 
 	@Override
-	public Person findById(Long id) {
+	public PersonFRDTO findById(Long id) {
 		log.info("Start - PersonServiceImpl.findById - Id: {}", id);
 
 		Optional<Person> optPerson = this.personRepository.findById(id);
@@ -45,12 +48,14 @@ public class PersonServiceImpl implements PersonService {
 			throw new PersonNotFoundException();
 		}
 
-		log.info("End - PersonServiceImpl.findById - Person {}", optPerson.get().toString());
-		return optPerson.get();
+		PersonFRDTO person = this.mapper.map(optPerson.get(), PersonFRDTO.class);
+
+		log.info("End - PersonServiceImpl.findById - PersonFRDTO {}", person.toString());
+		return person;
 	}
 
 	@Override
-	public Person findByCpf(String cpf) {
+	public PersonFRDTO findByCpf(String cpf) {
 		log.info("Start - PersonServiceImpl.findByCpf - CPF: {}", cpf);
 
 		Optional<Person> optPerson = this.personRepository.findByCpf(cpf);
@@ -59,8 +64,10 @@ public class PersonServiceImpl implements PersonService {
 			throw new PersonNotFoundException();
 		}
 
-		log.info("End - PersonServiceImpl.findByCpf - Person: {}", optPerson.get().toString());
-		return optPerson.get();
+		PersonFRDTO person = this.mapper.map(optPerson.get(), PersonFRDTO.class);
+
+		log.info("End - PersonServiceImpl.findByCpf - PersonFRDTO: {}", person.toString());
+		return person;
 	}
 
 	@Override

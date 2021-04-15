@@ -12,15 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ControllerAdvice
-public class StateNotFoundExceptionHandler extends ResponseEntityExceptionHandler {
+public class StateAlreadyExistsExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(StateNotFoundException.class)
-	public final ResponseEntity<Object> exceptionHandler(StateNotFoundException exception) {
-		log.error("CityNotFoundException - Message: {}", exception);
+	@ExceptionHandler(StateAlreadyExistsException.class)
+	public final ResponseEntity<Object> exceptionHandler(StateAlreadyExistsException exception) {
+		log.error("StateAlreadyExistsException - Message: {}", exception);
 
 		Response<Void> response = new Response<>();
 		response.addError(exception.getMessage());
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	}
 }

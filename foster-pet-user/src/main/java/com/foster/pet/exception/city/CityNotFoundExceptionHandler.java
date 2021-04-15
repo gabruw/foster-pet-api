@@ -18,7 +18,7 @@ public class CityNotFoundExceptionHandler extends ResponseEntityExceptionHandler
 	public final ResponseEntity<Object> exceptionHandler(CityNotFoundException exception) {
 		log.error("CityNotFoundException - Message: {}", exception);
 
-		Response<Void> response = new Response<Void>();
+		Response<Void> response = new Response<>();
 		response.addError(exception.getMessage());
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

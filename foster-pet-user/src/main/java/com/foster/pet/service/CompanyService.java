@@ -1,17 +1,18 @@
 package com.foster.pet.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import com.foster.pet.dto.company.CompanyFRDTO;
 import com.foster.pet.dto.company.CompanyRDTO;
-import com.foster.pet.entity.Company;
 
 public interface CompanyService {
 
-    List<CompanyRDTO> findAll();
+	Page<CompanyRDTO> findAll(Pageable pageable);
 
-    Company findById(Long id);
+	CompanyFRDTO findById(Long id);
 
-    Company findByCnpj(String cnpj);
+	CompanyFRDTO findByCnpj(String cnpj);
 
-    CompanyRDTO deleteById(Long id);
+	CompanyRDTO deleteById(Long id);
 }

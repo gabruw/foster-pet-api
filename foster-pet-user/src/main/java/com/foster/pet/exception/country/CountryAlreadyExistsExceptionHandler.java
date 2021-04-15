@@ -21,6 +21,6 @@ public class CountryAlreadyExistsExceptionHandler extends ResponseEntityExceptio
 		Response<Void> response = new Response<>();
 		response.addError(exception.getMessage());
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	}
 }

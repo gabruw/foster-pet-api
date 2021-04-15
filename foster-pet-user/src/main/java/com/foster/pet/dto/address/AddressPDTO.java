@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.foster.pet.dto.city.CityAddressPDTO;
+import com.foster.pet.dto.city.CityHPDTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,12 +31,12 @@ public class AddressPDTO implements Serializable {
 	@NotNull(message = "O campo 'Número' é obrigatório.")
 	private Integer number;
 
-	@Size(max = 255, message = "O campo 'Complemento' deve conter entre 1 e 255 caracteres.")
+	@Size(max = 255, message = "O campo 'Complemento' deve conter no máximo 255 caracteres.")
 	private String complement;
 
 	@Size(min = 13, max = 13, message = "O campo 'Nº de Telefone' deve conter 13 caracteres.")
 	private String phone;
 
 	@NotNull
-	private CityAddressPDTO city;
+	private CityHPDTO city;
 }

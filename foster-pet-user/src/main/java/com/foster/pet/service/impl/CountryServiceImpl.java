@@ -6,9 +6,13 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.foster.pet.dto.country.CountryDTO;
+import com.foster.pet.dto.OptionDTO;
+import com.foster.pet.dto.country.CountryFRPDTO;
+import com.foster.pet.dto.country.CountryRPDTO;
 import com.foster.pet.entity.Country;
 import com.foster.pet.exception.country.CountryAlreadyExistsException;
 import com.foster.pet.exception.country.CountryNotFoundException;
@@ -28,16 +32,30 @@ public class CountryServiceImpl implements CountryService {
 	private CountryRepository countryRepository;
 
 	@Override
-	public List<CountryDTO> findAll() {
-		log.info("Start - CountryServiceImpl.findAll");
-		List<Country> countries = this.countryRepository.findAll();
+	public Page<CountryRPDTO> findAll(Pageable pageable) {
+		log.info("Start - CountryServiceImpl.findAll - Pageable: {}", pageable);
 
-		log.info("End - CountryServiceImpl.findAll - List<Country>: {}", countries.toString());
-		return countries.stream().map(country -> mapper.map(country, CountryDTO.class)).collect(Collectors.toList());
+		Page<Country> countries = this.countryRepository.findAll(pageable);
+		Page<CountryRPDTO> fltCountries = countries.map(country -> this.mapper.map(country, CountryRPDTO.class));
+
+		log.info("End - CountryServiceImpl.findAll - Page<CountryRPDTO>: {}", fltCountries.toString());
+		return fltCountries;
 	}
 
 	@Override
-	public Country findById(Long id) {
+	public List<OptionDTO<Long>> findOptions() {
+		log.info("Start - CountryServiceImpl.findOptions");
+
+		List<Country> optCountry = this.countryRepository.findAll();
+		List<OptionDTO<Long>> options = optCountry.stream()
+				.map(state -> new OptionDTO<Long>(state.getName(), state.getId())).collect(Collectors.toList());
+
+		log.info("End - CountryServiceImpl.findOptions - List<OptionDTO<Long>>: {}", options.toString());
+		return options;
+	}
+
+	@Override
+	public CountryFRPDTO findById(Long id) {
 		log.info("Start - CountryServiceImpl.findById - Id: {}", id);
 
 		Optional<Country> optCountry = this.countryRepository.findById(id);
@@ -46,12 +64,14 @@ public class CountryServiceImpl implements CountryService {
 			throw new CountryNotFoundException();
 		}
 
-		log.info("End - CountryServiceImpl.findById - Country {}", optCountry.get().toString());
-		return optCountry.get();
+		CountryFRPDTO country = this.mapper.map(optCountry.get(), CountryFRPDTO.class);
+
+		log.info("End - CountryServiceImpl.findById - CountryFRPDTO {}", country.toString());
+		return country;
 	}
 
 	@Override
-	public Country findByName(String name) {
+	public CountryFRPDTO findByName(String name) {
 		log.info("Start - CountryServiceImpl.findByName - Name: {}", name);
 
 		Optional<Country> optCountry = this.countryRepository.findByName(name);
@@ -60,26 +80,33 @@ public class CountryServiceImpl implements CountryService {
 			throw new CountryNotFoundException();
 		}
 
-		log.info("End - CountryServiceImpl.findByName - Country: {}", optCountry.get().toString());
-		return optCountry.get();
+		CountryFRPDTO country = this.mapper.map(optCountry.get(), CountryFRPDTO.class);
+
+		log.info("End - CountryServiceImpl.findByName - CountryFRPDTO: {}", country.toString());
+		return country;
 	}
 
 	@Override
-	public Country persist(Country country) {
-		log.info("Start - CountryServiceImpl.persist - Country: {}", country.toString());
+	public CountryRPDTO persist(CountryRPDTO countryRPDTO) {
+		log.info("Start - CountryServiceImpl.persist - CountryRPDTO: {}", countryRPDTO.toString());
 
-		Optional<Country> optAuthentication = this.countryRepository.findByName(country.getName());
-		if (optAuthentication.isPresent()) {
-			log.error("CountryAlreadyExistsException - Name: {}", country.getName());
+		Optional<Country> optCountry = this.countryRepository.findByName(countryRPDTO.getName());
+		if (optCountry.isPresent()) {
+			log.error("CountryAlreadyExistsException - Name: {}", countryRPDTO.getName());
 			throw new CountryAlreadyExistsException();
 		}
 
-		log.info("End - CountryServiceImpl.persist - Country: {}", country.toString());
-		return this.countryRepository.save(country);
+		Country country = this.mapper.map(countryRPDTO, Country.class);
+		country = this.countryRepository.save(country);
+
+		countryRPDTO = this.mapper.map(country, CountryRPDTO.class);
+
+		log.info("End - CountryServiceImpl.persist - CountryRPDTO: {}", countryRPDTO.toString());
+		return countryRPDTO;
 	}
 
 	@Override
-	public CountryDTO deleteById(Long id) {
+	public CountryRPDTO deleteById(Long id) {
 		log.info("Start - CountryServiceImpl.deleteById - Id: {}", id);
 
 		Optional<Country> optCountry = this.countryRepository.findById(id);
@@ -89,9 +116,9 @@ public class CountryServiceImpl implements CountryService {
 		}
 
 		this.countryRepository.deleteById(id);
-		CountryDTO country = this.mapper.map(optCountry.get(), CountryDTO.class);
+		CountryRPDTO country = this.mapper.map(optCountry.get(), CountryRPDTO.class);
 
-		log.info("End - CountryServiceImpl.deleteById - CountryDTO: {}", country.toString());
+		log.info("End - CountryServiceImpl.deleteById - CountryRPDTO: {}", country.toString());
 		return country;
 	}
 }

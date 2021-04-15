@@ -18,7 +18,7 @@ public class TokenEmptyExceptionHandler extends ResponseEntityExceptionHandler {
 	public final ResponseEntity<Object> exceptionHandler(TokenEmptyException exception) {
 		log.error("TokenEmptyException - Message: {}", exception);
 
-		Response<Void> response = new Response<Void>();
+		Response<Void> response = new Response<>();
 		response.addError(exception.getMessage());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

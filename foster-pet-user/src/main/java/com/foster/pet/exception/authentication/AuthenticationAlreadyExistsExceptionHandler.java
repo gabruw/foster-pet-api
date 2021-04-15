@@ -18,9 +18,9 @@ public class AuthenticationAlreadyExistsExceptionHandler extends ResponseEntityE
 	public final ResponseEntity<Object> exceptionHandler(AuthenticationAlreadyExistsException exception) {
 		log.error("AuthenticationAlreadyExistsException - Message: {}", exception);
 
-		Response<Void> response = new Response<Void>();
+		Response<Void> response = new Response<>();
 		response.addError(exception.getMessage());
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	}
 }

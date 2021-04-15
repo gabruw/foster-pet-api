@@ -53,7 +53,7 @@ public class Address implements Serializable {
 	private Integer number;
 
 	@Column(name = "complement", nullable = true)
-	@Size(max = 255, message = "O campo 'Complemento' deve conter entre 1 e 255 caracteres.")
+	@Size(max = 255, message = "O campo 'Complemento' deve conter no máximo 255 caracteres.")
 	private String complement;
 
 	@Column(name = "phone", nullable = true)
