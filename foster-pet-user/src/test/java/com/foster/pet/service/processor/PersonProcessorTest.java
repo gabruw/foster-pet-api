@@ -21,6 +21,7 @@ import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.entity.Person;
 import com.foster.pet.exception.person.PersonAlreadyExistsException;
 import com.foster.pet.repository.PersonRepository;
+import com.foster.pet.service.prcr.PersonProcessor;
 
 import properties.person.PersonInstance;
 import properties.person.PersonProperties;

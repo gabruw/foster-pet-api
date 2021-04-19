@@ -21,6 +21,7 @@ import com.foster.pet.constant.ErrorCode;
 import com.foster.pet.entity.Company;
 import com.foster.pet.exception.company.CompanyAlreadyExistsException;
 import com.foster.pet.repository.CompanyRepository;
+import com.foster.pet.service.prcr.CompanyProcessor;
 
 import properties.company.CompanyInstance;
 import properties.company.CompanyProperties;

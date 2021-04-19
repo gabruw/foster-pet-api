@@ -20,8 +20,8 @@ import com.foster.pet.entity.State;
 import com.foster.pet.exception.state.StateNotFoundException;
 import com.foster.pet.repository.StateRepository;
 import com.foster.pet.service.StateService;
-import com.foster.pet.service.processor.CountryProcessor;
-import com.foster.pet.service.processor.StateProcessor;
+import com.foster.pet.service.prcr.CountryProcessor;
+import com.foster.pet.service.prcr.StateProcessor;
 
 import lombok.extern.slf4j.Slf4j;
 

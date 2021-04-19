@@ -17,8 +17,8 @@ import com.foster.pet.entity.Person;
 import com.foster.pet.repository.PersonRepository;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.PersonService;
-import com.foster.pet.service.processor.AddressProcessor;
-import com.foster.pet.service.processor.PersonProcessor;
+import com.foster.pet.service.prcr.AddressProcessor;
+import com.foster.pet.service.prcr.PersonProcessor;
 
 import lombok.extern.slf4j.Slf4j;
 

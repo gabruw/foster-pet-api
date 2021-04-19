@@ -15,7 +15,7 @@ import com.foster.pet.dto.country.CountryRPDTO;
 import com.foster.pet.entity.Country;
 import com.foster.pet.repository.CountryRepository;
 import com.foster.pet.service.CountryService;
-import com.foster.pet.service.processor.CountryProcessor;
+import com.foster.pet.service.prcr.CountryProcessor;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -10,7 +10,7 @@ import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.repository.AuthenticationRepository;
 import com.foster.pet.service.AuthenticationService;
-import com.foster.pet.service.processor.AuthenticationProcessor;
+import com.foster.pet.service.prcr.AuthenticationProcessor;
 import com.foster.pet.util.Encryptor;
 import com.foster.pet.util.JwtUtil;
 

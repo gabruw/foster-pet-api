@@ -19,8 +19,8 @@ import com.foster.pet.entity.City;
 import com.foster.pet.entity.State;
 import com.foster.pet.repository.CityRepository;
 import com.foster.pet.service.CityService;
-import com.foster.pet.service.processor.CityProcessor;
-import com.foster.pet.service.processor.StateProcessor;
+import com.foster.pet.service.prcr.CityProcessor;
+import com.foster.pet.service.prcr.StateProcessor;
 
 import lombok.extern.slf4j.Slf4j;
 
