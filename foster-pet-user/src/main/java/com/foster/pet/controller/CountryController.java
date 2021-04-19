@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -93,11 +94,23 @@ public class CountryController {
 		log.info("Start - CountryController.register - CountryRPDTO: {}", countryRPDTO.toString());
 		Response<CountryRPDTO> response = new Response<>();
 
-		CountryRPDTO country = this.countryService.persist(countryRPDTO);
+		CountryRPDTO country = this.countryService.register(countryRPDTO);
 		response.setData(country);
 
 		log.info("End - CountryController.register - CountryRPDTO: {}", country.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
+
+	@PutMapping
+	public ResponseEntity<Response<CountryFRPDTO>> edit(@RequestBody @Valid CountryFRPDTO countryFRPDTO) {
+		log.info("Start - CountryController.edit - CountryFRPDTO: {}", countryFRPDTO.toString());
+		Response<CountryFRPDTO> response = new Response<>();
+
+		CountryFRPDTO country = this.countryService.edit(countryFRPDTO);
+		response.setData(country);
+
+		log.info("End - CountryController.edit - CountryFRPDTO: {}", country.toString());
+		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping(params = "id")
@@ -105,7 +118,7 @@ public class CountryController {
 		log.info("Start - CountryController.remove - Id: {}", id);
 		Response<CountryRPDTO> response = new Response<>();
 
-		CountryRPDTO country = this.countryService.deleteById(id);
+		CountryRPDTO country = this.countryService.remove(id);
 		response.setData(country);
 
 		log.info("End - CountryController.remove - CountryRPDTO: {}", country.toString());

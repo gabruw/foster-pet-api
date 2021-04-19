@@ -12,14 +12,16 @@ import com.foster.pet.dto.country.CountryRPDTO;
 public interface CountryService {
 
 	Page<CountryRPDTO> findAll(Pageable pageable);
-	
+
 	List<OptionDTO<Long>> findOptions();
 
 	CountryFRPDTO findById(Long id);
 
 	CountryFRPDTO findByName(String name);
 
-	CountryRPDTO persist(CountryRPDTO countryRPDTO);
+	CountryRPDTO register(CountryRPDTO countryRPDTO);
 
-	CountryRPDTO deleteById(Long id);
+	CountryFRPDTO edit(CountryFRPDTO countryFRPDTO);
+
+	CountryRPDTO remove(Long id);
 }

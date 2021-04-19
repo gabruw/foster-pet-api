@@ -95,7 +95,7 @@ public class CityController {
 		log.info("Start - CityController.register - CityPDTO: {}", cityPDTO.toString());
 		Response<CityRDTO> response = new Response<>();
 
-		CityRDTO city = this.cityService.persist(cityPDTO);
+		CityRDTO city = this.cityService.register(cityPDTO);
 		response.setData(city);
 
 		log.info("End - CityController.register - CityRDTO: {}", city.toString());
@@ -107,7 +107,7 @@ public class CityController {
 		log.info("Start - CityController.remove - Id: {}", id);
 		Response<CityHRDTO> response = new Response<>();
 
-		CityHRDTO city = this.cityService.deleteById(id);
+		CityHRDTO city = this.cityService.remove(id);
 		response.setData(city);
 
 		log.info("End - CityController.remove - CityHRDTO: {}", city.toString());

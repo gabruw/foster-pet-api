@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.OptionDTO;
-import com.foster.pet.dto.state.StateFRDTO;
+import com.foster.pet.dto.state.StateFRPDTO;
 import com.foster.pet.dto.state.StateHRDTO;
 import com.foster.pet.dto.state.StatePDTO;
 import com.foster.pet.dto.state.StateRDTO;
@@ -66,11 +66,11 @@ public class StateController {
 
 	@Cacheable("state")
 	@GetMapping(params = "id")
-	public ResponseEntity<Response<StateFRDTO>> findById(@RequestParam Long id) {
+	public ResponseEntity<Response<StateFRPDTO>> findById(@RequestParam Long id) {
 		log.info("Start - StateController.findById - Id: {}", id);
-		Response<StateFRDTO> response = new Response<>();
+		Response<StateFRPDTO> response = new Response<>();
 
-		StateFRDTO state = this.stateService.findById(id);
+		StateFRPDTO state = this.stateService.findById(id);
 		response.setData(state);
 
 		log.info("End - StateController.findById - StateFRDTO: {}", state.toString());
@@ -79,11 +79,11 @@ public class StateController {
 
 	@Cacheable("state")
 	@GetMapping(params = "name")
-	public ResponseEntity<Response<StateFRDTO>> findByName(@RequestParam String name) {
+	public ResponseEntity<Response<StateFRPDTO>> findByName(@RequestParam String name) {
 		log.info("Start - StateController.findByName - Name: {}", name);
-		Response<StateFRDTO> response = new Response<>();
+		Response<StateFRPDTO> response = new Response<>();
 
-		StateFRDTO state = this.stateService.findByName(name);
+		StateFRPDTO state = this.stateService.findByName(name);
 		response.setData(state);
 
 		log.info("End - StateController.findByName - StateFRDTO: {}", state.toString());
@@ -95,7 +95,7 @@ public class StateController {
 		log.info("Start - StateController.register - StatePDTO: {}", statePDTO.toString());
 		Response<StateRDTO> response = new Response<>();
 
-		StateRDTO state = this.stateService.persist(statePDTO);
+		StateRDTO state = this.stateService.register(statePDTO);
 		response.setData(state);
 
 		log.info("End - StateController.register - StateRDTO: {}", state.toString());
@@ -107,7 +107,7 @@ public class StateController {
 		log.info("Start - StateController.remove - Id: {}", id);
 		Response<StateHRDTO> response = new Response<>();
 
-		StateHRDTO state = this.stateService.deleteById(id);
+		StateHRDTO state = this.stateService.remove(id);
 		response.setData(state);
 
 		log.info("End - StateController.remove - StateHRDTO: {}", state.toString());

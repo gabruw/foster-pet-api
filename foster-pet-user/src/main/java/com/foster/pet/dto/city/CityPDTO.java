@@ -16,9 +16,6 @@ public class CityPDTO implements Serializable {
 
 	private static final long serialVersionUID = 1583437306224764410L;
 
-	@Size(min = 1, max = 11, message = "O campo 'Id' deve conter entre 1 e 11 caracteres.")
-	private Long id;
-
 	@Size(min = 1, max = 70, message = "O campo 'Cidade' deve conter entre 1 e 70 caracteres.")
 	private String name;
 

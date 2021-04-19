@@ -11,18 +11,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.foster.pet.dto.OptionDTO;
-import com.foster.pet.dto.state.StateFRDTO;
+import com.foster.pet.dto.state.StateFRPDTO;
 import com.foster.pet.dto.state.StateHRDTO;
 import com.foster.pet.dto.state.StatePDTO;
 import com.foster.pet.dto.state.StateRDTO;
 import com.foster.pet.entity.Country;
 import com.foster.pet.entity.State;
-import com.foster.pet.exception.country.CountryNotFoundException;
-import com.foster.pet.exception.state.StateAlreadyExistsException;
 import com.foster.pet.exception.state.StateNotFoundException;
-import com.foster.pet.repository.CountryRepository;
 import com.foster.pet.repository.StateRepository;
 import com.foster.pet.service.StateService;
+import com.foster.pet.service.processor.CountryProcessor;
+import com.foster.pet.service.processor.StateProcessor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,10 +33,13 @@ public class StateServiceImpl implements StateService {
 	private ModelMapper mapper;
 
 	@Autowired
-	private StateRepository stateRepository;
+	private StateProcessor stateProcessor;
 
 	@Autowired
-	private CountryRepository countryRepository;
+	private CountryProcessor countryProcessor;
+
+	@Autowired
+	private StateRepository stateRepository;
 
 	@Override
 	public Page<StateHRDTO> findAll(Pageable pageable) {
@@ -54,13 +56,8 @@ public class StateServiceImpl implements StateService {
 	public List<OptionDTO<Long>> findOptions(Long countryId) {
 		log.info("Start - StateServiceImpl.findOptions");
 
-		Optional<Country> optCountry = this.countryRepository.findById(countryId);
-		if (optCountry.isEmpty()) {
-			log.error("CountryNotFoundException - CountryId: {}", countryId);
-			throw new CountryNotFoundException();
-		}
-
-		List<OptionDTO<Long>> options = optCountry.get().getState().stream()
+		Country country = this.countryProcessor.exists(countryId);
+		List<OptionDTO<Long>> options = country.getState().stream()
 				.map(state -> new OptionDTO<Long>(state.getName(), state.getId())).collect(Collectors.toList());
 
 		log.info("End - StateServiceImpl.findOptions - List<OptionDTO<Long>>: {}", options.toString());
@@ -68,59 +65,60 @@ public class StateServiceImpl implements StateService {
 	}
 
 	@Override
-	public StateFRDTO findById(Long id) {
+	public StateFRPDTO findById(Long id) {
 		log.info("Start - StateServiceImpl.findById - Id: {}", id);
 
-		Optional<State> optState = this.stateRepository.findById(id);
-		if (optState.isEmpty()) {
-			log.error("StateNotFoundException - Id: {}", id);
-			throw new StateNotFoundException();
-		}
+		State state = this.stateProcessor.exists(id);
+		StateFRPDTO stateFRDTO = this.mapper.map(state, StateFRPDTO.class);
 
-		StateFRDTO state = this.mapper.map(optState.get(), StateFRDTO.class);
-
-		log.info("End - StateServiceImpl.findById - StateFRDTO {}", state.toString());
-		return state;
+		log.info("End - StateServiceImpl.findById - StateFRPDTO {}", stateFRDTO.toString());
+		return stateFRDTO;
 	}
 
 	@Override
-	public StateFRDTO findByName(String name) {
+	public StateFRPDTO findByName(String name) {
 		log.info("Start - StateServiceImpl.findByName - Name: {}", name);
 
-		Optional<State> optState = this.stateRepository.findByName(name);
-		if (optState.isEmpty()) {
-			log.error("StateNotFoundException - Name: {}", name);
-			throw new StateNotFoundException();
-		}
+		State state = this.stateProcessor.exists(name);
+		StateFRPDTO stateFRDTO = this.mapper.map(state, StateFRPDTO.class);
 
-		StateFRDTO state = this.mapper.map(optState.get(), StateFRDTO.class);
-
-		log.info("End - StateServiceImpl.findByName - StateFRDTO: {}", state.toString());
-		return state;
+		log.info("End - StateServiceImpl.findByName - StateFRPDTO: {}", stateFRDTO.toString());
+		return stateFRDTO;
 	}
 
 	@Override
-	public StateRDTO persist(StatePDTO statePDTO) {
-		log.info("Start - StateServiceImpl.persist - StatePDTO: {}", statePDTO.toString());
+	public StateRDTO register(StatePDTO statePDTO) {
+		log.info("Start - StateServiceImpl.register - StatePDTO: {}", statePDTO.toString());
 
-		Optional<State> optState = this.stateRepository.findByName(statePDTO.getName());
-		if (optState.isPresent()) {
-			log.error("StateAlreadyExistsException - Name: {}", statePDTO.getName());
-			throw new StateAlreadyExistsException();
-		}
+		this.stateProcessor.alreadyExists(statePDTO.getName());
 
 		State state = this.mapper.map(statePDTO, State.class);
 		state = this.stateRepository.save(state);
 
 		StateRDTO stateRDTO = this.mapper.map(state, StateRDTO.class);
 
-		log.info("End - StateServiceImpl.persist - StateRDTO: {}", stateRDTO.toString());
+		log.info("End - StateServiceImpl.register - StateRDTO: {}", stateRDTO.toString());
 		return stateRDTO;
 	}
 
 	@Override
-	public StateHRDTO deleteById(Long id) {
-		log.info("Start - StateServiceImpl.deleteById - Id: {}", id);
+	public StateFRPDTO edit(StateFRPDTO stateFRPDTO) {
+		log.info("Start - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO.toString());
+
+		this.countryProcessor.exists(stateFRPDTO.getId());
+
+		State state = this.mapper.map(stateFRPDTO, State.class);
+		state = this.stateRepository.save(state);
+
+		stateFRPDTO = this.mapper.map(state, StateFRPDTO.class);
+
+		log.info("End - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO.toString());
+		return stateFRPDTO;
+	}
+
+	@Override
+	public StateHRDTO remove(Long id) {
+		log.info("Start - StateServiceImpl.remove - Id: {}", id);
 
 		Optional<State> optState = this.stateRepository.findById(id);
 		if (optState.isEmpty()) {
@@ -131,7 +129,7 @@ public class StateServiceImpl implements StateService {
 		this.stateRepository.deleteById(id);
 		StateHRDTO state = this.mapper.map(optState.get(), StateHRDTO.class);
 
-		log.info("End - StateServiceImpl.deleteById - StateHRDTO: {}", state.toString());
+		log.info("End - StateServiceImpl.remove - StateHRDTO: {}", state.toString());
 		return state;
 	}
 }

@@ -1,7 +1,6 @@
 package com.foster.pet.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -14,10 +13,9 @@ import com.foster.pet.dto.OptionDTO;
 import com.foster.pet.dto.country.CountryFRPDTO;
 import com.foster.pet.dto.country.CountryRPDTO;
 import com.foster.pet.entity.Country;
-import com.foster.pet.exception.country.CountryAlreadyExistsException;
-import com.foster.pet.exception.country.CountryNotFoundException;
 import com.foster.pet.repository.CountryRepository;
 import com.foster.pet.service.CountryService;
+import com.foster.pet.service.processor.CountryProcessor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +25,9 @@ public class CountryServiceImpl implements CountryService {
 
 	@Autowired
 	private ModelMapper mapper;
+
+	@Autowired
+	private CountryProcessor countryProcessor;
 
 	@Autowired
 	private CountryRepository countryRepository;
@@ -58,67 +59,64 @@ public class CountryServiceImpl implements CountryService {
 	public CountryFRPDTO findById(Long id) {
 		log.info("Start - CountryServiceImpl.findById - Id: {}", id);
 
-		Optional<Country> optCountry = this.countryRepository.findById(id);
-		if (optCountry.isEmpty()) {
-			log.error("CountryNotFoundException - Id: {}", id);
-			throw new CountryNotFoundException();
-		}
+		Country country = this.countryProcessor.exists(id);
+		CountryFRPDTO countryFRPDTO = this.mapper.map(country, CountryFRPDTO.class);
 
-		CountryFRPDTO country = this.mapper.map(optCountry.get(), CountryFRPDTO.class);
-
-		log.info("End - CountryServiceImpl.findById - CountryFRPDTO {}", country.toString());
-		return country;
+		log.info("End - CountryServiceImpl.findById - CountryFRPDTO {}", countryFRPDTO.toString());
+		return countryFRPDTO;
 	}
 
 	@Override
 	public CountryFRPDTO findByName(String name) {
 		log.info("Start - CountryServiceImpl.findByName - Name: {}", name);
 
-		Optional<Country> optCountry = this.countryRepository.findByName(name);
-		if (optCountry.isEmpty()) {
-			log.error("CountryNotFoundException - Name: {}", name);
-			throw new CountryNotFoundException();
-		}
+		Country country = this.countryProcessor.exists(name);
+		CountryFRPDTO countryFRPDTO = this.mapper.map(country, CountryFRPDTO.class);
 
-		CountryFRPDTO country = this.mapper.map(optCountry.get(), CountryFRPDTO.class);
-
-		log.info("End - CountryServiceImpl.findByName - CountryFRPDTO: {}", country.toString());
-		return country;
+		log.info("End - CountryServiceImpl.findByName - CountryFRPDTO: {}", countryFRPDTO.toString());
+		return countryFRPDTO;
 	}
 
 	@Override
-	public CountryRPDTO persist(CountryRPDTO countryRPDTO) {
-		log.info("Start - CountryServiceImpl.persist - CountryRPDTO: {}", countryRPDTO.toString());
+	public CountryRPDTO register(CountryRPDTO countryRPDTO) {
+		log.info("Start - CountryServiceImpl.register - CountryRPDTO: {}", countryRPDTO.toString());
 
-		Optional<Country> optCountry = this.countryRepository.findByName(countryRPDTO.getName());
-		if (optCountry.isPresent()) {
-			log.error("CountryAlreadyExistsException - Name: {}", countryRPDTO.getName());
-			throw new CountryAlreadyExistsException();
-		}
+		this.countryProcessor.alreadyExists(countryRPDTO.getName());
 
 		Country country = this.mapper.map(countryRPDTO, Country.class);
 		country = this.countryRepository.save(country);
 
 		countryRPDTO = this.mapper.map(country, CountryRPDTO.class);
 
-		log.info("End - CountryServiceImpl.persist - CountryRPDTO: {}", countryRPDTO.toString());
+		log.info("End - CountryServiceImpl.register - CountryRPDTO: {}", countryRPDTO.toString());
 		return countryRPDTO;
 	}
 
 	@Override
-	public CountryRPDTO deleteById(Long id) {
-		log.info("Start - CountryServiceImpl.deleteById - Id: {}", id);
+	public CountryFRPDTO edit(CountryFRPDTO countryFRPDTO) {
+		log.info("Start - CountryServiceImpl.edit - CountryFRPDTO: {}", countryFRPDTO.toString());
 
-		Optional<Country> optCountry = this.countryRepository.findById(id);
-		if (optCountry.isEmpty()) {
-			log.error("CountryNotFoundException - Id: {}", id);
-			throw new CountryNotFoundException();
-		}
+		this.countryProcessor.exists(countryFRPDTO.getId());
 
+		Country country = this.mapper.map(countryFRPDTO, Country.class);
+		country = this.countryRepository.save(country);
+
+		countryFRPDTO = this.mapper.map(country, CountryFRPDTO.class);
+
+		log.info("End - CountryServiceImpl.edit - CountryFRPDTO: {}", countryFRPDTO.toString());
+		return countryFRPDTO;
+	}
+
+	@Override
+	public CountryRPDTO remove(Long id) {
+		log.info("Start - CountryServiceImpl.remove - Id: {}", id);
+
+		Country country = this.countryProcessor.exists(id);
 		this.countryRepository.deleteById(id);
-		CountryRPDTO country = this.mapper.map(optCountry.get(), CountryRPDTO.class);
 
-		log.info("End - CountryServiceImpl.deleteById - CountryRPDTO: {}", country.toString());
-		return country;
+		CountryRPDTO countryRPDTO = this.mapper.map(country, CountryRPDTO.class);
+
+		log.info("End - CountryServiceImpl.remove - CountryRPDTO: {}", countryRPDTO.toString());
+		return countryRPDTO;
 	}
 }

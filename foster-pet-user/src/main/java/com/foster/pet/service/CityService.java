@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.foster.pet.dto.OptionDTO;
+import com.foster.pet.dto.city.CityFPDTO;
 import com.foster.pet.dto.city.CityFRDTO;
 import com.foster.pet.dto.city.CityHRDTO;
 import com.foster.pet.dto.city.CityPDTO;
@@ -21,7 +22,9 @@ public interface CityService {
 
 	CityFRDTO findByName(String name);
 
-	CityRDTO persist(CityPDTO cityPDTO);
+	CityRDTO register(CityPDTO cityPDTO);
 
-	CityHRDTO deleteById(Long id);
+	CityFPDTO edit(CityFPDTO cityFPDTO);
+
+	CityHRDTO remove(Long id);
 }
