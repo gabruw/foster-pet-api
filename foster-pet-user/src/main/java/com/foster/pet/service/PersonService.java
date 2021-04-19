@@ -14,5 +14,5 @@ public interface PersonService {
 
 	PersonFRDTO findByCpf(String cpf);
 
-	PersonRDTO deleteById(Long id);
+	PersonRDTO remove(Long id);
 }

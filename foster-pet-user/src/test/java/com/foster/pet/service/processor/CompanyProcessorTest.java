@@ -47,7 +47,7 @@ public class CompanyProcessorTest extends CompanyProperties {
 	@Test
 	@DisplayName("Validade company to persist")
 	public void validateToPersist() {
-		this.companyProcessor.validateToPersist(this.company);
+		this.companyProcessor.exists(this.company);
 		verify(this.companyRepository, times(1)).findByCnpj(CNPJ);
 	}
 
@@ -57,7 +57,7 @@ public class CompanyProcessorTest extends CompanyProperties {
 		CompanyAlreadyExistsException exception = assertThrows(CompanyAlreadyExistsException.class, () -> {
 			when(this.companyRepository.findByCnpj(CNPJ)).thenReturn(Optional.of(this.company));
 
-			this.companyProcessor.validateToPersist(this.company);
+			this.companyProcessor.exists(this.company);
 		});
 
 		assertEquals(ErrorCode.COMPANY_ALREADY_EXISTS.getMessage(), exception.getMessage());

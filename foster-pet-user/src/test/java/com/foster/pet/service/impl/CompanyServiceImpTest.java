@@ -123,7 +123,7 @@ public class CompanyServiceImpTest extends CompanyProperties {
 		doNothing().when(this.companyRepository).deleteById(ID);
 		when(this.companyRepository.findById(ID)).thenReturn(Optional.of(this.company));
 
-		CompanyRDTO returnedCompanyDTO = this.companyService.deleteById(ID);
+		CompanyRDTO returnedCompanyDTO = this.companyService.remove(ID);
 
 		assertEquals(CNPJ, returnedCompanyDTO.getCnpj());
 		assertEquals(COMPANY_NAME, returnedCompanyDTO.getCompanyName());
@@ -139,7 +139,7 @@ public class CompanyServiceImpTest extends CompanyProperties {
 			Long invalidId = 2L;
 			when(this.companyRepository.findById(ID)).thenReturn(Optional.of(this.company));
 
-			this.companyService.deleteById(invalidId);
+			this.companyService.remove(invalidId);
 		});
 
 		assertEquals(ErrorCode.COMPANY_NOT_FOUND.getMessage(), exception.getMessage());

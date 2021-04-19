@@ -1,7 +1,5 @@
 package com.foster.pet.service.impl;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.foster.pet.dto.company.CompanyFRDTO;
 import com.foster.pet.dto.company.CompanyRDTO;
 import com.foster.pet.entity.Company;
-import com.foster.pet.exception.company.CompanyNotFoundException;
 import com.foster.pet.repository.CompanyRepository;
 import com.foster.pet.service.CompanyService;
+import com.foster.pet.service.processor.CompanyProcessor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +21,9 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	private ModelMapper mapper;
+
+	@Autowired
+	private CompanyProcessor companyProcessor;
 
 	@Autowired
 	private CompanyRepository companyRepository;
@@ -42,48 +43,34 @@ public class CompanyServiceImpl implements CompanyService {
 	public CompanyFRDTO findById(Long id) {
 		log.info("Start - CompanyServiceImpl.findById - Id: {}", id);
 
-		Optional<Company> optCompany = this.companyRepository.findById(id);
-		if (optCompany.isEmpty()) {
-			log.error("CompanyNotFoundException - Id: {}", id);
-			throw new CompanyNotFoundException();
-		}
+		Company company = this.companyProcessor.exists(id);
+		CompanyFRDTO companyFRDTO = this.mapper.map(company, CompanyFRDTO.class);
 
-		CompanyFRDTO company = this.mapper.map(optCompany.get(), CompanyFRDTO.class);
-
-		log.info("End - CompanyServiceImpl.findById - CompanyFRDTO {}", company.toString());
-		return company;
+		log.info("End - CompanyServiceImpl.findById - CompanyFRDTO {}", companyFRDTO.toString());
+		return companyFRDTO;
 	}
 
 	@Override
 	public CompanyFRDTO findByCnpj(String cnpj) {
 		log.info("Start - CompanyServiceImpl.findByCpf - CNPJ: {}", cnpj);
 
-		Optional<Company> optCompany = this.companyRepository.findByCnpj(cnpj);
-		if (optCompany.isEmpty()) {
-			log.error("CompanyNotFoundException - CNPJ: {}", cnpj);
-			throw new CompanyNotFoundException();
-		}
+		Company company = this.companyProcessor.exists(cnpj);
+		CompanyFRDTO companyFRDTO = this.mapper.map(company, CompanyFRDTO.class);
 
-		CompanyFRDTO company = this.mapper.map(optCompany.get(), CompanyFRDTO.class);
-
-		log.info("End - CompanyServiceImpl.findByCnpj - CompanyFRDTO {}", company.toString());
-		return company;
+		log.info("End - CompanyServiceImpl.findByCnpj - CompanyFRDTO {}", companyFRDTO.toString());
+		return companyFRDTO;
 	}
 
 	@Override
-	public CompanyRDTO deleteById(Long id) {
-		log.info("Start - CompanyServiceImpl.deleteById - Id: {}", id);
+	public CompanyRDTO remove(Long id) {
+		log.info("Start - CompanyServiceImpl.remove - Id: {}", id);
 
-		Optional<Company> optCompany = this.companyRepository.findById(id);
-		if (optCompany.isEmpty()) {
-			log.error("CompanyNotFoundException - Id: {}", id);
-			throw new CompanyNotFoundException();
-		}
-
+		Company company = this.companyProcessor.exists(id);
 		this.companyRepository.deleteById(id);
-		CompanyRDTO company = this.mapper.map(optCompany.get(), CompanyRDTO.class);
 
-		log.info("End - CompanyServiceImpl.deleteById - CompanyRDTO {}", company.toString());
-		return company;
+		CompanyRDTO companyRDTO = this.mapper.map(company, CompanyRDTO.class);
+
+		log.info("End - CompanyServiceImpl.remove - CompanyRDTO {}", companyRDTO.toString());
+		return companyRDTO;
 	}
 }

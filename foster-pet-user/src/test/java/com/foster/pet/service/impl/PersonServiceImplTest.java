@@ -127,7 +127,7 @@ public class PersonServiceImplTest extends PersonProperties {
 		doNothing().when(this.personRepository).deleteById(ID);
 		when(this.personRepository.findById(ID)).thenReturn(Optional.of(this.person));
 
-		PersonRDTO returnedPersonDTO = this.personService.deleteById(ID);
+		PersonRDTO returnedPersonDTO = this.personService.remove(ID);
 		assertEquals(CPF, returnedPersonDTO.getCpf());
 		assertEquals(NAME, returnedPersonDTO.getName());
 		assertEquals(CELL, returnedPersonDTO.getCell());
@@ -143,7 +143,7 @@ public class PersonServiceImplTest extends PersonProperties {
 			Long invalidId = 2L;
 			when(this.personRepository.findById(ID)).thenReturn(Optional.of(this.person));
 
-			this.personService.deleteById(invalidId);
+			this.personService.remove(invalidId);
 		});
 
 		assertEquals(ErrorCode.PERSON_NOT_FOUND.getMessage(), exception.getMessage());

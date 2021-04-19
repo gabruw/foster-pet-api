@@ -14,5 +14,5 @@ public interface CompanyService {
 
 	CompanyFRDTO findByCnpj(String cnpj);
 
-	CompanyRDTO deleteById(Long id);
+	CompanyRDTO remove(Long id);
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +64,8 @@ public class AuthenticationController {
 	}
 
 	@GetMapping(value = "/refresh")
-	public ResponseEntity<Response<TokenRDTO>> refresh(HttpServletRequest request) {
+	public ResponseEntity<Response<TokenRDTO>> refresh(@RequestHeader(name = "Authorization") String authorization,
+			HttpServletRequest request) {
 		log.info("Start - AuthenticationController.refresh - HttpServletRequest: {}", request.toString());
 		Response<TokenRDTO> response = new Response<>();
 

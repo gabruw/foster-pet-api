@@ -95,7 +95,7 @@ public class CompanyControllerTest extends CompanyProperties {
 
 	@Test
 	public void remove() throws Exception {
-		when(this.companyService.deleteById(ID)).thenReturn(this.companyRDTO);
+		when(this.companyService.remove(ID)).thenReturn(this.companyRDTO);
 
 		this.mockMvc.perform(delete(Routes.COMPANY).param("id", String.valueOf(ID))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))

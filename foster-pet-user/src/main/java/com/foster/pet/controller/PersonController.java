@@ -101,7 +101,7 @@ public class PersonController {
 		Response<Authentication> response = new Response<>();
 
 		Authentication authentication = this.mapper.map(authenticationPersonPDTO, Authentication.class);
-		this.personProcessor.validateToPersist(authentication.getPerson());
+		this.personProcessor.exists(authentication.getPerson().getCpf());
 
 		List<Address> validatedAddresses = this.addressProcessor
 				.validateToPersist(authentication.getPerson().getAddresses());
@@ -119,7 +119,7 @@ public class PersonController {
 		log.info("Start - PersonController.remove - Id: {}", id);
 		Response<PersonRDTO> response = new Response<>();
 
-		PersonRDTO person = this.personService.deleteById(id);
+		PersonRDTO person = this.personService.remove(id);
 		response.setData(person);
 
 		log.info("End - PersonController.remove - PersonRDTO: {}", person.toString());

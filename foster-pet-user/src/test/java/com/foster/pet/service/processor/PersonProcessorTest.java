@@ -47,7 +47,7 @@ public class PersonProcessorTest extends PersonProperties {
 	@Test
 	@DisplayName("Validade person to persist")
 	public void validateToPersist() {
-		this.personProcessor.validateToPersist(this.person);
+		this.personProcessor.exists(this.person);
 		verify(this.personRepository, times(1)).findByCpf(CPF);
 	}
 
@@ -57,7 +57,7 @@ public class PersonProcessorTest extends PersonProperties {
 		PersonAlreadyExistsException exception = assertThrows(PersonAlreadyExistsException.class, () -> {
 			when(this.personRepository.findByCpf(CPF)).thenReturn(Optional.of(this.person));
 
-			this.personProcessor.validateToPersist(this.person);
+			this.personProcessor.exists(this.person);
 		});
 
 		assertEquals(ErrorCode.PERSON_ALREADY_EXISTS.getMessage(), exception.getMessage());

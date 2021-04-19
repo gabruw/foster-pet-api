@@ -101,7 +101,7 @@ public class CompanyController {
 		Response<Authentication> response = new Response<>();
 
 		Authentication authentication = this.mapper.map(authenticationCompanyPDTO, Authentication.class);
-		this.companyProcessor.validateToPersist(authentication.getCompany());
+		this.companyProcessor.exists(authentication.getCompany().getCnpj());
 
 		List<Address> validatedAddresses = this.addressProcessor
 				.validateToPersist(authentication.getCompany().getAddresses());
@@ -119,7 +119,7 @@ public class CompanyController {
 		log.info("Start - CompanyController.remove - Id: {}", id);
 		Response<CompanyRDTO> response = new Response<>();
 
-		CompanyRDTO company = this.companyService.deleteById(id);
+		CompanyRDTO company = this.companyService.remove(id);
 		response.setData(company);
 
 		log.info("End - CompanyController.remove - CompanyRDTO: {}", company.toString());

@@ -13,12 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.OptionDTO;
+import com.foster.pet.dto.city.CityFPDTO;
 import com.foster.pet.dto.city.CityFRDTO;
 import com.foster.pet.dto.city.CityHRDTO;
 import com.foster.pet.dto.city.CityPDTO;
@@ -66,7 +68,7 @@ public class CityController {
 
 	@Cacheable("city")
 	@GetMapping(params = "id")
-	public ResponseEntity<Response<CityFRDTO>> getById(@RequestParam Long id) {
+	public ResponseEntity<Response<CityFRDTO>> findById(@RequestParam Long id) {
 		log.info("Start - CityController.findById - Id: {}", id);
 		Response<CityFRDTO> response = new Response<>();
 
@@ -100,6 +102,18 @@ public class CityController {
 
 		log.info("End - CityController.register - CityRDTO: {}", city.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
+
+	@PutMapping
+	public ResponseEntity<Response<CityFPDTO>> edit(@RequestBody @Valid CityFPDTO cityFPDTO) {
+		log.info("Start - CityController.edit - CityFPDTO: {}", cityFPDTO.toString());
+		Response<CityFPDTO> response = new Response<>();
+
+		CityFPDTO city = this.cityService.edit(cityFPDTO);
+		response.setData(city);
+
+		log.info("End - CityController.edit - CityFPDTO: {}", city.toString());
+		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping(params = "id")

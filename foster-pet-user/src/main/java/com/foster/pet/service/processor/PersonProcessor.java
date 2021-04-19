@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.foster.pet.entity.Person;
 import com.foster.pet.exception.person.PersonAlreadyExistsException;
+import com.foster.pet.exception.person.PersonNotFoundException;
 import com.foster.pet.repository.PersonRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,15 +19,29 @@ public class PersonProcessor {
 	@Autowired
 	private PersonRepository personRepository;
 
-	public void validateToPersist(Person person) {
-		log.info("Start - PersonProcessor.validateToPersist - Person: {}", person.toString());
+	public Person exists(Long id) {
+		log.info("Start - PersonProcessor.exists - Id: {}", id);
 
-		Optional<Person> optPerson = this.personRepository.findByCpf(person.getCpf());
+		Optional<Person> optPerson = this.personRepository.findById(id);
+		if (optPerson.isEmpty()) {
+			log.error("PersonNotFoundException - Id: {}", id);
+			throw new PersonNotFoundException();
+		}
+
+		log.info("End - PersonProcessor.exists - Person: {}", optPerson.toString());
+		return optPerson.get();
+	}
+
+	public Person exists(String cpf) {
+		log.info("Start - PersonProcessor.exists - CPF: {}", cpf);
+
+		Optional<Person> optPerson = this.personRepository.findByCpf(cpf);
 		if (optPerson.isPresent()) {
-			log.error("PersonAlreadyExistsException - CPF: {}", person.getCpf());
+			log.error("PersonAlreadyExistsException - CPF: {}", cpf);
 			throw new PersonAlreadyExistsException();
 		}
 
-		log.info("End - PersonProcessor.validateToPersist - Person: {}", person.toString());
+		log.info("End - PersonProcessor.exists - Person: {}", optPerson.toString());
+		return optPerson.get();
 	}
 }

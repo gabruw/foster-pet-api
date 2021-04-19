@@ -1,7 +1,5 @@
 package com.foster.pet.service.impl;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.foster.pet.dto.person.PersonFRDTO;
 import com.foster.pet.dto.person.PersonRDTO;
 import com.foster.pet.entity.Person;
-import com.foster.pet.exception.person.PersonNotFoundException;
 import com.foster.pet.repository.PersonRepository;
 import com.foster.pet.service.PersonService;
+import com.foster.pet.service.processor.PersonProcessor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +21,9 @@ public class PersonServiceImpl implements PersonService {
 
 	@Autowired
 	private ModelMapper mapper;
+
+	@Autowired
+	private PersonProcessor personProcessor;
 
 	@Autowired
 	private PersonRepository personRepository;
@@ -42,48 +43,34 @@ public class PersonServiceImpl implements PersonService {
 	public PersonFRDTO findById(Long id) {
 		log.info("Start - PersonServiceImpl.findById - Id: {}", id);
 
-		Optional<Person> optPerson = this.personRepository.findById(id);
-		if (optPerson.isEmpty()) {
-			log.error("PersonNotFoundException - Id: {}", id);
-			throw new PersonNotFoundException();
-		}
+		Person person = this.personProcessor.exists(id);
+		PersonFRDTO personFRDTO = this.mapper.map(person, PersonFRDTO.class);
 
-		PersonFRDTO person = this.mapper.map(optPerson.get(), PersonFRDTO.class);
-
-		log.info("End - PersonServiceImpl.findById - PersonFRDTO {}", person.toString());
-		return person;
+		log.info("End - PersonServiceImpl.findById - PersonFRDTO {}", personFRDTO.toString());
+		return personFRDTO;
 	}
 
 	@Override
 	public PersonFRDTO findByCpf(String cpf) {
 		log.info("Start - PersonServiceImpl.findByCpf - CPF: {}", cpf);
 
-		Optional<Person> optPerson = this.personRepository.findByCpf(cpf);
-		if (optPerson.isEmpty()) {
-			log.error("PersonNotFoundException - CPF: {}", cpf);
-			throw new PersonNotFoundException();
-		}
+		Person person = this.personProcessor.exists(cpf);
+		PersonFRDTO personFRDTO = this.mapper.map(person, PersonFRDTO.class);
 
-		PersonFRDTO person = this.mapper.map(optPerson.get(), PersonFRDTO.class);
-
-		log.info("End - PersonServiceImpl.findByCpf - PersonFRDTO: {}", person.toString());
-		return person;
+		log.info("End - PersonServiceImpl.findByCpf - PersonFRDTO: {}", personFRDTO.toString());
+		return personFRDTO;
 	}
 
 	@Override
-	public PersonRDTO deleteById(Long id) {
-		log.info("Start - PersonServiceImpl.deleteById - Id: {}", id);
+	public PersonRDTO remove(Long id) {
+		log.info("Start - PersonServiceImpl.remove - Id: {}", id);
 
-		Optional<Person> optPerson = this.personRepository.findById(id);
-		if (optPerson.isEmpty()) {
-			log.error("PersonNotFoundException - Id: {}", id);
-			throw new PersonNotFoundException();
-		}
-
+		Person person = this.personProcessor.exists(id);
 		this.personRepository.deleteById(id);
-		PersonRDTO person = this.mapper.map(optPerson.get(), PersonRDTO.class);
 
-		log.info("End - PersonServiceImpl.deleteById - PersonRDTO: {}", person.toString());
-		return person;
+		PersonRDTO personRDTO = this.mapper.map(person, PersonRDTO.class);
+
+		log.info("End - PersonServiceImpl.remove - PersonRDTO: {}", personRDTO.toString());
+		return personRDTO;
 	}
 }

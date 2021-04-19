@@ -99,7 +99,7 @@ public class PersonControllerTest extends PersonProperties {
 
 	@Test
 	public void remove() throws Exception {
-		when(this.personService.deleteById(ID)).thenReturn(this.personRDTO);
+		when(this.personService.remove(ID)).thenReturn(this.personRDTO);
 
 		this.mockMvc.perform(delete(Routes.PERSON).param("id", String.valueOf(ID))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
