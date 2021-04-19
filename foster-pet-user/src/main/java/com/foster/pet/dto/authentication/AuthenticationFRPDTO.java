@@ -14,9 +14,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class AuthenticationRDTO implements Serializable {
+public class AuthenticationFRPDTO implements Serializable {
 
-	private static final long serialVersionUID = 2932728917392452591L;
+	private static final long serialVersionUID = 4852433818663915173L;
+
+	@Size(min = 1, max = 11, message = "O campo 'Id' deve conter entre 1 e 11 caracteres.")
+	private Long id;
 
 	@Email(message = "O campo 'Email' é inválido")
 	@Size(min = 6, max = 80, message = "O campo 'Email' deve conter entre 6 e 80 caracteres.")
@@ -28,4 +31,3 @@ public class AuthenticationRDTO implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private AuthenticationRoleEnum role;
 }
-	

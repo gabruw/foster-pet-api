@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.dto.token.TokenRDTO;
-import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.token.TokenEmptyException;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.util.JwtUtil;
@@ -39,27 +39,27 @@ public class AuthenticationController {
 
 	@Cacheable("authentication")
 	@GetMapping(params = "id")
-	public ResponseEntity<Response<Authentication>> getById(@RequestParam Long id) {
-		log.info("Start - AuthenticationController.getById - Id: {}", id);
-		Response<Authentication> response = new Response<>();
+	public ResponseEntity<Response<AuthenticationFRPDTO>> findById(@RequestParam Long id) {
+		log.info("Start - AuthenticationController.findById - Id: {}", id);
+		Response<AuthenticationFRPDTO> response = new Response<>();
 
-		Authentication authentication = this.authenticationService.findById(id);
+		AuthenticationFRPDTO authentication = this.authenticationService.findById(id);
 		response.setData(authentication);
 
-		log.info("End - AuthenticationController.getById - Authentication: {}", authentication.toString());
+		log.info("End - AuthenticationController.findById - Authentication: {}", authentication.toString());
 		return ResponseEntity.ok(response);
 	}
 
 	@Cacheable("authentication")
 	@GetMapping(params = "email")
-	public ResponseEntity<Response<Authentication>> getByEmail(@RequestParam @Email @Valid String email) {
-		log.info("Start - AuthenticationController.getByEmail - Email: {}", email);
-		Response<Authentication> response = new Response<>();
+	public ResponseEntity<Response<AuthenticationFRPDTO>> findByEmail(@RequestParam @Email @Valid String email) {
+		log.info("Start - AuthenticationController.findByEmail - Email: {}", email);
+		Response<AuthenticationFRPDTO> response = new Response<>();
 
-		Authentication authentication = this.authenticationService.findByEmail(email);
+		AuthenticationFRPDTO authentication = this.authenticationService.findByEmail(email);
 		response.setData(authentication);
 
-		log.info("End - AuthenticationController.getByEmail - Authentication: {}", authentication.toString());
+		log.info("End - AuthenticationController.findByEmail - AuthenticationFRPDTO: {}", authentication.toString());
 		return ResponseEntity.ok(response);
 	}
 
@@ -69,7 +69,7 @@ public class AuthenticationController {
 		log.info("Start - AuthenticationController.refresh - HttpServletRequest: {}", request.toString());
 		Response<TokenRDTO> response = new Response<>();
 
-		Optional<String> token = Optional.ofNullable(request.getHeader(jwtTokenUtil.getHeader()));
+		Optional<String> token = Optional.ofNullable(request.getHeader(this.jwtTokenUtil.getHeader()));
 		if (token.isEmpty()) {
 			log.error("TokenEmptyException - HttpServletRequest: {}", request.toString());
 			throw new TokenEmptyException();

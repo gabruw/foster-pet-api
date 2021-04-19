@@ -1,18 +1,19 @@
 package com.foster.pet.service;
 
+import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
 import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 
 public interface AuthenticationService {
 
-	Authentication findById(Long id);
+	AuthenticationFRPDTO findById(Long id);
 
-	Authentication findByEmail(String email);
+	AuthenticationFRPDTO findByEmail(String email);
 
 	TokenRDTO refresh(String token);
 
-	Authentication persist(Authentication authentication);
+	Authentication register(Authentication authentication);
 
-	AuthenticationRDTO deleteById(Long id);
+	AuthenticationRDTO remove(Long id);
 }

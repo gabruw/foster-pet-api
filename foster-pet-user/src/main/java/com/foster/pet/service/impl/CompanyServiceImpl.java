@@ -1,16 +1,23 @@
 package com.foster.pet.service.impl;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.foster.pet.dto.authentication.AuthenticationCompanyPDTO;
 import com.foster.pet.dto.company.CompanyFRDTO;
 import com.foster.pet.dto.company.CompanyRDTO;
+import com.foster.pet.entity.Address;
+import com.foster.pet.entity.Authentication;
 import com.foster.pet.entity.Company;
 import com.foster.pet.repository.CompanyRepository;
+import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.CompanyService;
+import com.foster.pet.service.processor.AddressProcessor;
 import com.foster.pet.service.processor.CompanyProcessor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +33,13 @@ public class CompanyServiceImpl implements CompanyService {
 	private CompanyProcessor companyProcessor;
 
 	@Autowired
+	private AddressProcessor addressProcessor;
+
+	@Autowired
 	private CompanyRepository companyRepository;
+
+	@Autowired
+	private AuthenticationService authenticationService;
 
 	@Override
 	public Page<CompanyRDTO> findAll(Pageable pageable) {
@@ -46,7 +59,7 @@ public class CompanyServiceImpl implements CompanyService {
 		Company company = this.companyProcessor.exists(id);
 		CompanyFRDTO companyFRDTO = this.mapper.map(company, CompanyFRDTO.class);
 
-		log.info("End - CompanyServiceImpl.findById - CompanyFRDTO {}", companyFRDTO.toString());
+		log.info("End - CompanyServiceImpl.findById - CompanyFRDTO: {}", companyFRDTO.toString());
 		return companyFRDTO;
 	}
 
@@ -57,8 +70,27 @@ public class CompanyServiceImpl implements CompanyService {
 		Company company = this.companyProcessor.exists(cnpj);
 		CompanyFRDTO companyFRDTO = this.mapper.map(company, CompanyFRDTO.class);
 
-		log.info("End - CompanyServiceImpl.findByCnpj - CompanyFRDTO {}", companyFRDTO.toString());
+		log.info("End - CompanyServiceImpl.findByCnpj - CompanyFRDTO: {}", companyFRDTO.toString());
 		return companyFRDTO;
+	}
+
+	@Override
+	public AuthenticationCompanyPDTO register(AuthenticationCompanyPDTO authenticationCompanyPDTO) {
+		log.info("Start - CompanyServiceImpl.register - AuthenticationCompanyPDTO: {}",
+				authenticationCompanyPDTO.toString());
+
+		Authentication authentication = this.mapper.map(authenticationCompanyPDTO, Authentication.class);
+		this.companyProcessor.exists(authentication.getCompany().getCnpj());
+
+		List<Address> validatedAddresses = this.addressProcessor.validade(authentication.getCompany().getAddresses());
+		authentication.getCompany().setAddresses(validatedAddresses);
+
+		authentication = this.authenticationService.register(authentication);
+		authenticationCompanyPDTO = this.mapper.map(authentication, AuthenticationCompanyPDTO.class);
+
+		log.info("End - CompanyServiceImpl.register - AuthenticationCompanyPDTO: {}",
+				authenticationCompanyPDTO.toString());
+		return authenticationCompanyPDTO;
 	}
 
 	@Override
@@ -70,7 +102,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 		CompanyRDTO companyRDTO = this.mapper.map(company, CompanyRDTO.class);
 
-		log.info("End - CompanyServiceImpl.remove - CompanyRDTO {}", companyRDTO.toString());
+		log.info("End - CompanyServiceImpl.remove - CompanyRDTO: {}", companyRDTO.toString());
 		return companyRDTO;
 	}
 }

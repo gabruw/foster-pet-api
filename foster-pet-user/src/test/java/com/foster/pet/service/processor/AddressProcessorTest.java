@@ -66,7 +66,7 @@ public class AddressProcessorTest extends AddressProperties {
 				.thenReturn(Optional.of(this.address.getCity().getState()));
 
 		List<Address> addressesWithCityAndStateOnlyId = AddressInstance.instaceAddressesWithCityAndStateOnlyId(3);
-		List<Address> validateToPersist = this.addressProcessor.validateToPersist(addressesWithCityAndStateOnlyId);
+		List<Address> validateToPersist = this.addressProcessor.validade(addressesWithCityAndStateOnlyId);
 		
 		assertArrayEquals(this.addresses.toArray(), validateToPersist.toArray());
 	}
@@ -75,7 +75,7 @@ public class AddressProcessorTest extends AddressProperties {
 	@DisplayName("Validade address to persist with a city not founded")
 	public void validateToPersistWithNotFoundedCityId() {
 		CityNotFoundException exception = assertThrows(CityNotFoundException.class, () -> {
-			this.addressProcessor.validateToPersist(this.addresses);
+			this.addressProcessor.validade(this.addresses);
 		});
 
 		assertEquals(ErrorCode.CITY_NOT_FOUND.getMessage(), exception.getMessage());
@@ -88,7 +88,7 @@ public class AddressProcessorTest extends AddressProperties {
 			when(this.cityRepository.findById(this.address.getCity().getId()))
 					.thenReturn(Optional.of(this.address.getCity()));
 
-			this.addressProcessor.validateToPersist(this.addresses);
+			this.addressProcessor.validade(this.addresses);
 		});
 
 		assertEquals(ErrorCode.STATE_NOT_FOUND.getMessage(), exception.getMessage());

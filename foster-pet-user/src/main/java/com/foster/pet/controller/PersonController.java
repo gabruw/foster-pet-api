@@ -1,10 +1,7 @@
 package com.foster.pet.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -22,12 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
 import com.foster.pet.dto.person.PersonFRDTO;
 import com.foster.pet.dto.person.PersonRDTO;
-import com.foster.pet.entity.Address;
-import com.foster.pet.entity.Authentication;
-import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.PersonService;
-import com.foster.pet.service.processor.AddressProcessor;
-import com.foster.pet.service.processor.PersonProcessor;
 import com.foster.pet.util.Response;
 
 import lombok.NoArgsConstructor;
@@ -40,19 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PersonController {
 
 	@Autowired
-	private ModelMapper mapper;
-
-	@Autowired
 	private PersonService personService;
-
-	@Autowired
-	private PersonProcessor personProcessor;
-
-	@Autowired
-	private AddressProcessor addressProcessor;
-
-	@Autowired
-	private AuthenticationService authenticationService;
 
 	@GetMapping
 	@Cacheable("person")
@@ -94,23 +74,16 @@ public class PersonController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Response<Authentication>> register(
+	public ResponseEntity<Response<AuthenticationPersonPDTO>> register(
 			@RequestBody @Valid AuthenticationPersonPDTO authenticationPersonPDTO) {
 		log.info("Start - PersonController.register - AuthenticationPersonPDTO: {}",
 				authenticationPersonPDTO.toString());
-		Response<Authentication> response = new Response<>();
+		Response<AuthenticationPersonPDTO> response = new Response<>();
 
-		Authentication authentication = this.mapper.map(authenticationPersonPDTO, Authentication.class);
-		this.personProcessor.exists(authentication.getPerson().getCpf());
+		authenticationPersonPDTO = this.personService.register(authenticationPersonPDTO);
+		response.setData(authenticationPersonPDTO);
 
-		List<Address> validatedAddresses = this.addressProcessor
-				.validateToPersist(authentication.getPerson().getAddresses());
-		authentication.getPerson().setAddresses(validatedAddresses);
-
-		authentication = this.authenticationService.persist(authentication);
-		response.setData(authentication);
-
-		log.info("End - PersonController.register - Authentication: {}", authentication.toString());
+		log.info("End - PersonController.register - AuthenticationPersonPDTO: {}", authenticationPersonPDTO.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 

@@ -1,18 +1,16 @@
 package com.foster.pet.service.impl;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
 import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
-import com.foster.pet.exception.authentication.AuthenticationAlreadyExistsException;
-import com.foster.pet.exception.authentication.AuthenticationNotFoundException;
 import com.foster.pet.repository.AuthenticationRepository;
 import com.foster.pet.service.AuthenticationService;
+import com.foster.pet.service.processor.AuthenticationProcessor;
 import com.foster.pet.util.Encryptor;
 import com.foster.pet.util.JwtUtil;
 
@@ -29,53 +27,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private JwtUtil jwtTokenUtil;
 
 	@Autowired
+	private AuthenticationProcessor authenticationProcessor;
+
+	@Autowired
 	private AuthenticationRepository authenticationRepository;
 
 	@Override
-	public Authentication findById(Long id) {
+	public AuthenticationFRPDTO findById(Long id) {
 		log.info("Start - AuthenticationServiceImpl.findById - Id: {}", id);
 
-		Optional<Authentication> optAuthentication = this.authenticationRepository.findById(id);
-		if (optAuthentication.isEmpty()) {
-			log.error("AuthenticationNotFoundException - Id: {}", id);
-			throw new AuthenticationNotFoundException();
-		}
+		Authentication authentication = this.authenticationProcessor.exists(id);
+		AuthenticationFRPDTO authenticationFRPDTO = this.mapper.map(authentication, AuthenticationFRPDTO.class);
 
-		log.info("End - AuthenticationServiceImpl.findById - Authentication: {}", optAuthentication.get().toString());
-		return optAuthentication.get();
+		log.info("End - AuthenticationServiceImpl.findById - AuthenticationFRPDTO: {}",
+				authenticationFRPDTO.toString());
+		return authenticationFRPDTO;
 	}
 
 	@Override
-	public Authentication findByEmail(String email) {
+	public AuthenticationFRPDTO findByEmail(String email) {
 		log.info("Start - AuthenticationServiceImpl.findByEmail - Email: {}", email);
 
-		Optional<Authentication> optAuthentication = this.authenticationRepository.findByEmail(email);
-		if (optAuthentication.isEmpty()) {
-			log.error("AuthenticationNotFoundException - Email: {}", email);
-			throw new AuthenticationNotFoundException();
-		}
+		Authentication authentication = this.authenticationProcessor.exists(email);
+		AuthenticationFRPDTO authenticationFRPDTO = this.mapper.map(authentication, AuthenticationFRPDTO.class);
 
-		log.info("End - AuthenticationServiceImpl.findByEmail - Authentication: {}",
-				optAuthentication.get().toString());
-		return optAuthentication.get();
-	}
-
-	@Override
-	public Authentication persist(Authentication authentication) {
-		log.info("Start - AuthenticationServiceImpl.persist - Authentication: {}", authentication.toString());
-
-		Optional<Authentication> optAuthentication = this.authenticationRepository
-				.findByEmail(authentication.getEmail());
-		if (optAuthentication.isPresent()) {
-			log.error("AuthenticationAlreadyExistsException - Email: {}", authentication.getEmail());
-			throw new AuthenticationAlreadyExistsException();
-		}
-
-		String encodedPassword = Encryptor.encode(authentication.getPassword());
-		authentication.setPassword(encodedPassword);
-
-		log.info("End - AuthenticationServiceImpl.persist - Authentication: {}", authentication.toString());
-		return this.authenticationRepository.save(authentication);
+		log.info("End - AuthenticationServiceImpl.findByEmail - AuthenticationFRPDTO: {}",
+				authenticationFRPDTO.toString());
+		return authenticationFRPDTO;
 	}
 
 	@Override
@@ -85,27 +63,35 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		token = token.substring(7);
 		String refreshedToken = this.jwtTokenUtil.refresh(token);
 
-		TokenRDTO returnedToken = new TokenRDTO();
-		returnedToken.setToken(refreshedToken);
+		TokenRDTO returnedToken = new TokenRDTO(refreshedToken);
 
 		log.info("End - AuthenticationServiceImpl.refresh - TokenRDTO: {}", returnedToken.toString());
 		return returnedToken;
 	}
 
 	@Override
-	public AuthenticationRDTO deleteById(Long id) {
-		log.info("Start - AuthenticationServiceImpl.deleteById - Id: {}", id);
+	public Authentication register(Authentication authentication) {
+		log.info("Start - AuthenticationServiceImpl.persist - Authentication: {}", authentication.toString());
 
-		Optional<Authentication> optAuthentication = this.authenticationRepository.findById(id);
-		if (optAuthentication.isEmpty()) {
-			log.error("AuthenticationNotFoundException - Id: {}", id);
-			throw new AuthenticationNotFoundException();
-		}
+		this.authenticationProcessor.alreadyExists(authentication.getEmail());
 
+		String encodedPassword = Encryptor.encode(authentication.getPassword());
+		authentication.setPassword(encodedPassword);
+
+		log.info("End - AuthenticationServiceImpl.persist - Authentication: {}", authentication.toString());
+		return this.authenticationRepository.save(authentication);
+	}
+
+	@Override
+	public AuthenticationRDTO remove(Long id) {
+		log.info("Start - AuthenticationServiceImpl.remove - Id: {}", id);
+
+		Authentication authentication = this.authenticationProcessor.exists(id);
 		this.authenticationRepository.deleteById(id);
-		AuthenticationRDTO authentication = this.mapper.map(optAuthentication.get(), AuthenticationRDTO.class);
 
-		log.info("End - AuthenticationServiceImpl.deleteById - AuthenticationRDTO: {}", authentication.toString());
-		return authentication;
+		AuthenticationRDTO authenticationRDTO = this.mapper.map(authentication, AuthenticationRDTO.class);
+
+		log.info("End - AuthenticationServiceImpl.remove - AuthenticationRDTO: {}", authenticationRDTO.toString());
+		return authenticationRDTO;
 	}
 }

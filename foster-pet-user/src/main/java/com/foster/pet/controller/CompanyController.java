@@ -1,10 +1,7 @@
 package com.foster.pet.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -22,12 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.foster.pet.dto.authentication.AuthenticationCompanyPDTO;
 import com.foster.pet.dto.company.CompanyFRDTO;
 import com.foster.pet.dto.company.CompanyRDTO;
-import com.foster.pet.entity.Address;
-import com.foster.pet.entity.Authentication;
-import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.CompanyService;
-import com.foster.pet.service.processor.AddressProcessor;
-import com.foster.pet.service.processor.CompanyProcessor;
 import com.foster.pet.util.Response;
 
 import lombok.NoArgsConstructor;
@@ -40,19 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyController {
 
 	@Autowired
-	private ModelMapper mapper;
-
-	@Autowired
 	private CompanyService companyService;
-
-	@Autowired
-	private CompanyProcessor companyProcessor;
-
-	@Autowired
-	private AddressProcessor addressProcessor;
-
-	@Autowired
-	private AuthenticationService authenticationService;
 
 	@GetMapping
 	@Cacheable("company")
@@ -94,23 +74,17 @@ public class CompanyController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Response<Authentication>> register(
+	public ResponseEntity<Response<AuthenticationCompanyPDTO>> register(
 			@RequestBody @Valid AuthenticationCompanyPDTO authenticationCompanyPDTO) {
 		log.info("Start - CompanyController.register - AuthenticationCompanyPDTO: {}",
 				authenticationCompanyPDTO.toString());
-		Response<Authentication> response = new Response<>();
+		Response<AuthenticationCompanyPDTO> response = new Response<>();
 
-		Authentication authentication = this.mapper.map(authenticationCompanyPDTO, Authentication.class);
-		this.companyProcessor.exists(authentication.getCompany().getCnpj());
+		authenticationCompanyPDTO = this.companyService.register(authenticationCompanyPDTO);
+		response.setData(authenticationCompanyPDTO);
 
-		List<Address> validatedAddresses = this.addressProcessor
-				.validateToPersist(authentication.getCompany().getAddresses());
-		authentication.getCompany().setAddresses(validatedAddresses);
-
-		authentication = this.authenticationService.persist(authentication);
-		response.setData(authentication);
-
-		log.info("End - CompanyController.register - Authentication: {}", authentication.toString());
+		log.info("End - CompanyController.register - AuthenticationCompanyPDTO: {}",
+				authenticationCompanyPDTO.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 

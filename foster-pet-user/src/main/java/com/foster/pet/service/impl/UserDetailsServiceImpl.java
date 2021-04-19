@@ -6,10 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.foster.pet.entity.Authentication;
+import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.security.entity.JwtUser;
 import com.foster.pet.service.AuthenticationService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -21,7 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) {
-		Authentication authentication = this.authenticationService.findByEmail(email);
-		return this.mapper.map(authentication, JwtUser.class);
+		log.info("Start - UserDetailsServiceImpl.loadUserByUsername - Email: {}", email);
+
+		AuthenticationFRPDTO authentication = this.authenticationService.findByEmail(email);
+		JwtUser jwtUser = this.mapper.map(authentication, JwtUser.class);
+
+		log.info("End - UserDetailsServiceImpl.loadUserByUsername - JwtUser: {}", jwtUser.toString());
+		return jwtUser;
 	}
 }

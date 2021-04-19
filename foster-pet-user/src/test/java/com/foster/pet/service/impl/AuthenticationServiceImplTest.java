@@ -111,7 +111,7 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 	public void persist() {
 		when(this.authenticationRepository.save(any(Authentication.class))).thenReturn(this.authentication);
 
-		Authentication returnedAuthentication = this.authenticationService.persist(this.authentication);
+		Authentication returnedAuthentication = this.authenticationService.register(this.authentication);
 		assertEquals(ID, returnedAuthentication.getId());
 		assertEquals(ROLE, returnedAuthentication.getRole());
 		assertEquals(EMAIL, returnedAuthentication.getEmail());
@@ -125,7 +125,7 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 				() -> {
 					when(this.authenticationRepository.findByEmail(EMAIL)).thenReturn(Optional.of(this.authentication));
 
-					this.authenticationService.persist(this.authentication);
+					this.authenticationService.register(this.authentication);
 				});
 
 		assertEquals(ErrorCode.AUTHENTICATION_ALREADY_EXISTS.getMessage(), exception.getMessage());
@@ -149,7 +149,7 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 		doNothing().when(this.authenticationRepository).deleteById(ID);
 		when(this.authenticationRepository.findById(ID)).thenReturn(Optional.of(this.authentication));
 
-		AuthenticationRDTO returnedAuthentication = this.authenticationService.deleteById(ID);
+		AuthenticationRDTO returnedAuthentication = this.authenticationService.remove(ID);
 		assertEquals(ROLE, returnedAuthentication.getRole());
 		assertEquals(EMAIL, returnedAuthentication.getEmail());
 		assertEquals(PASSWORD, returnedAuthentication.getPassword());
@@ -164,7 +164,7 @@ public class AuthenticationServiceImplTest extends AuthenticationProperties {
 			Long invalidId = 2L;
 			when(this.authenticationRepository.findById(ID)).thenReturn(Optional.of(this.authentication));
 
-			this.authenticationService.deleteById(invalidId);
+			this.authenticationService.remove(invalidId);
 		});
 
 		assertEquals(ErrorCode.AUTHENTICATION_NOT_FOUND.getMessage(), exception.getMessage());
