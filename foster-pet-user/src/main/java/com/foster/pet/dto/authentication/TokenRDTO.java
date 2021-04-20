@@ -1,4 +1,4 @@
-package com.foster.pet.dto.token;
+package com.foster.pet.dto.authentication;
 
 import java.io.Serializable;
 

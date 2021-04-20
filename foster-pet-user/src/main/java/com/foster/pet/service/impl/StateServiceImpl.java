@@ -54,7 +54,7 @@ public class StateServiceImpl implements StateService {
 
 	@Override
 	public List<OptionDTO<Long>> findOptions(Long countryId) {
-		log.info("Start - StateServiceImpl.findOptions");
+		log.info("Start - StateServiceImpl.findOptions - CountryId: {}", countryId);
 
 		Country country = this.countryProcessor.exists(countryId);
 		List<OptionDTO<Long>> options = country.getState().stream()

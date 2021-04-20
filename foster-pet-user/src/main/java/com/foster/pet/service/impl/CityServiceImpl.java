@@ -45,7 +45,7 @@ public class CityServiceImpl implements CityService {
 		log.info("Start - CityServiceImpl.findAll - Pageable: {}", pageable);
 
 		Page<City> cities = this.cityRepository.findAll(pageable);
-		Page<CityHRDTO> fltStates = cities.map(state -> this.mapper.map(state, CityHRDTO.class));
+		Page<CityHRDTO> fltStates = cities.map(city -> this.mapper.map(city, CityHRDTO.class));
 
 		log.info("End - CityServiceImpl.findAll - Page<CityHRDTO>: {}", fltStates.toString());
 		return fltStates;
@@ -53,7 +53,7 @@ public class CityServiceImpl implements CityService {
 
 	@Override
 	public List<OptionDTO<Long>> findOptions(Long stateId) {
-		log.info("Start - CityServiceImpl.findOptions");
+		log.info("Start - CityServiceImpl.findOptions - StateId: {}", stateId);
 
 		State state = this.stateProcessor.exists(stateId);
 		List<OptionDTO<Long>> options = state.getCity().stream()

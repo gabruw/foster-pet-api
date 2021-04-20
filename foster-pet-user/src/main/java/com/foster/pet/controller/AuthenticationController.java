@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
-import com.foster.pet.dto.token.TokenRDTO;
+import com.foster.pet.dto.authentication.TokenRDTO;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.util.Response;
 

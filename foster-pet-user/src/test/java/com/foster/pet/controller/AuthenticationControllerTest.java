@@ -20,7 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.foster.pet.constant.ErrorCode;
-import com.foster.pet.dto.token.TokenRDTO;
+import com.foster.pet.dto.authentication.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.token.TokenEmptyException;
 import com.foster.pet.service.AuthenticationService;

@@ -2,7 +2,7 @@ package com.foster.pet.service;
 
 import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
-import com.foster.pet.dto.token.TokenRDTO;
+import com.foster.pet.dto.authentication.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 
 public interface AuthenticationService {

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
-import com.foster.pet.dto.token.TokenRDTO;
+import com.foster.pet.dto.authentication.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.repository.AuthenticationRepository;
 import com.foster.pet.service.AuthenticationService;
