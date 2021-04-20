@@ -1,8 +1,5 @@
 package com.foster.pet.controller;
 
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 
@@ -17,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.dto.token.TokenRDTO;
-import com.foster.pet.exception.token.TokenEmptyException;
 import com.foster.pet.service.AuthenticationService;
-import com.foster.pet.util.JwtUtil;
 import com.foster.pet.util.Response;
 
 import lombok.NoArgsConstructor;
@@ -30,9 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @RequestMapping("/authentication")
 public class AuthenticationController {
-
-	@Autowired
-	private JwtUtil jwtTokenUtil;
 
 	@Autowired
 	private AuthenticationService authenticationService;
@@ -64,18 +56,12 @@ public class AuthenticationController {
 	}
 
 	@GetMapping(value = "/refresh")
-	public ResponseEntity<Response<TokenRDTO>> refresh(@RequestHeader(name = "Authorization") String authorization,
-			HttpServletRequest request) {
-		log.info("Start - AuthenticationController.refresh - HttpServletRequest: {}", request.toString());
+	public ResponseEntity<Response<TokenRDTO>> refresh(
+			@RequestHeader(required = true, name = "Authorization") String token) {
+		log.info("Start - AuthenticationController.refresh - Token: {}", token);
 		Response<TokenRDTO> response = new Response<>();
 
-		Optional<String> token = Optional.ofNullable(request.getHeader(this.jwtTokenUtil.getHeader()));
-		if (token.isEmpty()) {
-			log.error("TokenEmptyException - HttpServletRequest: {}", request.toString());
-			throw new TokenEmptyException();
-		}
-
-		TokenRDTO returnedToken = this.authenticationService.refresh(token.get());
+		TokenRDTO returnedToken = this.authenticationService.refresh(token);
 		response.setData(returnedToken);
 
 		log.info("End - AuthenticationController.refresh - TokenRDTO: {}", returnedToken.toString());
