@@ -50,8 +50,8 @@ public class CountryController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping
 	@Cacheable("country")
+	@GetMapping("/options")
 	public ResponseEntity<Response<List<OptionDTO<Long>>>> findOptions() {
 		log.info("Start - CountryController.findOptions");
 		Response<List<OptionDTO<Long>>> response = new Response<>();

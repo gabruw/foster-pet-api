@@ -53,7 +53,7 @@ public class StateController {
 	}
 
 	@Cacheable("state")
-	@GetMapping(params = "countryId")
+	@GetMapping(path = "/options", params = "countryId")
 	public ResponseEntity<Response<List<OptionDTO<Long>>>> findOptions(@RequestParam Long countryId) {
 		log.info("Start - StateController.findOptions - CountryId: {}", countryId);
 		Response<List<OptionDTO<Long>>> response = new Response<>();
