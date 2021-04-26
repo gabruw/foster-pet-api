@@ -14,8 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.br.CNPJ;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,18 +29,17 @@ public class NGO implements Serializable {
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "entityName", nullable = false)
-	@Size(min = 1, max = 200, message = "O campo 'Nome da Entidade' deve conter entre 1 e 200 caracteres.")
+	@Size(min = 1, max = 200, message = "O campo 'Nome da Entidade' deve conter entre 1 e 200 caracteres")
 	private String entityName;
 
 	@Column(name = "tradeName", nullable = false)
-	@Size(min = 1, max = 200, message = "O campo 'Nome Fantasia' deve conter entre 1 e 200 caracteres.")
+	@Size(min = 1, max = 200, message = "O campo 'Nome Fantasia' deve conter entre 1 e 200 caracteres")
 	private String tradeName;
 
-	@CNPJ(message = "O campo 'CNPJ' é inválido.")
 	@Column(name = "cnpj", unique = true, nullable = true)
-	@Size(min = 19, max = 19, message = "O campo 'CNPJ' deve conter 19 caracteres.")
+	@Size(min = 19, max = 19, message = "O campo 'CNPJ' deve conter 19 caracteres")
 	private String cnpj;
 
 	@ManyToMany(mappedBy = "ngo")

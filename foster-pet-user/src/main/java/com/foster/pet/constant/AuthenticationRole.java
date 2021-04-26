@@ -1,5 +1,5 @@
 package com.foster.pet.constant;
 
-public enum AuthenticationRoleEnum {
+public enum AuthenticationRole {
 	ADMIN, USER;
 }

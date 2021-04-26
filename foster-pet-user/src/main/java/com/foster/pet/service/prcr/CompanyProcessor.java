@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.foster.pet.entity.Company;
-import com.foster.pet.exception.company.CompanyAlreadyExistsException;
 import com.foster.pet.exception.company.CompanyNotFoundException;
 import com.foster.pet.repository.CompanyRepository;
 
@@ -36,9 +35,9 @@ public class CompanyProcessor {
 		log.info("Start - CompanyProcessor.exists - CNPJ {}", cnpj);
 
 		Optional<Company> optCompany = this.companyRepository.findByCnpj(cnpj);
-		if (optCompany.isPresent()) {
-			log.error("CompanyAlreadyExistsException - CNPJ: {}", cnpj);
-			throw new CompanyAlreadyExistsException();
+		if (optCompany.isEmpty()) {
+			log.error("CompanyNotFoundException - CNPJ: {}", cnpj);
+			throw new CompanyNotFoundException();
 		}
 
 		log.info("End - CompanyProcessor.exists - Company {}", optCompany.get());

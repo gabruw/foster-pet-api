@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
 import com.foster.pet.dto.person.PersonFRDTO;
-import com.foster.pet.dto.person.PersonRDTO;
+import com.foster.pet.dto.person.PersonHRDTO;
 import com.foster.pet.entity.Address;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.entity.Person;
@@ -42,13 +42,13 @@ public class PersonServiceImpl implements PersonService {
 	private AuthenticationService authenticationService;
 
 	@Override
-	public Page<PersonRDTO> findAll(Pageable pageable) {
+	public Page<PersonHRDTO> findAll(Pageable pageable) {
 		log.info("Start - PersonServiceImpl.findAll");
 
 		Page<Person> persons = this.personRepository.findAll(pageable);
-		Page<PersonRDTO> personRDTO = persons.map(person -> this.mapper.map(person, PersonRDTO.class));
+		Page<PersonHRDTO> personRDTO = persons.map(person -> this.mapper.map(person, PersonHRDTO.class));
 
-		log.info("End - PersonServiceImpl.findAll - Page<PersonRDTO>: {}", personRDTO.toString());
+		log.info("End - PersonServiceImpl.findAll - Page<PersonRDTO>: {}", personRDTO);
 		return personRDTO;
 	}
 
@@ -59,7 +59,7 @@ public class PersonServiceImpl implements PersonService {
 		Person person = this.personProcessor.exists(id);
 		PersonFRDTO personFRDTO = this.mapper.map(person, PersonFRDTO.class);
 
-		log.info("End - PersonServiceImpl.findById - PersonFRDTO {}", personFRDTO.toString());
+		log.info("End - PersonServiceImpl.findById - PersonFRDTO {}", personFRDTO);
 		return personFRDTO;
 	}
 
@@ -70,14 +70,14 @@ public class PersonServiceImpl implements PersonService {
 		Person person = this.personProcessor.exists(cpf);
 		PersonFRDTO personFRDTO = this.mapper.map(person, PersonFRDTO.class);
 
-		log.info("End - PersonServiceImpl.findByCpf - PersonFRDTO: {}", personFRDTO.toString());
+		log.info("End - PersonServiceImpl.findByCpf - PersonFRDTO: {}", personFRDTO);
 		return personFRDTO;
 	}
 
 	@Override
 	public AuthenticationPersonPDTO register(AuthenticationPersonPDTO authenticationPersonPDTO) {
 		log.info("Start - PersonServiceImpl.register - AuthenticationPersonPDTO: {}",
-				authenticationPersonPDTO.toString());
+				authenticationPersonPDTO);
 
 		Authentication authentication = this.mapper.map(authenticationPersonPDTO, Authentication.class);
 		this.personProcessor.exists(authentication.getPerson().getCpf());
@@ -89,20 +89,20 @@ public class PersonServiceImpl implements PersonService {
 		authenticationPersonPDTO = this.mapper.map(authentication, AuthenticationPersonPDTO.class);
 
 		log.info("End - PersonServiceImpl.register - AuthenticationPersonPDTO: {}",
-				authenticationPersonPDTO.toString());
+				authenticationPersonPDTO);
 		return authenticationPersonPDTO;
 	}
 
 	@Override
-	public PersonRDTO remove(Long id) {
+	public PersonHRDTO remove(Long id) {
 		log.info("Start - PersonServiceImpl.remove - Id: {}", id);
 
 		Person person = this.personProcessor.exists(id);
 		this.personRepository.deleteById(id);
 
-		PersonRDTO personRDTO = this.mapper.map(person, PersonRDTO.class);
+		PersonHRDTO personRDTO = this.mapper.map(person, PersonHRDTO.class);
 
-		log.info("End - PersonServiceImpl.remove - PersonRDTO: {}", personRDTO.toString());
+		log.info("End - PersonServiceImpl.remove - PersonRDTO: {}", personRDTO);
 		return personRDTO;
 	}
 }

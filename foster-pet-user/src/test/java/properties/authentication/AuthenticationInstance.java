@@ -1,6 +1,6 @@
 package properties.authentication;
 
-import com.foster.pet.dto.authentication.TokenRDTO;
+import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 
 public class AuthenticationInstance extends AuthenticationProperties {

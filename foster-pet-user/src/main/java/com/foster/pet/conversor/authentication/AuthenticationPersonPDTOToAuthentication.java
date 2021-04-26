@@ -1,4 +1,4 @@
-package com.foster.pet.conversor;
+package com.foster.pet.conversor.authentication;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,20 +6,20 @@ import java.util.stream.Collectors;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
 
-import com.foster.pet.dto.authentication.AuthenticationCompanyPDTO;
+import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
 import com.foster.pet.entity.Address;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.entity.City;
-import com.foster.pet.entity.Company;
+import com.foster.pet.entity.Person;
 import com.foster.pet.entity.State;
 
-public class AuthenticationCompanyPDTOToAuthentication implements Converter<AuthenticationCompanyPDTO, Authentication> {
+public class AuthenticationPersonPDTOToAuthentication implements Converter<AuthenticationPersonPDTO, Authentication> {
 
 	@Override
-	public Authentication convert(MappingContext<AuthenticationCompanyPDTO, Authentication> context) {
-		AuthenticationCompanyPDTO source = context.getSource();
+	public Authentication convert(MappingContext<AuthenticationPersonPDTO, Authentication> context) {
+		AuthenticationPersonPDTO source = context.getSource();
 
-		List<Address> addresses = source.getCompany().getAddresses().stream().map(addressPDTO -> {
+		List<Address> addresses = source.getPerson().getAddresses().stream().map(addressPDTO -> {
 			State state = new State();
 			state.setId(addressPDTO.getCity().getState().getId());
 
@@ -39,14 +39,16 @@ public class AuthenticationCompanyPDTOToAuthentication implements Converter<Auth
 			return address;
 		}).collect(Collectors.toList());
 
-		Company company = new Company();
-		company.setAddresses(addresses);
-		company.setCnpj(source.getCompany().getCnpj());
-		company.setTradeName(source.getCompany().getTradeName());
-		company.setCompanyName(source.getCompany().getCompanyName());
+		Person person = new Person();
+		person.setAddresses(addresses);
+		person.setCpf(source.getPerson().getCpf());
+		person.setCell(source.getPerson().getCell());
+		person.setName(source.getPerson().getName());
+		person.setBirth(source.getPerson().getBirth());
+		person.setGender(source.getPerson().getGender());
 
 		Authentication destination = new Authentication();
-		destination.setCompany(company);
+		destination.setPerson(person);
 		destination.setRole(source.getRole());
 		destination.setEmail(source.getEmail());
 		destination.setPassword(source.getPassword());

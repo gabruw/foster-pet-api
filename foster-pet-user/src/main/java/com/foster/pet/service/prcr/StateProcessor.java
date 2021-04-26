@@ -45,7 +45,7 @@ public class StateProcessor {
 		return optState.get();
 	}
 
-	public State alreadyExists(String name) {
+	public void alreadyExists(String name) {
 		log.info("Start - StateProcessor.alreadyExists - Name {}", name);
 
 		Optional<State> optState = this.stateRepository.findByName(name);
@@ -54,7 +54,6 @@ public class StateProcessor {
 			throw new StateAlreadyExistsException();
 		}
 
-		log.info("End - StateProcessor.alreadyExists - State {}", optState.get());
-		return optState.get();
+		log.info("End - StateProcessor.alreadyExists");
 	}
 }

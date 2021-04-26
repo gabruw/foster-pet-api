@@ -1,4 +1,4 @@
-package com.foster.pet.conversor;
+package com.foster.pet.conversor.authentication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,8 @@ public class AuthenticationToJwtUser implements Converter<Authentication, JwtUse
 		destination.setEmail(source.getEmail());
 		destination.setPassword(source.getPassword());
 
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority(source.getRole().toString()));
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(source.getRole().name()));
 
 		destination.setAuthorities(authorities);
 		return destination;

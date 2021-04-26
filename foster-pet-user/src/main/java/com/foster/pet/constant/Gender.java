@@ -1,5 +1,5 @@
 package com.foster.pet.constant;
 
-public enum GenderEnum {
+public enum Gender {
 	MALE, FEMALE;
 }

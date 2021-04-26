@@ -4,9 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.foster.pet.conversor.AuthenticationCompanyPDTOToAuthentication;
-import com.foster.pet.conversor.AuthenticationPersonPDTOToAuthentication;
-import com.foster.pet.conversor.AuthenticationToJwtUser;
+import com.foster.pet.conversor.authentication.AuthenticationCompanyPDTOToAuthentication;
+import com.foster.pet.conversor.authentication.AuthenticationPersonPDTOToAuthentication;
+import com.foster.pet.conversor.authentication.AuthenticationToJwtUser;
 
 @Configuration
 public class ModelMapperConfig {

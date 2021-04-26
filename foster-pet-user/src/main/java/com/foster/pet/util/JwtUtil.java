@@ -74,7 +74,7 @@ public class JwtUtil {
 	}
 
 	public String create(UserDetails userDetails) {
-		Map<String, Object> claims = new HashMap<String, Object>();
+		Map<String, Object> claims = new HashMap<>();
 		claims.put(created, new Date());
 		claims.put(username, userDetails.getUsername());
 

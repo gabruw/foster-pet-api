@@ -47,7 +47,7 @@ public class CityServiceImpl implements CityService {
 		Page<City> cities = this.cityRepository.findAll(pageable);
 		Page<CityHRDTO> fltStates = cities.map(city -> this.mapper.map(city, CityHRDTO.class));
 
-		log.info("End - CityServiceImpl.findAll - Page<CityHRDTO>: {}", fltStates.toString());
+		log.info("End - CityServiceImpl.findAll - Page<CityHRDTO>: {}", fltStates);
 		return fltStates;
 	}
 
@@ -59,7 +59,7 @@ public class CityServiceImpl implements CityService {
 		List<OptionDTO<Long>> options = state.getCity().stream()
 				.map(city -> new OptionDTO<Long>(city.getName(), city.getId())).collect(Collectors.toList());
 
-		log.info("End - CityServiceImpl.findOptions - List<OptionDTO<Long>>: {}", options.toString());
+		log.info("End - CityServiceImpl.findOptions - List<OptionDTO<Long>>: {}", options);
 		return options;
 	}
 
@@ -70,7 +70,7 @@ public class CityServiceImpl implements CityService {
 		City city = this.cityProcessor.exists(id);
 		CityFRDTO cityFRDTO = this.mapper.map(city, CityFRDTO.class);
 
-		log.info("End - CityServiceImpl.findById - CityFRDTO {}", cityFRDTO.toString());
+		log.info("End - CityServiceImpl.findById - CityFRDTO {}", cityFRDTO);
 		return cityFRDTO;
 	}
 
@@ -81,13 +81,13 @@ public class CityServiceImpl implements CityService {
 		City city = this.cityProcessor.exists(name);
 		CityFRDTO cityFRDTO = this.mapper.map(city, CityFRDTO.class);
 
-		log.info("End - CityServiceImpl.findByName - CityFRDTO: {}", cityFRDTO.toString());
+		log.info("End - CityServiceImpl.findByName - CityFRDTO: {}", cityFRDTO);
 		return cityFRDTO;
 	}
 
 	@Override
 	public CityRDTO register(CityPDTO cityPDTO) {
-		log.info("Start - CityServiceImpl.register - CityPDTO: {}", cityPDTO.toString());
+		log.info("Start - CityServiceImpl.register - CityPDTO: {}", cityPDTO);
 
 		this.cityProcessor.alreadyExists(cityPDTO.getName());
 
@@ -96,13 +96,13 @@ public class CityServiceImpl implements CityService {
 
 		CityRDTO cityRDTO = this.mapper.map(city, CityRDTO.class);
 
-		log.info("End - CityServiceImpl.register - CityRDTO: {}", cityRDTO.toString());
+		log.info("End - CityServiceImpl.register - CityRDTO: {}", cityRDTO);
 		return cityRDTO;
 	}
 
 	@Override
 	public CityFPDTO edit(CityFPDTO cityFPDTO) {
-		log.info("Start - CityServiceImpl.edit - CityFPDTO: {}", cityFPDTO.toString());
+		log.info("Start - CityServiceImpl.edit - CityFPDTO: {}", cityFPDTO);
 
 		this.cityProcessor.exists(cityFPDTO.getId());
 
@@ -111,7 +111,7 @@ public class CityServiceImpl implements CityService {
 
 		cityFPDTO = this.mapper.map(city, CityFPDTO.class);
 
-		log.info("End - CityServiceImpl.edit - CityFPDTO: {}", cityFPDTO.toString());
+		log.info("End - CityServiceImpl.edit - CityFPDTO: {}", cityFPDTO);
 		return cityFPDTO;
 	}
 
@@ -124,7 +124,7 @@ public class CityServiceImpl implements CityService {
 
 		CityHRDTO cityHRDTO = this.mapper.map(city, CityHRDTO.class);
 
-		log.info("End - CityServiceImpl.remove - CityHRDTO: {}", cityHRDTO.toString());
+		log.info("End - CityServiceImpl.remove - CityHRDTO: {}", cityHRDTO);
 		return cityHRDTO;
 	}
 }

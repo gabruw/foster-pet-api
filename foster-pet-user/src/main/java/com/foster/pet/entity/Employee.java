@@ -16,7 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.foster.pet.constant.EmployeeRoleEnum;
+import com.foster.pet.constant.EmployeeRole;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +36,7 @@ public class Employee implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false)
-	private EmployeeRoleEnum role;
+	private EmployeeRole role;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "person_id", referencedColumnName = "id")

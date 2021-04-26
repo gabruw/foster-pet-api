@@ -48,7 +48,7 @@ public class StateController {
 		Page<StateHRDTO> states = this.stateService.findAll(pageable);
 		response.setData(states);
 
-		log.info("End - StateController.findAll - Page<StateHRDTO>: {}", states.toString());
+		log.info("End - StateController.findAll - Page<StateHRDTO>: {}", states);
 		return ResponseEntity.ok(response);
 	}
 
@@ -61,7 +61,7 @@ public class StateController {
 		List<OptionDTO<Long>> options = this.stateService.findOptions(countryId);
 		response.setData(options);
 
-		log.info("End - StateController.findOptions - <List<OptionDTO<Long>>>: {}", options.toString());
+		log.info("End - StateController.findOptions - <List<OptionDTO<Long>>>: {}", options);
 		return ResponseEntity.ok(response);
 	}
 
@@ -74,7 +74,7 @@ public class StateController {
 		StateFRPDTO state = this.stateService.findById(id);
 		response.setData(state);
 
-		log.info("End - StateController.findById - StateFRDTO: {}", state.toString());
+		log.info("End - StateController.findById - StateFRDTO: {}", state);
 		return ResponseEntity.ok(response);
 	}
 
@@ -87,31 +87,31 @@ public class StateController {
 		StateFRPDTO state = this.stateService.findByName(name);
 		response.setData(state);
 
-		log.info("End - StateController.findByName - StateFRDTO: {}", state.toString());
+		log.info("End - StateController.findByName - StateFRDTO: {}", state);
 		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
 	public ResponseEntity<Response<StateRDTO>> register(@RequestBody @Valid StatePDTO statePDTO) {
-		log.info("Start - StateController.register - StatePDTO: {}", statePDTO.toString());
+		log.info("Start - StateController.register - StatePDTO: {}", statePDTO);
 		Response<StateRDTO> response = new Response<>();
 
 		StateRDTO state = this.stateService.register(statePDTO);
 		response.setData(state);
 
-		log.info("End - StateController.register - StateRDTO: {}", state.toString());
+		log.info("End - StateController.register - StateRDTO: {}", state);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping
 	public ResponseEntity<Response<StateFRPDTO>> edit(@RequestBody @Valid StateFRPDTO stateFRPDTO) {
-		log.info("Start - StateController.edit - StateFRPDTO: {}", stateFRPDTO.toString());
+		log.info("Start - StateController.edit - StateFRPDTO: {}", stateFRPDTO);
 		Response<StateFRPDTO> response = new Response<>();
 
 		StateFRPDTO state = this.stateService.edit(stateFRPDTO);
 		response.setData(state);
 
-		log.info("End - StateController.edit - StateFRPDTO: {}", state.toString());
+		log.info("End - StateController.edit - StateFRPDTO: {}", state);
 		return ResponseEntity.ok(response);
 	}
 
@@ -123,7 +123,7 @@ public class StateController {
 		StateHRDTO state = this.stateService.remove(id);
 		response.setData(state);
 
-		log.info("End - StateController.remove - StateHRDTO: {}", state.toString());
+		log.info("End - StateController.remove - StateHRDTO: {}", state);
 		return ResponseEntity.ok(response);
 	}
 }

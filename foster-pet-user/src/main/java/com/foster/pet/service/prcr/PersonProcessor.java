@@ -28,7 +28,7 @@ public class PersonProcessor {
 			throw new PersonNotFoundException();
 		}
 
-		log.info("End - PersonProcessor.exists - Person: {}", optPerson.toString());
+		log.info("End - PersonProcessor.exists - Person: {}", optPerson);
 		return optPerson.get();
 	}
 
@@ -41,7 +41,7 @@ public class PersonProcessor {
 			throw new PersonAlreadyExistsException();
 		}
 
-		log.info("End - PersonProcessor.exists - Person: {}", optPerson.toString());
+		log.info("End - PersonProcessor.exists - Person: {}", optPerson);
 		return optPerson.get();
 	}
 }

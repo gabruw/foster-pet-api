@@ -3,6 +3,7 @@ package com.foster.pet.dto.company;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -10,28 +11,35 @@ import org.hibernate.validator.constraints.br.CNPJ;
 
 import com.foster.pet.dto.address.AddressPDTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class CompanyFRDTO implements Serializable {
 
 	private static final long serialVersionUID = -3331492576958844721L;
 
-	@Size(min = 1, max = 11, message = "O campo 'Id' deve conter entre 1 e 11 caracteres.")
+	@NotEmpty(message = "O campo 'Id' é obrigatório")
 	private Long id;
 
-	@Size(min = 1, max = 200, message = "O campo 'Razão Social' deve conter entre 1 e 200 caracteres.")
+	@NotNull(message = "O campo 'Razão Social' é obrigatório")
+	@Size(min = 1, max = 200, message = "O campo 'Razão Social' deve conter entre 1 e 200 caracteres")
 	private String companyName;
 
-	@Size(min = 1, max = 200, message = "O campo 'Nome Fantasia' deve conter entre 1 e 200 caracteres.")
+	@NotNull(message = "O campo 'Nome' é obrigatório")
+	@Size(min = 1, max = 200, message = "O campo 'Nome Fantasia' deve conter entre 1 e 200 caracteres")
 	private String tradeName;
 
-	@CNPJ(message = "O campo 'CNPJ' é inválido.")
-	@Size(min = 19, max = 19, message = "O campo 'CNPJ' deve conter 19 caracteres.")
+	@NotNull(message = "O campo 'Nome' é obrigatório")
+	@Size(min = 19, max = 19, message = "O campo 'CNPJ' deve conter 19 caracteres")
+	@CNPJ(message = "O campo 'CNPJ' é inválido")
 	private String cnpj;
 
-	@NotNull
+	@NotNull(message = "O campo 'Endereços' é obrigatório")
 	private List<AddressPDTO> addresses;
 }

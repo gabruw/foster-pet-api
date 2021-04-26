@@ -1,7 +1,7 @@
 package com.foster.pet.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,5 +12,5 @@ import com.foster.pet.entity.Address;
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
 	@Transactional(readOnly = true)
-	List<Address> findByCep(String cep);
+	Page<Address> findAllByCep(String cep, Pageable pageable);
 }

@@ -1,13 +1,13 @@
 package properties.authentication;
 
-import com.foster.pet.constant.AuthenticationRoleEnum;
+import com.foster.pet.constant.AuthenticationRole;
 
 public class AuthenticationProperties {
 
     protected static final Long ID = 1L;;
     protected static final String PASSWORD = "@bc123YOU";
     protected static final String EMAIL = "foster.pet@teste.com";
-    protected static final AuthenticationRoleEnum ROLE = AuthenticationRoleEnum.USER;
+    protected static final AuthenticationRole ROLE = AuthenticationRole.USER;
    
     protected static final String TOKEN = "Bearer uhouhhigiyg776tygqeufgfwi3g17t78tq3437fqqef3123";
     protected static final String INVALID_TOKEN = "Bearer uhouhhigiyg776tygqeufgfwi3g17t78tq3437fqss3";

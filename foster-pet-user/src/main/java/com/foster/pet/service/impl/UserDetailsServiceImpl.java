@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		AuthenticationFRPDTO authentication = this.authenticationService.findByEmail(email);
 		JwtUser jwtUser = this.mapper.map(authentication, JwtUser.class);
 
-		log.info("End - UserDetailsServiceImpl.loadUserByUsername - JwtUser: {}", jwtUser.toString());
+		log.info("End - UserDetailsServiceImpl.loadUserByUsername - JwtUser: {}", jwtUser);
 		return jwtUser;
 	}
 }

@@ -21,7 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.foster.pet.constant.ErrorCode;
-import com.foster.pet.dto.person.PersonRDTO;
+import com.foster.pet.dto.person.PersonHRDTO;
 import com.foster.pet.entity.Person;
 import com.foster.pet.exception.person.PersonNotFoundException;
 import com.foster.pet.repository.PersonRepository;
@@ -57,8 +57,8 @@ public class PersonServiceImplTest extends PersonProperties {
 
 		when(this.personRepository.findAll()).thenReturn(persons);
 
-		List<PersonRDTO> returnedPersons = this.personService.findAll();
-		Optional<PersonRDTO> optPerson = returnedPersons.stream().findFirst();
+		List<PersonHRDTO> returnedPersons = this.personService.findAll();
+		Optional<PersonHRDTO> optPerson = returnedPersons.stream().findFirst();
 
 		assertEquals(CPF, optPerson.get().getCpf());
 		assertEquals(NAME, optPerson.get().getName());
@@ -127,7 +127,7 @@ public class PersonServiceImplTest extends PersonProperties {
 		doNothing().when(this.personRepository).deleteById(ID);
 		when(this.personRepository.findById(ID)).thenReturn(Optional.of(this.person));
 
-		PersonRDTO returnedPersonDTO = this.personService.remove(ID);
+		PersonHRDTO returnedPersonDTO = this.personService.remove(ID);
 		assertEquals(CPF, returnedPersonDTO.getCpf());
 		assertEquals(NAME, returnedPersonDTO.getName());
 		assertEquals(CELL, returnedPersonDTO.getCell());

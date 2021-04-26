@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
 import com.foster.pet.dto.person.PersonFRDTO;
-import com.foster.pet.dto.person.PersonRDTO;
+import com.foster.pet.dto.person.PersonHRDTO;
 import com.foster.pet.service.PersonService;
 import com.foster.pet.util.Response;
 
@@ -36,14 +36,14 @@ public class PersonController {
 
 	@GetMapping
 	@Cacheable("person")
-	public ResponseEntity<Response<Page<PersonRDTO>>> findAll(Pageable pageable) {
+	public ResponseEntity<Response<Page<PersonHRDTO>>> findAll(Pageable pageable) {
 		log.info("Start - PersonController.findAll = Pageable: {}", pageable);
-		Response<Page<PersonRDTO>> response = new Response<>();
+		Response<Page<PersonHRDTO>> response = new Response<>();
 
-		Page<PersonRDTO> persons = this.personService.findAll(pageable);
+		Page<PersonHRDTO> persons = this.personService.findAll(pageable);
 		response.setData(persons);
 
-		log.info("End - PersonController.findAll - Page<PersonRDTO>: {}", persons.toString());
+		log.info("End - PersonController.findAll - Page<PersonRDTO>: {}", persons);
 		return ResponseEntity.ok(response);
 	}
 
@@ -56,7 +56,7 @@ public class PersonController {
 		PersonFRDTO person = this.personService.findById(id);
 		response.setData(person);
 
-		log.info("End - PersonController.findById - PersonFRDTO: {}", person.toString());
+		log.info("End - PersonController.findById - PersonFRDTO: {}", person);
 		return ResponseEntity.ok(response);
 	}
 
@@ -69,7 +69,7 @@ public class PersonController {
 		PersonFRDTO person = this.personService.findByCpf(cpf);
 		response.setData(person);
 
-		log.info("End - PersonController.findByCpf - PersonFRDTO: {}", person.toString());
+		log.info("End - PersonController.findByCpf - PersonFRDTO: {}", person);
 		return ResponseEntity.ok(response);
 	}
 
@@ -77,25 +77,25 @@ public class PersonController {
 	public ResponseEntity<Response<AuthenticationPersonPDTO>> register(
 			@RequestBody @Valid AuthenticationPersonPDTO authenticationPersonPDTO) {
 		log.info("Start - PersonController.register - AuthenticationPersonPDTO: {}",
-				authenticationPersonPDTO.toString());
+				authenticationPersonPDTO);
 		Response<AuthenticationPersonPDTO> response = new Response<>();
 
 		authenticationPersonPDTO = this.personService.register(authenticationPersonPDTO);
 		response.setData(authenticationPersonPDTO);
 
-		log.info("End - PersonController.register - AuthenticationPersonPDTO: {}", authenticationPersonPDTO.toString());
+		log.info("End - PersonController.register - AuthenticationPersonPDTO: {}", authenticationPersonPDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@DeleteMapping(params = "id")
-	public ResponseEntity<Response<PersonRDTO>> remove(@RequestParam Long id) {
+	public ResponseEntity<Response<PersonHRDTO>> remove(@RequestParam Long id) {
 		log.info("Start - PersonController.remove - Id: {}", id);
-		Response<PersonRDTO> response = new Response<>();
+		Response<PersonHRDTO> response = new Response<>();
 
-		PersonRDTO person = this.personService.remove(id);
+		PersonHRDTO person = this.personService.remove(id);
 		response.setData(person);
 
-		log.info("End - PersonController.remove - PersonRDTO: {}", person.toString());
+		log.info("End - PersonController.remove - PersonRDTO: {}", person);
 		return ResponseEntity.ok(response);
 	}
 }

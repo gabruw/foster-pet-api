@@ -5,11 +5,11 @@ import org.springframework.data.domain.Pageable;
 
 import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
 import com.foster.pet.dto.person.PersonFRDTO;
-import com.foster.pet.dto.person.PersonRDTO;
+import com.foster.pet.dto.person.PersonHRDTO;
 
 public interface PersonService {
 
-	Page<PersonRDTO> findAll(Pageable pageable);
+	Page<PersonHRDTO> findAll(Pageable pageable);
 
 	PersonFRDTO findById(Long id);
 
@@ -17,5 +17,5 @@ public interface PersonService {
 
 	AuthenticationPersonPDTO register(AuthenticationPersonPDTO authenticationPersonPDTO);
 
-	PersonRDTO remove(Long id);
+	PersonHRDTO remove(Long id);
 }

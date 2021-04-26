@@ -46,7 +46,7 @@ public class UserDetailsServiceImplTest extends AuthenticationProperties {
 		UserDetails returnedUserDetails = this.userDetailsServiceImpl.loadUserByUsername(EMAIL);
 		String authority = returnedUserDetails.getAuthorities().stream().findFirst().get().getAuthority();
 		
-		assertEquals(ROLE.toString(), authority);
+		assertEquals(ROLE, authority);
 		assertEquals(EMAIL, returnedUserDetails.getUsername());
 		assertEquals(PASSWORD, returnedUserDetails.getPassword());
 	}

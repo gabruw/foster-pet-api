@@ -1,7 +1,7 @@
 package com.foster.pet.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -17,9 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.br.CPF;
-
-import com.foster.pet.constant.GenderEnum;
+import com.foster.pet.constant.Gender;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,25 +36,24 @@ public class Person implements Serializable {
 	private Long id;
 
 	@Column(name = "name", nullable = false)
-	@Size(min = 1, max = 200, message = "O campo 'Nome' deve conter entre 1 e 200 caracteres.")
+	@Size(min = 1, max = 200, message = "O campo 'Nome' deve conter entre 1 e 200 caracteres")
 	private String name;
 
 	@Column(name = "birth", nullable = false)
-	@NotNull(message = "O campo 'Data de Nascimento' é obrigatório.")
-	private Date birth;
+	@NotNull(message = "O campo 'Data de Nascimento' é obrigatório")
+	private LocalDate birth;
 
-	@CPF(message = "O campo 'CPF' é inválido.")
 	@Column(name = "cpf", unique = true, nullable = false)
-	@Size(min = 14, max = 14, message = "O campo 'CPF' deve conter 14 caracteres.")
+	@Size(min = 14, max = 14, message = "O campo 'CPF' deve conter 14 caracteres")
 	private String cpf;
 
 	@Column(name = "cell", nullable = true)
-	@Size(min = 14, max = 14, message = "O campo 'Nº de Celular' deve conter 14 caracteres.")
+	@Size(min = 14, max = 14, message = "O campo 'Nº de Celular' deve conter 14 caracteres")
 	private String cell;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "gender", nullable = false)
-	private GenderEnum gender;
+	private Gender gender;
 
 	@OneToOne(mappedBy = "person")
 	private Employee employee;

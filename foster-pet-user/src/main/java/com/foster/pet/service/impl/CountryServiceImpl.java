@@ -39,7 +39,7 @@ public class CountryServiceImpl implements CountryService {
 		Page<Country> countries = this.countryRepository.findAll(pageable);
 		Page<CountryRPDTO> fltCountries = countries.map(country -> this.mapper.map(country, CountryRPDTO.class));
 
-		log.info("End - CountryServiceImpl.findAll - Page<CountryRPDTO>: {}", fltCountries.toString());
+		log.info("End - CountryServiceImpl.findAll - Page<CountryRPDTO>: {}", fltCountries);
 		return fltCountries;
 	}
 
@@ -51,7 +51,7 @@ public class CountryServiceImpl implements CountryService {
 		List<OptionDTO<Long>> options = optCountry.stream()
 				.map(state -> new OptionDTO<Long>(state.getName(), state.getId())).collect(Collectors.toList());
 
-		log.info("End - CountryServiceImpl.findOptions - List<OptionDTO<Long>>: {}", options.toString());
+		log.info("End - CountryServiceImpl.findOptions - List<OptionDTO<Long>>: {}", options);
 		return options;
 	}
 
@@ -62,7 +62,7 @@ public class CountryServiceImpl implements CountryService {
 		Country country = this.countryProcessor.exists(id);
 		CountryFRPDTO countryFRPDTO = this.mapper.map(country, CountryFRPDTO.class);
 
-		log.info("End - CountryServiceImpl.findById - CountryFRPDTO {}", countryFRPDTO.toString());
+		log.info("End - CountryServiceImpl.findById - CountryFRPDTO {}", countryFRPDTO);
 		return countryFRPDTO;
 	}
 
@@ -73,13 +73,13 @@ public class CountryServiceImpl implements CountryService {
 		Country country = this.countryProcessor.exists(name);
 		CountryFRPDTO countryFRPDTO = this.mapper.map(country, CountryFRPDTO.class);
 
-		log.info("End - CountryServiceImpl.findByName - CountryFRPDTO: {}", countryFRPDTO.toString());
+		log.info("End - CountryServiceImpl.findByName - CountryFRPDTO: {}", countryFRPDTO);
 		return countryFRPDTO;
 	}
 
 	@Override
 	public CountryRPDTO register(CountryRPDTO countryRPDTO) {
-		log.info("Start - CountryServiceImpl.register - CountryRPDTO: {}", countryRPDTO.toString());
+		log.info("Start - CountryServiceImpl.register - CountryRPDTO: {}", countryRPDTO);
 
 		this.countryProcessor.alreadyExists(countryRPDTO.getName());
 
@@ -88,13 +88,13 @@ public class CountryServiceImpl implements CountryService {
 
 		countryRPDTO = this.mapper.map(country, CountryRPDTO.class);
 
-		log.info("End - CountryServiceImpl.register - CountryRPDTO: {}", countryRPDTO.toString());
+		log.info("End - CountryServiceImpl.register - CountryRPDTO: {}", countryRPDTO);
 		return countryRPDTO;
 	}
 
 	@Override
 	public CountryFRPDTO edit(CountryFRPDTO countryFRPDTO) {
-		log.info("Start - CountryServiceImpl.edit - CountryFRPDTO: {}", countryFRPDTO.toString());
+		log.info("Start - CountryServiceImpl.edit - CountryFRPDTO: {}", countryFRPDTO);
 
 		this.countryProcessor.exists(countryFRPDTO.getId());
 
@@ -103,7 +103,7 @@ public class CountryServiceImpl implements CountryService {
 
 		countryFRPDTO = this.mapper.map(country, CountryFRPDTO.class);
 
-		log.info("End - CountryServiceImpl.edit - CountryFRPDTO: {}", countryFRPDTO.toString());
+		log.info("End - CountryServiceImpl.edit - CountryFRPDTO: {}", countryFRPDTO);
 		return countryFRPDTO;
 	}
 
@@ -116,7 +116,7 @@ public class CountryServiceImpl implements CountryService {
 
 		CountryRPDTO countryRPDTO = this.mapper.map(country, CountryRPDTO.class);
 
-		log.info("End - CountryServiceImpl.remove - CountryRPDTO: {}", countryRPDTO.toString());
+		log.info("End - CountryServiceImpl.remove - CountryRPDTO: {}", countryRPDTO);
 		return countryRPDTO;
 	}
 }

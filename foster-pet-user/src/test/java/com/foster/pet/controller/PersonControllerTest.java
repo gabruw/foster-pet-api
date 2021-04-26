@@ -23,7 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foster.pet.dto.person.PersonRDTO;
+import com.foster.pet.dto.person.PersonHRDTO;
 import com.foster.pet.entity.Person;
 import com.foster.pet.service.PersonService;
 
@@ -50,17 +50,17 @@ public class PersonControllerTest extends PersonProperties {
 	private Person person;
 
 	@Mock
-	private PersonRDTO personRDTO;
+	private PersonHRDTO personRDTO;
 
 	@BeforeEach
 	public void init() {
 		this.person = PersonInstance.instace();
-		this.personRDTO = this.mapper.map(this.person, PersonRDTO.class);
+		this.personRDTO = this.mapper.map(this.person, PersonHRDTO.class);
 	}
 
 	@Test
 	public void getAll() throws Exception {
-		List<PersonRDTO> persons = new ArrayList<>();
+		List<PersonHRDTO> persons = new ArrayList<>();
 		persons.add(this.personRDTO);
 
 		when(this.personService.findAll()).thenReturn(persons);
@@ -69,7 +69,7 @@ public class PersonControllerTest extends PersonProperties {
 				.andExpect(jsonPath("$.data[0].cpf", equalTo(CPF))).andExpect(jsonPath("$.data[0].name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data[0].cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data[0].birth", isA(String.class)))
-				.andExpect(jsonPath("$.data[0].gender", equalTo(GENDER.toString())))
+				.andExpect(jsonPath("$.data[0].gender", equalTo(GENDER)))
 				.andExpect(jsonPath("$.errors").isEmpty());
 	}
 
@@ -81,7 +81,7 @@ public class PersonControllerTest extends PersonProperties {
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))
-				.andExpect(jsonPath("$.data.gender", equalTo(GENDER.toString()))).andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.gender", equalTo(GENDER))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.errors").isEmpty());
 	}
 
@@ -93,7 +93,7 @@ public class PersonControllerTest extends PersonProperties {
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))
-				.andExpect(jsonPath("$.data.gender", equalTo(GENDER.toString()))).andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.gender", equalTo(GENDER))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.errors").isEmpty());
 	}
 
@@ -105,7 +105,7 @@ public class PersonControllerTest extends PersonProperties {
 				.andExpect(jsonPath("$.data.cpf", equalTo(CPF))).andExpect(jsonPath("$.data.name", equalTo(NAME)))
 				.andExpect(jsonPath("$.data.cell", equalTo(CELL)))
 				.andExpect(jsonPath("$.data.birth", isA(String.class)))
-				.andExpect(jsonPath("$.data.gender", equalTo(GENDER.toString()))).andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.gender", equalTo(GENDER))).andExpect(status().isOk())
 				.andExpect(jsonPath("$.errors").isEmpty());
 	}
 }

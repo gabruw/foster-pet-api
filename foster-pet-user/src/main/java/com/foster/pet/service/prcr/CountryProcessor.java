@@ -20,7 +20,7 @@ public class CountryProcessor {
 	private CountryRepository countryRepository;
 
 	public Country exists(Long id) {
-		log.info("Start - CountryProcessor.exists - Id {}", id);
+		log.info("Start - CountryProcessor.exists - Id: {}", id);
 
 		Optional<Country> optCountry = this.countryRepository.findById(id);
 		if (optCountry.isEmpty()) {
@@ -28,12 +28,12 @@ public class CountryProcessor {
 			throw new CountryNotFoundException();
 		}
 
-		log.info("End - CountryProcessor.exists - Country {}", optCountry.get());
+		log.info("End - CountryProcessor.exists - Country: {}", optCountry.get());
 		return optCountry.get();
 	}
 
 	public Country exists(String name) {
-		log.info("Start - CountryProcessor.exists - Name {}", name);
+		log.info("Start - CountryProcessor.exists - Name: {}", name);
 
 		Optional<Country> optCountry = this.countryRepository.findByName(name);
 		if (optCountry.isEmpty()) {
@@ -41,12 +41,12 @@ public class CountryProcessor {
 			throw new CountryNotFoundException();
 		}
 
-		log.info("End - CountryProcessor.exists - Country {}", optCountry.get());
+		log.info("End - CountryProcessor.exists - Country: {}", optCountry.get());
 		return optCountry.get();
 	}
 
-	public Country alreadyExists(String name) {
-		log.info("Start - CountryProcessor.alreadyExists - Name {}", name);
+	public void alreadyExists(String name) {
+		log.info("Start - CountryProcessor.alreadyExists - Name: {}", name);
 
 		Optional<Country> optCountry = this.countryRepository.findByName(name);
 		if (optCountry.isPresent()) {
@@ -54,7 +54,6 @@ public class CountryProcessor {
 			throw new CountryAlreadyExistsException();
 		}
 
-		log.info("End - CountryProcessor.alreadyExists - Country {}", optCountry.get());
-		return optCountry.get();
+		log.info("End - CountryProcessor.alreadyExists");
 	}
 }

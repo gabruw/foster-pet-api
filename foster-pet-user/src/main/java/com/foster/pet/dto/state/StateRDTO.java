@@ -7,18 +7,23 @@ import javax.validation.constraints.Size;
 
 import com.foster.pet.dto.country.CountryRPDTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class StateRDTO implements Serializable {
 
 	private static final long serialVersionUID = -6969615747215487546L;
 
-	@Size(min = 1, max = 70, message = "O campo 'Estado' deve conter entre 1 e 70 caracteres.")
+	@NotNull(message = "O campo 'Cidade' é obrigatório")
+	@Size(min = 1, max = 70, message = "O campo 'Estado' deve conter entre 1 e 70 caracteres")
 	private String name;
-	
-	@NotNull
+
+	@NotNull(message = "O campo 'País' é obrigatório")
 	private CountryRPDTO country;
 }

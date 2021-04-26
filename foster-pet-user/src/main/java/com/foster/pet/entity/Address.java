@@ -33,31 +33,31 @@ public class Address implements Serializable {
 	private Long id;
 
 	@Column(name = "name", nullable = false)
-	@Size(min = 1, max = 70, message = "O campo 'Nome' deve conter entre 1 e 70 caracteres.")
+	@Size(min = 1, max = 70, message = "O campo 'Nome' deve conter entre 1 e 70 caracteres")
 	private String name;
 
 	@Column(name = "cep", nullable = false)
-	@Size(min = 9, max = 9, message = "O campo 'CEP' deve conter 9 caracteres.")
+	@Size(min = 9, max = 9, message = "O campo 'CEP' deve conter 9 caracteres")
 	private String cep;
 
 	@Column(name = "road", nullable = false)
-	@Size(min = 1, max = 255, message = "O campo 'Rua' deve conter entre 1 e 255 caracteres.")
+	@Size(min = 1, max = 255, message = "O campo 'Rua' deve conter entre 1 e 255 caracteres")
 	private String road;
 
 	@Column(name = "neighborhood", nullable = false)
-	@Size(min = 1, max = 255, message = "O campo 'Bairro' deve conter entre 1 e 255 caracteres.")
+	@Size(min = 1, max = 255, message = "O campo 'Bairro' deve conter entre 1 e 255 caracteres")
 	private String neighborhood;
 
 	@Column(name = "number", nullable = false)
-	@NotNull(message = "O campo 'Número' é obrigatório.")
+	@NotNull(message = "O campo 'Número' é obrigatório")
 	private Integer number;
 
 	@Column(name = "complement", nullable = true)
-	@Size(max = 255, message = "O campo 'Complemento' deve conter no máximo 255 caracteres.")
+	@Size(max = 255, message = "O campo 'Complemento' deve conter no máximo 255 caracteres")
 	private String complement;
 
 	@Column(name = "phone", nullable = true)
-	@Size(min = 13, max = 13, message = "O campo 'Nº de Telefone' deve conter 13 caracteres.")
+	@Size(min = 13, max = 13, message = "O campo 'Nº de Telefone' deve conter 13 caracteres")
 	private String phone;
 
 	@ManyToOne

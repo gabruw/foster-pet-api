@@ -46,7 +46,7 @@ public class CountryController {
 		Page<CountryRPDTO> countries = this.countryService.findAll(pageable);
 		response.setData(countries);
 
-		log.info("End - CountryController.findAll - Page<CountryRPDTO>: {}", countries.toString());
+		log.info("End - CountryController.findAll - Page<CountryRPDTO>: {}", countries);
 		return ResponseEntity.ok(response);
 	}
 
@@ -59,7 +59,7 @@ public class CountryController {
 		List<OptionDTO<Long>> options = this.countryService.findOptions();
 		response.setData(options);
 
-		log.info("End - CountryController.findOptions - <List<OptionDTO<Long>>>: {}", options.toString());
+		log.info("End - CountryController.findOptions - <List<OptionDTO<Long>>>: {}", options);
 		return ResponseEntity.ok(response);
 	}
 
@@ -72,7 +72,7 @@ public class CountryController {
 		CountryFRPDTO country = this.countryService.findById(id);
 		response.setData(country);
 
-		log.info("End - CountryController.findById - CountryFRPDTO: {}", country.toString());
+		log.info("End - CountryController.findById - CountryFRPDTO: {}", country);
 		return ResponseEntity.ok(response);
 	}
 
@@ -85,31 +85,31 @@ public class CountryController {
 		CountryFRPDTO country = this.countryService.findByName(name);
 		response.setData(country);
 
-		log.info("End - CountryController.findByName - CountryFRPDTO: {}", country.toString());
+		log.info("End - CountryController.findByName - CountryFRPDTO: {}", country);
 		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
 	public ResponseEntity<Response<CountryRPDTO>> register(@RequestBody @Valid CountryRPDTO countryRPDTO) {
-		log.info("Start - CountryController.register - CountryRPDTO: {}", countryRPDTO.toString());
+		log.info("Start - CountryController.register - CountryRPDTO: {}", countryRPDTO);
 		Response<CountryRPDTO> response = new Response<>();
 
 		CountryRPDTO country = this.countryService.register(countryRPDTO);
 		response.setData(country);
 
-		log.info("End - CountryController.register - CountryRPDTO: {}", country.toString());
+		log.info("End - CountryController.register - CountryRPDTO: {}", country);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping
 	public ResponseEntity<Response<CountryFRPDTO>> edit(@RequestBody @Valid CountryFRPDTO countryFRPDTO) {
-		log.info("Start - CountryController.edit - CountryFRPDTO: {}", countryFRPDTO.toString());
+		log.info("Start - CountryController.edit - CountryFRPDTO: {}", countryFRPDTO);
 		Response<CountryFRPDTO> response = new Response<>();
 
 		CountryFRPDTO country = this.countryService.edit(countryFRPDTO);
 		response.setData(country);
 
-		log.info("End - CountryController.edit - CountryFRPDTO: {}", country.toString());
+		log.info("End - CountryController.edit - CountryFRPDTO: {}", country);
 		return ResponseEntity.ok(response);
 	}
 
@@ -121,7 +121,7 @@ public class CountryController {
 		CountryRPDTO country = this.countryService.remove(id);
 		response.setData(country);
 
-		log.info("End - CountryController.remove - CountryRPDTO: {}", country.toString());
+		log.info("End - CountryController.remove - CountryRPDTO: {}", country);
 		return ResponseEntity.ok(response);
 	}
 }

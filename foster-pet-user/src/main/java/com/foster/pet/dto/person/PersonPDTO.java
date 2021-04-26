@@ -1,7 +1,7 @@
 package com.foster.pet.dto.person;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EnumType;
@@ -11,34 +11,42 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.br.CPF;
 
-import com.foster.pet.constant.GenderEnum;
+import com.foster.pet.constant.Gender;
 import com.foster.pet.dto.address.AddressPDTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class PersonPDTO implements Serializable {
 
 	private static final long serialVersionUID = -7843175176714907358L;
 
-	@Size(min = 1, max = 200, message = "O campo 'Nome' deve conter entre 1 e 200 caracteres.")
+	@NotNull(message = "O campo 'Nome' é obrigatório")
+	@Size(min = 1, max = 200, message = "O campo 'Nome' deve conter entre 1 e 200 caracteres")
 	private String name;
 
-	@NotNull(message = "O campo 'Data de Nascimento' é obrigatório.")
-	private Date birth;
+	@NotNull(message = "O campo 'Data de Nascimento' é obrigatório")
+	private LocalDate birth;
 
-	@CPF(message = "O campo 'CPF' é inválido.")
-	@Size(min = 14, max = 14, message = "O campo 'CPF' deve conter 14 caracteres.")
+	@NotNull(message = "O campo 'CPF' é obrigatório")
+	@Size(min = 14, max = 14, message = "O campo 'CPF' deve conter 14 caracteres")
+	@CPF(message = "O campo 'CPF' é inválido")
 	private String cpf;
 
-	@Size(min = 14, max = 14, message = "O campo 'Nº de Celular' deve conter 14 caracteres.")
+	@NotNull(message = "O campo 'Nº de Celular' é obrigatório")
+	@Size(min = 14, max = 14, message = "O campo 'Nº de Celular' deve conter 14 caracteres")
 	private String cell;
 
+	@NotNull(message = "O campo 'Gênero' é obrigatório")
 	@Enumerated(EnumType.STRING)
-	private GenderEnum gender;
+	private Gender gender;
 
-	@NotNull
+	@NotNull(message = "O campo 'Endereços' é obrigatório")
 	private List<AddressPDTO> addresses;
 }

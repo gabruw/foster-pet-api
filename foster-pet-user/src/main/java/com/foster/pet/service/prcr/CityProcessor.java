@@ -45,7 +45,7 @@ public class CityProcessor {
 		return optCity.get();
 	}
 
-	public City alreadyExists(String name) {
+	public void alreadyExists(String name) {
 		log.info("Start - CityProcessor.alreadyExists - Name {}", name);
 
 		Optional<City> optCity = this.cityRepository.findByName(name);
@@ -54,7 +54,6 @@ public class CityProcessor {
 			throw new CityAlreadyExistsException();
 		}
 
-		log.info("End - CityProcessor.alreadyExists - City {}", optCity.get());
-		return optCity.get();
+		log.info("End - CityProcessor.alreadyExists");
 	}
 }

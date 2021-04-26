@@ -20,7 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.foster.pet.constant.ErrorCode;
-import com.foster.pet.dto.authentication.TokenRDTO;
+import com.foster.pet.dto.token.TokenRDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.token.TokenEmptyException;
 import com.foster.pet.service.AuthenticationService;
@@ -58,8 +58,8 @@ public class AuthenticationControllerTest extends AuthenticationProperties {
 		when(this.authenticationService.findById(ID)).thenReturn(this.authentication);
 
 		this.mockMvc.perform(get(Routes.AUTHENTICATION).param("id", String.valueOf(ID))).andExpect(status().isOk())
-				.andExpect(jsonPath("$.data.id", equalTo(Integer.valueOf(ID.toString()))))
-				.andExpect(jsonPath("$.data.role", equalTo(ROLE.toString())))
+				.andExpect(jsonPath("$.data.id", equalTo(Integer.valueOf(ID))))
+				.andExpect(jsonPath("$.data.role", equalTo(ROLE)))
 				.andExpect(jsonPath("$.data.email", equalTo(EMAIL)))
 				.andExpect(jsonPath("$.data.password", equalTo(PASSWORD))).andExpect(jsonPath("$.errors").isEmpty());
 	}
@@ -69,8 +69,8 @@ public class AuthenticationControllerTest extends AuthenticationProperties {
 		when(this.authenticationService.findByEmail(EMAIL)).thenReturn(this.authentication);
 
 		this.mockMvc.perform(get(Routes.AUTHENTICATION).param("email", EMAIL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.data.id", equalTo(Integer.valueOf(ID.toString()))))
-				.andExpect(jsonPath("$.data.role", equalTo(ROLE.toString())))
+				.andExpect(jsonPath("$.data.id", equalTo(Integer.valueOf(ID))))
+				.andExpect(jsonPath("$.data.role", equalTo(ROLE)))
 				.andExpect(jsonPath("$.data.email", equalTo(EMAIL)))
 				.andExpect(jsonPath("$.data.password", equalTo(PASSWORD))).andExpect(jsonPath("$.errors").isEmpty());
 	}

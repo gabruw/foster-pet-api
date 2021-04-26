@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 
 import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
-import com.foster.pet.dto.authentication.TokenRDTO;
+import com.foster.pet.dto.token.TokenFRDTO;
+import com.foster.pet.dto.token.TokenRDTO;
+import com.foster.pet.dto.user.LoginDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.repository.AuthenticationRepository;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.prcr.AuthenticationProcessor;
+import com.foster.pet.service.prcr.SecurityProcessor;
 import com.foster.pet.util.Encryptor;
 import com.foster.pet.util.JwtUtil;
 
@@ -27,6 +30,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private JwtUtil jwtTokenUtil;
 
 	@Autowired
+	private SecurityProcessor securityProcessor;
+
+	@Autowired
 	private AuthenticationProcessor authenticationProcessor;
 
 	@Autowired
@@ -39,8 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		Authentication authentication = this.authenticationProcessor.exists(id);
 		AuthenticationFRPDTO authenticationFRPDTO = this.mapper.map(authentication, AuthenticationFRPDTO.class);
 
-		log.info("End - AuthenticationServiceImpl.findById - AuthenticationFRPDTO: {}",
-				authenticationFRPDTO.toString());
+		log.info("End - AuthenticationServiceImpl.findById - AuthenticationFRPDTO: {}", authenticationFRPDTO);
 		return authenticationFRPDTO;
 	}
 
@@ -51,9 +56,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		Authentication authentication = this.authenticationProcessor.exists(email);
 		AuthenticationFRPDTO authenticationFRPDTO = this.mapper.map(authentication, AuthenticationFRPDTO.class);
 
-		log.info("End - AuthenticationServiceImpl.findByEmail - AuthenticationFRPDTO: {}",
-				authenticationFRPDTO.toString());
+		log.info("End - AuthenticationServiceImpl.findByEmail - AuthenticationFRPDTO: {}", authenticationFRPDTO);
 		return authenticationFRPDTO;
+	}
+
+	@Override
+	public TokenFRDTO login(LoginDTO loginDTO) {
+		log.info("Start - AuthenticationServiceImpl.login - LoginDTO: {}", loginDTO);
+
+		Authentication authentication = this.authenticationProcessor.exists(loginDTO.getEmail());
+		this.authenticationProcessor.matchPassword(loginDTO.getPassword(), authentication.getPassword());
+
+		String name = this.authenticationProcessor.getName(loginDTO.getUserType(), authentication);
+		String token = this.securityProcessor.authenticate(loginDTO.getEmail(), loginDTO.getPassword());
+
+		TokenFRDTO tokenFRDTO = TokenFRDTO.builder().name(name).token(token).userType(loginDTO.getUserType())
+				.role(authentication.getRole()).build();
+
+		log.info("End - AuthenticationServiceImpl.login - TokenFRDTO: {}", tokenFRDTO);
+		return tokenFRDTO;
 	}
 
 	@Override
@@ -65,20 +86,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 		TokenRDTO returnedToken = new TokenRDTO(refreshedToken);
 
-		log.info("End - AuthenticationServiceImpl.refresh - TokenRDTO: {}", returnedToken.toString());
+		log.info("End - AuthenticationServiceImpl.refresh - TokenRDTO: {}", returnedToken);
 		return returnedToken;
 	}
 
 	@Override
 	public Authentication register(Authentication authentication) {
-		log.info("Start - AuthenticationServiceImpl.persist - Authentication: {}", authentication.toString());
+		log.info("Start - AuthenticationServiceImpl.persist - Authentication: {}", authentication);
 
 		this.authenticationProcessor.alreadyExists(authentication.getEmail());
 
 		String encodedPassword = Encryptor.encode(authentication.getPassword());
 		authentication.setPassword(encodedPassword);
 
-		log.info("End - AuthenticationServiceImpl.persist - Authentication: {}", authentication.toString());
+		log.info("End - AuthenticationServiceImpl.persist - Authentication: {}", authentication);
 		return this.authenticationRepository.save(authentication);
 	}
 
@@ -91,7 +112,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 		AuthenticationRDTO authenticationRDTO = this.mapper.map(authentication, AuthenticationRDTO.class);
 
-		log.info("End - AuthenticationServiceImpl.remove - AuthenticationRDTO: {}", authenticationRDTO.toString());
+		log.info("End - AuthenticationServiceImpl.remove - AuthenticationRDTO: {}", authenticationRDTO);
 		return authenticationRDTO;
 	}
 }

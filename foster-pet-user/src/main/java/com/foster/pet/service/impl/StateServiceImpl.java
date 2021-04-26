@@ -48,7 +48,7 @@ public class StateServiceImpl implements StateService {
 		Page<State> states = this.stateRepository.findAll(pageable);
 		Page<StateHRDTO> fltStates = states.map(state -> this.mapper.map(state, StateHRDTO.class));
 
-		log.info("End - StateServiceImpl.findAll - Page<StateHRDTO>: {}", fltStates.toString());
+		log.info("End - StateServiceImpl.findAll - Page<StateHRDTO>: {}", fltStates);
 		return fltStates;
 	}
 
@@ -60,7 +60,7 @@ public class StateServiceImpl implements StateService {
 		List<OptionDTO<Long>> options = country.getState().stream()
 				.map(state -> new OptionDTO<Long>(state.getName(), state.getId())).collect(Collectors.toList());
 
-		log.info("End - StateServiceImpl.findOptions - List<OptionDTO<Long>>: {}", options.toString());
+		log.info("End - StateServiceImpl.findOptions - List<OptionDTO<Long>>: {}", options);
 		return options;
 	}
 
@@ -71,7 +71,7 @@ public class StateServiceImpl implements StateService {
 		State state = this.stateProcessor.exists(id);
 		StateFRPDTO stateFRDTO = this.mapper.map(state, StateFRPDTO.class);
 
-		log.info("End - StateServiceImpl.findById - StateFRPDTO {}", stateFRDTO.toString());
+		log.info("End - StateServiceImpl.findById - StateFRPDTO {}", stateFRDTO);
 		return stateFRDTO;
 	}
 
@@ -82,13 +82,13 @@ public class StateServiceImpl implements StateService {
 		State state = this.stateProcessor.exists(name);
 		StateFRPDTO stateFRDTO = this.mapper.map(state, StateFRPDTO.class);
 
-		log.info("End - StateServiceImpl.findByName - StateFRPDTO: {}", stateFRDTO.toString());
+		log.info("End - StateServiceImpl.findByName - StateFRPDTO: {}", stateFRDTO);
 		return stateFRDTO;
 	}
 
 	@Override
 	public StateRDTO register(StatePDTO statePDTO) {
-		log.info("Start - StateServiceImpl.register - StatePDTO: {}", statePDTO.toString());
+		log.info("Start - StateServiceImpl.register - StatePDTO: {}", statePDTO);
 
 		this.stateProcessor.alreadyExists(statePDTO.getName());
 
@@ -97,13 +97,13 @@ public class StateServiceImpl implements StateService {
 
 		StateRDTO stateRDTO = this.mapper.map(state, StateRDTO.class);
 
-		log.info("End - StateServiceImpl.register - StateRDTO: {}", stateRDTO.toString());
+		log.info("End - StateServiceImpl.register - StateRDTO: {}", stateRDTO);
 		return stateRDTO;
 	}
 
 	@Override
 	public StateFRPDTO edit(StateFRPDTO stateFRPDTO) {
-		log.info("Start - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO.toString());
+		log.info("Start - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO);
 
 		this.countryProcessor.exists(stateFRPDTO.getId());
 
@@ -112,7 +112,7 @@ public class StateServiceImpl implements StateService {
 
 		stateFRPDTO = this.mapper.map(state, StateFRPDTO.class);
 
-		log.info("End - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO.toString());
+		log.info("End - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO);
 		return stateFRPDTO;
 	}
 
@@ -129,7 +129,7 @@ public class StateServiceImpl implements StateService {
 		this.stateRepository.deleteById(id);
 		StateHRDTO state = this.mapper.map(optState.get(), StateHRDTO.class);
 
-		log.info("End - StateServiceImpl.remove - StateHRDTO: {}", state.toString());
+		log.info("End - StateServiceImpl.remove - StateHRDTO: {}", state);
 		return state;
 	}
 }

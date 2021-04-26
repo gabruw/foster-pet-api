@@ -49,7 +49,7 @@ public class CityController {
 		Page<CityHRDTO> cities = this.cityService.findAll(pageable);
 		response.setData(cities);
 
-		log.info("End - CityController.findAll - Page<CityHRDTO>: {}", cities.toString());
+		log.info("End - CityController.findAll - Page<CityHRDTO>: {}", cities);
 		return ResponseEntity.ok(response);
 	}
 
@@ -62,7 +62,7 @@ public class CityController {
 		List<OptionDTO<Long>> options = this.cityService.findOptions(stateId);
 		response.setData(options);
 
-		log.info("End - CityController.findOptions - List<OptionDTO<Long>>: {}", options.toString());
+		log.info("End - CityController.findOptions - List<OptionDTO<Long>>: {}", options);
 		return ResponseEntity.ok(response);
 	}
 
@@ -75,7 +75,7 @@ public class CityController {
 		CityFRDTO city = this.cityService.findById(id);
 		response.setData(city);
 
-		log.info("End - CityController.findById - CityFRDTO: {}", city.toString());
+		log.info("End - CityController.findById - CityFRDTO: {}", city);
 		return ResponseEntity.ok(response);
 	}
 
@@ -88,31 +88,31 @@ public class CityController {
 		CityFRDTO city = this.cityService.findByName(name);
 		response.setData(city);
 
-		log.info("End - CityController.findByName - CityFRDTO: {}", city.toString());
+		log.info("End - CityController.findByName - CityFRDTO: {}", city);
 		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping
 	public ResponseEntity<Response<CityRDTO>> register(@RequestBody @Valid CityPDTO cityPDTO) {
-		log.info("Start - CityController.register - CityPDTO: {}", cityPDTO.toString());
+		log.info("Start - CityController.register - CityPDTO: {}", cityPDTO);
 		Response<CityRDTO> response = new Response<>();
 
 		CityRDTO city = this.cityService.register(cityPDTO);
 		response.setData(city);
 
-		log.info("End - CityController.register - CityRDTO: {}", city.toString());
+		log.info("End - CityController.register - CityRDTO: {}", city);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping
 	public ResponseEntity<Response<CityFPDTO>> edit(@RequestBody @Valid CityFPDTO cityFPDTO) {
-		log.info("Start - CityController.edit - CityFPDTO: {}", cityFPDTO.toString());
+		log.info("Start - CityController.edit - CityFPDTO: {}", cityFPDTO);
 		Response<CityFPDTO> response = new Response<>();
 
 		CityFPDTO city = this.cityService.edit(cityFPDTO);
 		response.setData(city);
 
-		log.info("End - CityController.edit - CityFPDTO: {}", city.toString());
+		log.info("End - CityController.edit - CityFPDTO: {}", city);
 		return ResponseEntity.ok(response);
 	}
 
@@ -124,7 +124,7 @@ public class CityController {
 		CityHRDTO city = this.cityService.remove(id);
 		response.setData(city);
 
-		log.info("End - CityController.remove - CityHRDTO: {}", city.toString());
+		log.info("End - CityController.remove - CityHRDTO: {}", city);
 		return ResponseEntity.ok(response);
 	}
 }

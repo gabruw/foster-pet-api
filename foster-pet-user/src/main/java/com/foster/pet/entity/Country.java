@@ -29,7 +29,7 @@ public class Country implements Serializable {
 	private Long id;
 
 	@Column(name = "name", nullable = false)
-	@Size(min = 1, max = 70, message = "O campo 'País' deve conter entre 1 e 70 caracteres.")
+	@Size(min = 1, max = 70, message = "O campo 'País' deve conter entre 1 e 70 caracteres")
 	private String name;
 
 	@OneToMany(mappedBy = "country")

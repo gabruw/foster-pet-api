@@ -43,7 +43,7 @@ public class CompanyController {
 		Page<CompanyRDTO> companies = this.companyService.findAll(pageable);
 		response.setData(companies);
 
-		log.info("End - CompanyController.findAll - Page<CompanyRDTO>: {}", companies.toString());
+		log.info("End - CompanyController.findAll - Page<CompanyRDTO>: {}", companies);
 		return ResponseEntity.ok(response);
 	}
 
@@ -56,7 +56,7 @@ public class CompanyController {
 		CompanyFRDTO company = this.companyService.findById(id);
 		response.setData(company);
 
-		log.info("End - CompanyController.findById - CompanyFRDTO: {}", company.toString());
+		log.info("End - CompanyController.findById - CompanyFRDTO: {}", company);
 		return ResponseEntity.ok(response);
 	}
 
@@ -69,7 +69,7 @@ public class CompanyController {
 		CompanyFRDTO company = this.companyService.findByCnpj(cnpj);
 		response.setData(company);
 
-		log.info("End - CompanyController.findByCnpj - CompanyFRDTO: {}", company.toString());
+		log.info("End - CompanyController.findByCnpj - CompanyFRDTO: {}", company);
 		return ResponseEntity.ok(response);
 	}
 
@@ -77,14 +77,14 @@ public class CompanyController {
 	public ResponseEntity<Response<AuthenticationCompanyPDTO>> register(
 			@RequestBody @Valid AuthenticationCompanyPDTO authenticationCompanyPDTO) {
 		log.info("Start - CompanyController.register - AuthenticationCompanyPDTO: {}",
-				authenticationCompanyPDTO.toString());
+				authenticationCompanyPDTO);
 		Response<AuthenticationCompanyPDTO> response = new Response<>();
 
 		authenticationCompanyPDTO = this.companyService.register(authenticationCompanyPDTO);
 		response.setData(authenticationCompanyPDTO);
 
 		log.info("End - CompanyController.register - AuthenticationCompanyPDTO: {}",
-				authenticationCompanyPDTO.toString());
+				authenticationCompanyPDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
@@ -96,7 +96,7 @@ public class CompanyController {
 		CompanyRDTO company = this.companyService.remove(id);
 		response.setData(company);
 
-		log.info("End - CompanyController.remove - CompanyRDTO: {}", company.toString());
+		log.info("End - CompanyController.remove - CompanyRDTO: {}", company);
 		return ResponseEntity.ok(response);
 	}
 }

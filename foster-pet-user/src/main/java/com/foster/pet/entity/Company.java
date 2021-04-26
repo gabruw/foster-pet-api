@@ -15,8 +15,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.br.CNPJ;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,16 +32,15 @@ public class Company implements Serializable {
 	private Long id;
 
 	@Column(name = "companyName", nullable = false)
-	@Size(min = 1, max = 200, message = "O campo 'Razão Social' deve conter entre 1 e 200 caracteres.")
+	@Size(min = 1, max = 200, message = "O campo 'Razão Social' deve conter entre 1 e 200 caracteres")
 	private String companyName;
 
 	@Column(name = "tradeName", nullable = false)
-	@Size(min = 1, max = 200, message = "O campo 'Nome Fantasia' deve conter entre 1 e 200 caracteres.")
+	@Size(min = 1, max = 200, message = "O campo 'Nome Fantasia' deve conter entre 1 e 200 caracteres")
 	private String tradeName;
 
-	@CNPJ(message = "O campo 'CNPJ' é inválido.")
 	@Column(name = "cnpj", unique = true, nullable = false)
-	@Size(min = 19, max = 19, message = "O campo 'CNPJ' deve conter 19 caracteres.")
+	@Size(min = 19, max = 19, message = "O campo 'CNPJ' deve conter 19 caracteres")
 	private String cnpj;
 
 	@ManyToMany

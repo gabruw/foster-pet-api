@@ -48,7 +48,7 @@ public class CompanyServiceImpl implements CompanyService {
 		Page<Company> companies = this.companyRepository.findAll(pageable);
 		Page<CompanyRDTO> fltCompanies = companies.map(state -> this.mapper.map(state, CompanyRDTO.class));
 
-		log.info("End - CompanyServiceImpl.findAll - Page<CompanyRDTO>: {}", fltCompanies.toString());
+		log.info("End - CompanyServiceImpl.findAll - Page<CompanyRDTO>: {}", fltCompanies);
 		return fltCompanies;
 	}
 
@@ -59,7 +59,7 @@ public class CompanyServiceImpl implements CompanyService {
 		Company company = this.companyProcessor.exists(id);
 		CompanyFRDTO companyFRDTO = this.mapper.map(company, CompanyFRDTO.class);
 
-		log.info("End - CompanyServiceImpl.findById - CompanyFRDTO: {}", companyFRDTO.toString());
+		log.info("End - CompanyServiceImpl.findById - CompanyFRDTO: {}", companyFRDTO);
 		return companyFRDTO;
 	}
 
@@ -70,14 +70,14 @@ public class CompanyServiceImpl implements CompanyService {
 		Company company = this.companyProcessor.exists(cnpj);
 		CompanyFRDTO companyFRDTO = this.mapper.map(company, CompanyFRDTO.class);
 
-		log.info("End - CompanyServiceImpl.findByCnpj - CompanyFRDTO: {}", companyFRDTO.toString());
+		log.info("End - CompanyServiceImpl.findByCnpj - CompanyFRDTO: {}", companyFRDTO);
 		return companyFRDTO;
 	}
 
 	@Override
 	public AuthenticationCompanyPDTO register(AuthenticationCompanyPDTO authenticationCompanyPDTO) {
 		log.info("Start - CompanyServiceImpl.register - AuthenticationCompanyPDTO: {}",
-				authenticationCompanyPDTO.toString());
+				authenticationCompanyPDTO);
 
 		Authentication authentication = this.mapper.map(authenticationCompanyPDTO, Authentication.class);
 		this.companyProcessor.exists(authentication.getCompany().getCnpj());
@@ -89,7 +89,7 @@ public class CompanyServiceImpl implements CompanyService {
 		authenticationCompanyPDTO = this.mapper.map(authentication, AuthenticationCompanyPDTO.class);
 
 		log.info("End - CompanyServiceImpl.register - AuthenticationCompanyPDTO: {}",
-				authenticationCompanyPDTO.toString());
+				authenticationCompanyPDTO);
 		return authenticationCompanyPDTO;
 	}
 
@@ -102,7 +102,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 		CompanyRDTO companyRDTO = this.mapper.map(company, CompanyRDTO.class);
 
-		log.info("End - CompanyServiceImpl.remove - CompanyRDTO: {}", companyRDTO.toString());
+		log.info("End - CompanyServiceImpl.remove - CompanyRDTO: {}", companyRDTO);
 		return companyRDTO;
 	}
 }
