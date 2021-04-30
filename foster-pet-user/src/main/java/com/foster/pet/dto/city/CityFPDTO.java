@@ -2,7 +2,6 @@ package com.foster.pet.dto.city;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,7 +20,7 @@ public class CityFPDTO implements Serializable {
 
 	private static final long serialVersionUID = -4585729593872682671L;
 
-	@NotEmpty(message = "O campo 'Id' é obrigatório")
+	@NotNull(message = "O campo 'Id' é obrigatório")
 	private Long id;
 
 	@NotNull(message = "O campo 'Cidade' é obrigatório")

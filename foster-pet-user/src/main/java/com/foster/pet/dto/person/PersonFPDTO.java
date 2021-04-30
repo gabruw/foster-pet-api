@@ -23,13 +23,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonFRDTO implements Serializable {
+public class PersonFPDTO implements Serializable {
 
-	private static final long serialVersionUID = -3920706731592697170L;
+	private static final long serialVersionUID = 4469966605402994939L;
 
 	@NotNull(message = "O campo 'Id' é obrigatório")
 	private Long id;
-
+	
 	@NotNull(message = "O campo 'Nome' é obrigatório")
 	@Size(min = 1, max = 200, message = "O campo 'Nome' deve conter entre 1 e 200 caracteres")
 	private String name;

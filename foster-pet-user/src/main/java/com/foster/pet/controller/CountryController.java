@@ -59,7 +59,7 @@ public class CountryController {
 		List<OptionDTO<Long>> options = this.countryService.findOptions();
 		response.setData(options);
 
-		log.info("End - CountryController.findOptions - <List<OptionDTO<Long>>>: {}", options);
+		log.info("End - CountryController.findOptions - List<OptionDTO<Long>>: {}", options);
 		return ResponseEntity.ok(response);
 	}
 

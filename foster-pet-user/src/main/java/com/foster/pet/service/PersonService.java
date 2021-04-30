@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
+import com.foster.pet.dto.person.PersonFPDTO;
 import com.foster.pet.dto.person.PersonFRDTO;
 import com.foster.pet.dto.person.PersonHRDTO;
 
@@ -17,5 +18,7 @@ public interface PersonService {
 
 	AuthenticationPersonPDTO register(AuthenticationPersonPDTO authenticationPersonPDTO);
 
-	PersonHRDTO remove(Long id);
+	PersonFPDTO edit(PersonFPDTO personFPDTO);
+	
+	PersonHRDTO remove(Long id);	
 }

@@ -2,6 +2,7 @@ package com.foster.pet.service.prcr;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import com.foster.pet.entity.Country;
 import com.foster.pet.entity.Person;
 import com.foster.pet.entity.State;
 import com.foster.pet.exception.address.AddressAlreadyExistsException;
+import com.foster.pet.exception.address.AddressNotChangedException;
 import com.foster.pet.exception.address.AddressNotFoundException;
 import com.foster.pet.exception.city.CityNotFoundException;
 import com.foster.pet.exception.state.StateNotFoundException;
@@ -27,6 +29,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class AddressProcessor {
+
+	@Autowired
+	private CityProcessor cityProcessor;
 
 	@Autowired
 	private PersonProcessor personProcessor;
@@ -76,6 +81,33 @@ public class AddressProcessor {
 		}
 
 		log.info("End - AddressProcessor.alreadyExists");
+	}
+
+	public Address append(Address address) {
+		log.info("Start - AddressProcessor.append - Address: {}", address);
+
+		City original = this.cityProcessor.exists(address.getCity().getId());
+		address.setCity(original);
+
+		log.info("End - AddressProcessor.append - Address: {}", address);
+		return address;
+	}
+
+	public Address merge(Address address) {
+		log.info("Start - AddressProcessor.merge - Address: {}", address);
+
+		Address original = this.exists(address.getId());
+		address.setNgo(original.getNgo());
+		address.setPerson(original.getPerson());
+		address.setCompany(original.getCompany());
+		
+		if (Objects.equals(address, original)) {
+			log.error("AddressNotChangedException - Address: {}", address);
+			throw new AddressNotChangedException();
+		}
+
+		log.info("End - AddressProcessor.merge - Address: {}", address);
+		return address;
 	}
 
 	public List<Address> validade(List<Address> addresses) {
@@ -131,13 +163,11 @@ public class AddressProcessor {
 		List<Address> addresses;
 		switch (userDTO.getUserType()) {
 		case PERSON: {
-			Person person = this.personProcessor.exists(userDTO.getId());
-			addresses = person.getAddresses();
+			addresses = this.getPersonAddresses(userDTO.getId());
 			break;
 		}
 		case COMPANY: {
-			Company company = this.companyProcessor.exists(userDTO.getId());
-			addresses = company.getAddresses();
+			addresses = this.getCompanyAddresses(userDTO.getId());
 			break;
 		}
 		case NGO:
@@ -151,6 +181,26 @@ public class AddressProcessor {
 		}
 
 		log.info("End - AuthenticationProcessor.getAddresses - List<Address>: {}", addresses);
+		return addresses;
+	}
+
+	private List<Address> getPersonAddresses(Long personId) {
+		log.info("Start - AddressProcessor.getPersonAddresses - PersonId: {}", personId);
+
+		Person person = this.personProcessor.exists(personId);
+		List<Address> addresses = person.getAddresses();
+
+		log.info("End - AddressProcessor.getPersonAddresses - List<Address>: {}", addresses);
+		return addresses;
+	}
+
+	private List<Address> getCompanyAddresses(Long companyId) {
+		log.info("Start - AddressProcessor.getCompanyAddresses - CompanyId: {}", companyId);
+
+		Company company = this.companyProcessor.exists(companyId);
+		List<Address> addresses = company.getAddresses();
+
+		log.info("End - AddressProcessor.getCompanyAddresses - List<Address>: {}", addresses);
 		return addresses;
 	}
 }

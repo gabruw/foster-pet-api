@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.foster.pet.constant.UserType;
@@ -22,7 +21,7 @@ public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 4405336524165598241L;
 
-	@NotEmpty(message = "O campo 'Id' é obrigatório")
+	@NotNull(message = "O campo 'Id' é obrigatório")
 	private Long id;
 
 	@NotNull(message = "O campo 'Tipo de Usuário' é obrigatório")

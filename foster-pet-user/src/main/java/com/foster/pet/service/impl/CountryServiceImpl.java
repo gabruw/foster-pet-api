@@ -62,7 +62,7 @@ public class CountryServiceImpl implements CountryService {
 		Country country = this.countryProcessor.exists(id);
 		CountryFRPDTO countryFRPDTO = this.mapper.map(country, CountryFRPDTO.class);
 
-		log.info("End - CountryServiceImpl.findById - CountryFRPDTO {}", countryFRPDTO);
+		log.info("End - CountryServiceImpl.findById - CountryFRPDTO: {}", countryFRPDTO);
 		return countryFRPDTO;
 	}
 
@@ -99,8 +99,9 @@ public class CountryServiceImpl implements CountryService {
 		this.countryProcessor.exists(countryFRPDTO.getId());
 
 		Country country = this.mapper.map(countryFRPDTO, Country.class);
-		country = this.countryRepository.save(country);
+		country = this.countryProcessor.merge(country);
 
+		country = this.countryRepository.save(country);
 		countryFRPDTO = this.mapper.map(country, CountryFRPDTO.class);
 
 		log.info("End - CountryServiceImpl.edit - CountryFRPDTO: {}", countryFRPDTO);

@@ -22,7 +22,7 @@ public class AddressRDTO implements Serializable {
 
 	private static final long serialVersionUID = -5993559822441053455L;
 
-	@NotEmpty(message = "O campo 'Id' é obrigatório")
+	@NotNull(message = "O campo 'Id' é obrigatório")
 	private Long id;
 
 	@NotNull(message = "O campo 'Nome' é obrigatório")

@@ -86,7 +86,7 @@ public class AddressServiceImpl implements AddressService {
 		log.info("Start - AddressServiceImpl.findByName - UserDTO: {}, Name: {}", userDTO, name);
 
 		List<Address> addresses = this.addressProcessor.getAddresses(userDTO);
-		
+
 		Address address = this.addressProcessor.exists(addresses, name);
 		AddressFRDTO addressFRDTO = this.mapper.map(address, AddressFRDTO.class);
 
@@ -102,8 +102,9 @@ public class AddressServiceImpl implements AddressService {
 		this.addressProcessor.alreadyExists(addresses, addressUserPDTO.getAddress().getName());
 
 		Address address = this.mapper.map(addressUserPDTO.getAddress(), Address.class);
-		address = this.addressRepository.save(address);
+		address = this.addressProcessor.append(address);
 
+		address = this.addressRepository.save(address);
 		AddressRDTO addressRDTO = this.mapper.map(address, AddressRDTO.class);
 
 		log.info("End - AddressServiceImpl.register - AddressRDTO: {}", addressRDTO);
@@ -117,8 +118,9 @@ public class AddressServiceImpl implements AddressService {
 		this.addressProcessor.exists(addressUserFPDTO.getUser().getId());
 
 		Address address = this.mapper.map(addressUserFPDTO.getAddress(), Address.class);
-		address = this.addressRepository.save(address);
+		address = this.addressProcessor.merge(address);
 
+		address = this.addressRepository.save(address);
 		AddressFPDTO addressFPDTO = this.mapper.map(address, AddressFPDTO.class);
 
 		log.info("End - AddressServiceImpl.edit - AddressFPDTO: {}", addressFPDTO);

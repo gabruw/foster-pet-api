@@ -3,6 +3,7 @@ package com.foster.pet.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,6 @@ public class OptionDTO<T> implements Serializable {
 	@NotEmpty(message = "O campo 'Texto' é obrigatório")
 	private String text;
 	
-	@NotEmpty(message = "O campo 'Valor' é obrigatório")
+	@NotNull(message = "O campo 'Valor' é obrigatório")
 	private transient T value;
 }

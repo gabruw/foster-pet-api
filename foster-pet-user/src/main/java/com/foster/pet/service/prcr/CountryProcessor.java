@@ -1,5 +1,6 @@
 package com.foster.pet.service.prcr;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.foster.pet.entity.Country;
 import com.foster.pet.exception.country.CountryAlreadyExistsException;
+import com.foster.pet.exception.country.CountryNotChangedException;
 import com.foster.pet.exception.country.CountryNotFoundException;
 import com.foster.pet.repository.CountryRepository;
 
@@ -55,5 +57,20 @@ public class CountryProcessor {
 		}
 
 		log.info("End - CountryProcessor.alreadyExists");
+	}
+
+	public Country merge(Country country) {
+		log.info("Start - CountryProcessor.merge - Country: {}", country);
+
+		Country original = this.exists(country.getId());
+		country.setState(original.getState());
+		
+		if (Objects.equals(country, original)) {
+			log.error("CountryNotChangedException - Country: {}", country);
+			throw new CountryNotChangedException();
+		}
+
+		log.info("End - CountryProcessor.merge - Country: {}", country);
+		return country;
 	}
 }

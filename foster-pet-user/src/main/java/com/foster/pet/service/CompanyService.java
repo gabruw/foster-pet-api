@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.foster.pet.dto.authentication.AuthenticationCompanyPDTO;
+import com.foster.pet.dto.company.CompanyFPDTO;
 import com.foster.pet.dto.company.CompanyFRDTO;
 import com.foster.pet.dto.company.CompanyRDTO;
 
@@ -16,6 +17,8 @@ public interface CompanyService {
 	CompanyFRDTO findByCnpj(String cnpj);
 
 	AuthenticationCompanyPDTO register(AuthenticationCompanyPDTO authenticationCompanyPDTO);
+
+	CompanyFPDTO edit(CompanyFPDTO companyFPDTO);
 
 	CompanyRDTO remove(Long id);
 }

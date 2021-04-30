@@ -1,7 +1,5 @@
 package com.foster.pet.service.impl;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,15 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
+import com.foster.pet.dto.person.PersonFPDTO;
 import com.foster.pet.dto.person.PersonFRDTO;
 import com.foster.pet.dto.person.PersonHRDTO;
-import com.foster.pet.entity.Address;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.entity.Person;
 import com.foster.pet.repository.PersonRepository;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.PersonService;
-import com.foster.pet.service.prcr.AddressProcessor;
 import com.foster.pet.service.prcr.PersonProcessor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +28,6 @@ public class PersonServiceImpl implements PersonService {
 
 	@Autowired
 	private PersonProcessor personProcessor;
-
-	@Autowired
-	private AddressProcessor addressProcessor;
 
 	@Autowired
 	private PersonRepository personRepository;
@@ -76,21 +70,36 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public AuthenticationPersonPDTO register(AuthenticationPersonPDTO authenticationPersonPDTO) {
-		log.info("Start - PersonServiceImpl.register - AuthenticationPersonPDTO: {}",
-				authenticationPersonPDTO);
+		log.info("Start - PersonServiceImpl.register - AuthenticationPersonPDTO: {}", authenticationPersonPDTO);
 
+		this.personProcessor.alreadyExists(authenticationPersonPDTO.getPerson().getCpf());
 		Authentication authentication = this.mapper.map(authenticationPersonPDTO, Authentication.class);
-		this.personProcessor.exists(authentication.getPerson().getCpf());
 
-		List<Address> validatedAddresses = this.addressProcessor.validade(authentication.getPerson().getAddresses());
-		authentication.getPerson().setAddresses(validatedAddresses);
+		Person person = this.personProcessor.append(authentication.getPerson());
+		authentication.setPerson(person);
 
 		authentication = this.authenticationService.register(authentication);
 		authenticationPersonPDTO = this.mapper.map(authentication, AuthenticationPersonPDTO.class);
 
-		log.info("End - PersonServiceImpl.register - AuthenticationPersonPDTO: {}",
-				authenticationPersonPDTO);
+		log.info("End - PersonServiceImpl.register - AuthenticationPersonPDTO: {}", authenticationPersonPDTO);
 		return authenticationPersonPDTO;
+	}
+
+	@Override
+	public PersonFPDTO edit(PersonFPDTO personFPDTO) {
+		log.info("Start - PersonServiceImpl.edit - PersonFPDTO: {}", personFPDTO);
+
+		this.personProcessor.exists(personFPDTO.getCpf());
+		Authentication authentication = this.mapper.map(personFPDTO, Authentication.class);
+
+		Person person = this.personProcessor.append(authentication.getPerson());
+		authentication.setPerson(person);
+
+		authentication = this.authenticationService.register(authentication);
+		personFPDTO = this.mapper.map(authentication, PersonFPDTO.class);
+
+		log.info("End - PersonServiceImpl.edit - PersonFPDTO: {}", personFPDTO);
+		return personFPDTO;
 	}
 
 	@Override

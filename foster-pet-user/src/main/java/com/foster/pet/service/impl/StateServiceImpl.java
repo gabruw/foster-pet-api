@@ -1,7 +1,6 @@
 package com.foster.pet.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -17,7 +16,6 @@ import com.foster.pet.dto.state.StatePDTO;
 import com.foster.pet.dto.state.StateRDTO;
 import com.foster.pet.entity.Country;
 import com.foster.pet.entity.State;
-import com.foster.pet.exception.state.StateNotFoundException;
 import com.foster.pet.repository.StateRepository;
 import com.foster.pet.service.StateService;
 import com.foster.pet.service.prcr.CountryProcessor;
@@ -71,7 +69,7 @@ public class StateServiceImpl implements StateService {
 		State state = this.stateProcessor.exists(id);
 		StateFRPDTO stateFRDTO = this.mapper.map(state, StateFRPDTO.class);
 
-		log.info("End - StateServiceImpl.findById - StateFRPDTO {}", stateFRDTO);
+		log.info("End - StateServiceImpl.findById - StateFRPDTO: {}", stateFRDTO);
 		return stateFRDTO;
 	}
 
@@ -93,8 +91,9 @@ public class StateServiceImpl implements StateService {
 		this.stateProcessor.alreadyExists(statePDTO.getName());
 
 		State state = this.mapper.map(statePDTO, State.class);
-		state = this.stateRepository.save(state);
+		state = this.stateProcessor.append(state);
 
+		state = this.stateRepository.save(state);
 		StateRDTO stateRDTO = this.mapper.map(state, StateRDTO.class);
 
 		log.info("End - StateServiceImpl.register - StateRDTO: {}", stateRDTO);
@@ -108,8 +107,9 @@ public class StateServiceImpl implements StateService {
 		this.countryProcessor.exists(stateFRPDTO.getId());
 
 		State state = this.mapper.map(stateFRPDTO, State.class);
-		state = this.stateRepository.save(state);
+		state = this.stateProcessor.merge(state);
 
+		state = this.stateRepository.save(state);
 		stateFRPDTO = this.mapper.map(state, StateFRPDTO.class);
 
 		log.info("End - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO);
@@ -120,16 +120,12 @@ public class StateServiceImpl implements StateService {
 	public StateHRDTO remove(Long id) {
 		log.info("Start - StateServiceImpl.remove - Id: {}", id);
 
-		Optional<State> optState = this.stateRepository.findById(id);
-		if (optState.isEmpty()) {
-			log.error("StateNotFoundException - Id: {}", id);
-			throw new StateNotFoundException();
-		}
-
+		State state = this.stateProcessor.exists(id);
 		this.stateRepository.deleteById(id);
-		StateHRDTO state = this.mapper.map(optState.get(), StateHRDTO.class);
 
-		log.info("End - StateServiceImpl.remove - StateHRDTO: {}", state);
-		return state;
+		StateHRDTO stateHRDTO = this.mapper.map(state, StateHRDTO.class);
+
+		log.info("End - StateServiceImpl.remove - StateHRDTO: {}", stateHRDTO);
+		return stateHRDTO;
 	}
 }

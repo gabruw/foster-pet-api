@@ -1,7 +1,5 @@
 package com.foster.pet.service.impl;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,15 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.foster.pet.dto.authentication.AuthenticationCompanyPDTO;
+import com.foster.pet.dto.company.CompanyFPDTO;
 import com.foster.pet.dto.company.CompanyFRDTO;
 import com.foster.pet.dto.company.CompanyRDTO;
-import com.foster.pet.entity.Address;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.entity.Company;
 import com.foster.pet.repository.CompanyRepository;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.CompanyService;
-import com.foster.pet.service.prcr.AddressProcessor;
 import com.foster.pet.service.prcr.CompanyProcessor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +28,6 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Autowired
 	private CompanyProcessor companyProcessor;
-
-	@Autowired
-	private AddressProcessor addressProcessor;
 
 	@Autowired
 	private CompanyRepository companyRepository;
@@ -76,21 +70,36 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	public AuthenticationCompanyPDTO register(AuthenticationCompanyPDTO authenticationCompanyPDTO) {
-		log.info("Start - CompanyServiceImpl.register - AuthenticationCompanyPDTO: {}",
-				authenticationCompanyPDTO);
+		log.info("Start - CompanyServiceImpl.register - AuthenticationCompanyPDTO: {}", authenticationCompanyPDTO);
 
+		this.companyProcessor.alreadyExists(authenticationCompanyPDTO.getCompany().getCnpj());
 		Authentication authentication = this.mapper.map(authenticationCompanyPDTO, Authentication.class);
-		this.companyProcessor.exists(authentication.getCompany().getCnpj());
 
-		List<Address> validatedAddresses = this.addressProcessor.validade(authentication.getCompany().getAddresses());
-		authentication.getCompany().setAddresses(validatedAddresses);
+		Company company = this.companyProcessor.append(authentication.getCompany());
+		authentication.setCompany(company);
 
 		authentication = this.authenticationService.register(authentication);
 		authenticationCompanyPDTO = this.mapper.map(authentication, AuthenticationCompanyPDTO.class);
 
-		log.info("End - CompanyServiceImpl.register - AuthenticationCompanyPDTO: {}",
-				authenticationCompanyPDTO);
+		log.info("End - CompanyServiceImpl.register - AuthenticationCompanyPDTO: {}", authenticationCompanyPDTO);
 		return authenticationCompanyPDTO;
+	}
+
+	@Override
+	public CompanyFPDTO edit(CompanyFPDTO companyFPDTO) {
+		log.info("Start - CompanyServiceImpl.edit - CompanyFPDTO: {}", companyFPDTO);
+
+		this.companyProcessor.exists(companyFPDTO.getCnpj());
+		Authentication authentication = this.mapper.map(companyFPDTO, Authentication.class);
+
+		Company company = this.companyProcessor.append(authentication.getCompany());
+		authentication.setCompany(company);
+
+		authentication = this.authenticationService.register(authentication);
+		companyFPDTO = this.mapper.map(authentication, CompanyFPDTO.class);
+
+		log.info("End - CompanyServiceImpl.edit - CompanyFPDTO: {}", companyFPDTO);
+		return companyFPDTO;
 	}
 
 	@Override

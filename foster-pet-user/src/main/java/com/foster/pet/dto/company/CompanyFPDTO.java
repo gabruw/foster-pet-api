@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyFRDTO implements Serializable {
+public class CompanyFPDTO implements Serializable {
 
 	private static final long serialVersionUID = -3331492576958844721L;
 

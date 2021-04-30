@@ -18,11 +18,15 @@ import javax.validation.constraints.Size;
 
 import com.foster.pet.constant.AuthenticationRole;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "authentication")
 @Entity(name = "authentication")
 public class Authentication implements Serializable {

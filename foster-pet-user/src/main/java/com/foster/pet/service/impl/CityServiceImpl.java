@@ -70,7 +70,7 @@ public class CityServiceImpl implements CityService {
 		City city = this.cityProcessor.exists(id);
 		CityFRDTO cityFRDTO = this.mapper.map(city, CityFRDTO.class);
 
-		log.info("End - CityServiceImpl.findById - CityFRDTO {}", cityFRDTO);
+		log.info("End - CityServiceImpl.findById - CityFRDTO: {}", cityFRDTO);
 		return cityFRDTO;
 	}
 
@@ -92,8 +92,9 @@ public class CityServiceImpl implements CityService {
 		this.cityProcessor.alreadyExists(cityPDTO.getName());
 
 		City city = this.mapper.map(cityPDTO, City.class);
+		city = this.cityProcessor.append(city);
+		
 		city = this.cityRepository.save(city);
-
 		CityRDTO cityRDTO = this.mapper.map(city, CityRDTO.class);
 
 		log.info("End - CityServiceImpl.register - CityRDTO: {}", cityRDTO);
@@ -105,10 +106,11 @@ public class CityServiceImpl implements CityService {
 		log.info("Start - CityServiceImpl.edit - CityFPDTO: {}", cityFPDTO);
 
 		this.cityProcessor.exists(cityFPDTO.getId());
-
+		
 		City city = this.mapper.map(cityFPDTO, City.class);
+		city = this.cityProcessor.merge(city);
+		
 		city = this.cityRepository.save(city);
-
 		cityFPDTO = this.mapper.map(city, CityFPDTO.class);
 
 		log.info("End - CityServiceImpl.edit - CityFPDTO: {}", cityFPDTO);

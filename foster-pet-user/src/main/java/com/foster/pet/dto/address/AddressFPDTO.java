@@ -22,7 +22,7 @@ public class AddressFPDTO implements Serializable {
 
 	private static final long serialVersionUID = 2132795271520709679L;
 
-	@NotEmpty(message = "O campo 'Id' é obrigatório")
+	@NotNull(message = "O campo 'Id' é obrigatório")
 	private Long id;
 
 	@NotNull(message = "O campo 'Nome' é obrigatório")

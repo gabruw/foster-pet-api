@@ -19,5 +19,7 @@ public interface AuthenticationService {
 
 	Authentication register(Authentication authentication);
 
+	AuthenticationFRPDTO edit(AuthenticationFRPDTO authentication);
+	
 	AuthenticationRDTO remove(Long id);
 }
