@@ -52,7 +52,7 @@ public class JwtUtil {
 		Claims claims = null;
 
 		try {
-			claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+			claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
 		} catch (Exception e) {
 			log.warn("TokenInvalidException - Token: {}", token);
 			throw new TokenInvalidException();
@@ -67,24 +67,24 @@ public class JwtUtil {
 	}
 
 	private String createTokenWithRoles(Map<String, Object> claims) {
-		Date expirationDate = new Date(System.currentTimeMillis() + expiration * 1000);
+		Date expirationDate = new Date(System.currentTimeMillis() + this.expiration * 1000);
 
-		return Jwts.builder().setClaims(claims).setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secret)
-				.compact();
+		return Jwts.builder().setClaims(claims).setExpiration(expirationDate)
+				.signWith(SignatureAlgorithm.HS512, this.secret).compact();
 	}
 
 	public String create(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put(created, new Date());
-		claims.put(username, userDetails.getUsername());
+		claims.put(this.created, new Date());
+		claims.put(this.username, userDetails.getUsername());
 
-		userDetails.getAuthorities().forEach(authority -> claims.put(role, authority.getAuthority()));
-		return createTokenWithRoles(claims);
+		userDetails.getAuthorities().forEach(authority -> claims.put(this.role, authority.getAuthority()));
+		return this.createTokenWithRoles(claims);
 	}
 
 	public String refresh(String token) {
 		Claims claims = this.getClaimsFromToken(token);
-		claims.put(created, new Date());
+		claims.put(this.created, new Date());
 
 		return this.createTokenWithRoles(claims);
 	}

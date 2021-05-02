@@ -6,16 +6,11 @@ import org.springframework.stereotype.Service;
 
 import com.foster.pet.dto.authentication.AuthenticationFRPDTO;
 import com.foster.pet.dto.authentication.AuthenticationRDTO;
-import com.foster.pet.dto.token.TokenFRDTO;
-import com.foster.pet.dto.token.TokenRDTO;
-import com.foster.pet.dto.user.LoginDTO;
 import com.foster.pet.entity.Authentication;
 import com.foster.pet.repository.AuthenticationRepository;
 import com.foster.pet.service.AuthenticationService;
 import com.foster.pet.service.prcr.AuthenticationProcessor;
-import com.foster.pet.service.prcr.SecurityProcessor;
 import com.foster.pet.util.Encryptor;
-import com.foster.pet.util.JwtUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,12 +20,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Autowired
 	private ModelMapper mapper;
-
-	@Autowired
-	private JwtUtil jwtTokenUtil;
-
-	@Autowired
-	private SecurityProcessor securityProcessor;
 
 	@Autowired
 	private AuthenticationProcessor authenticationProcessor;
@@ -61,36 +50,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	@Override
-	public TokenFRDTO login(LoginDTO loginDTO) {
-		log.info("Start - AuthenticationServiceImpl.login - LoginDTO: {}", loginDTO);
-
-		Authentication authentication = this.authenticationProcessor.check(loginDTO.getEmail());
-		this.authenticationProcessor.matchPassword(loginDTO.getPassword(), authentication.getPassword());
-
-		String name = this.authenticationProcessor.getName(loginDTO.getUserType(), authentication);
-		String token = this.securityProcessor.authenticate(loginDTO.getEmail(), loginDTO.getPassword());
-
-		TokenFRDTO tokenFRDTO = TokenFRDTO.builder().name(name).token(token).userType(loginDTO.getUserType())
-				.role(authentication.getRole()).build();
-
-		log.info("End - AuthenticationServiceImpl.login - TokenFRDTO: {}", tokenFRDTO);
-		return tokenFRDTO;
-	}
-
-	@Override
-	public TokenRDTO refresh(String token) {
-		log.info("Start - AuthenticationServiceImpl.refresh - Token: {}", token);
-
-		token = token.substring(7);
-		String refreshedToken = this.jwtTokenUtil.refresh(token);
-
-		TokenRDTO returnedToken = new TokenRDTO(refreshedToken);
-
-		log.info("End - AuthenticationServiceImpl.refresh - TokenRDTO: {}", returnedToken);
-		return returnedToken;
-	}
-
-	@Override
 	public Authentication register(Authentication authentication) {
 		log.info("Start - AuthenticationServiceImpl.register - Authentication: {}", authentication);
 
@@ -112,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		log.info("Start - AuthenticationServiceImpl.edit - AuthenticationFRPDTO: {}", authenticationFRPDTO);
 
 		this.authenticationProcessor.exists(authenticationFRPDTO.getEmail());
-		
+
 		Authentication authentication = this.mapper.map(authenticationFRPDTO, Authentication.class);
 		authentication = this.authenticationProcessor.merge(authentication);
 
