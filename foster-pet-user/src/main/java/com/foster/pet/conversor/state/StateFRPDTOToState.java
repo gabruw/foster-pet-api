@@ -4,17 +4,17 @@ import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
 
 import com.foster.pet.dto.country.CountryFRPDTO;
-import com.foster.pet.dto.state.StateFRPDTO;
+import com.foster.pet.dto.state.StateFRDTO;
 import com.foster.pet.entity.State;
 
-public class StateFRPDTOToState implements Converter<State, StateFRPDTO> {
+public class StateFRPDTOToState implements Converter<State, StateFRDTO> {
 
 	@Override
-	public StateFRPDTO convert(MappingContext<State, StateFRPDTO> context) {
+	public StateFRDTO convert(MappingContext<State, StateFRDTO> context) {
 		State source = context.getSource();
 
 		CountryFRPDTO country = CountryFRPDTO.builder().id(source.getCountry().getId())
 				.name(source.getCountry().getName()).build();
-		return StateFRPDTO.builder().id(source.getId()).name(source.getName()).country(country).build();
+		return StateFRDTO.builder().id(source.getId()).name(source.getName()).country(country).build();
 	}
 }

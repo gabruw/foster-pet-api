@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.OptionDTO;
-import com.foster.pet.dto.state.StateFRPDTO;
+import com.foster.pet.dto.state.StateFPDTO;
+import com.foster.pet.dto.state.StateFRDTO;
 import com.foster.pet.dto.state.StateHRDTO;
 import com.foster.pet.dto.state.StatePDTO;
 import com.foster.pet.dto.state.StateRDTO;
@@ -67,11 +68,11 @@ public class StateController {
 
 	@Cacheable("state")
 	@GetMapping(params = "id")
-	public ResponseEntity<Response<StateFRPDTO>> findById(@RequestParam Long id) {
+	public ResponseEntity<Response<StateFRDTO>> findById(@RequestParam Long id) {
 		log.info("Start - StateController.findById - Id: {}", id);
-		Response<StateFRPDTO> response = new Response<>();
+		Response<StateFRDTO> response = new Response<>();
 
-		StateFRPDTO state = this.stateService.findById(id);
+		StateFRDTO state = this.stateService.findById(id);
 		response.setData(state);
 
 		log.info("End - StateController.findById - StateFRDTO: {}", state);
@@ -80,11 +81,11 @@ public class StateController {
 
 	@Cacheable("state")
 	@GetMapping(params = "name")
-	public ResponseEntity<Response<StateFRPDTO>> findByName(@RequestParam String name) {
+	public ResponseEntity<Response<StateFRDTO>> findByName(@RequestParam String name) {
 		log.info("Start - StateController.findByName - Name: {}", name);
-		Response<StateFRPDTO> response = new Response<>();
+		Response<StateFRDTO> response = new Response<>();
 
-		StateFRPDTO state = this.stateService.findByName(name);
+		StateFRDTO state = this.stateService.findByName(name);
 		response.setData(state);
 
 		log.info("End - StateController.findByName - StateFRDTO: {}", state);
@@ -104,14 +105,14 @@ public class StateController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Response<StateFRPDTO>> edit(@RequestBody @Valid StateFRPDTO stateFRPDTO) {
-		log.info("Start - StateController.edit - StateFRPDTO: {}", stateFRPDTO);
-		Response<StateFRPDTO> response = new Response<>();
+	public ResponseEntity<Response<StateFPDTO>> edit(@RequestBody @Valid StateFPDTO stateFPDTO) {
+		log.info("Start - StateController.edit - StateFPDTO: {}", stateFPDTO);
+		Response<StateFPDTO> response = new Response<>();
 
-		StateFRPDTO state = this.stateService.edit(stateFRPDTO);
+		StateFPDTO state = this.stateService.edit(stateFPDTO);
 		response.setData(state);
 
-		log.info("End - StateController.edit - StateFRPDTO: {}", state);
+		log.info("End - StateController.edit - StateFPDTO: {}", state);
 		return ResponseEntity.ok(response);
 	}
 

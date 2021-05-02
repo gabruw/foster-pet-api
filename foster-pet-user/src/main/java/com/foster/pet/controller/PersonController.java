@@ -11,12 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.foster.pet.dto.authentication.AuthenticationPersonPDTO;
+import com.foster.pet.dto.person.PersonFPDTO;
 import com.foster.pet.dto.person.PersonFRDTO;
 import com.foster.pet.dto.person.PersonHRDTO;
 import com.foster.pet.service.PersonService;
@@ -76,8 +78,7 @@ public class PersonController {
 	@PostMapping
 	public ResponseEntity<Response<AuthenticationPersonPDTO>> register(
 			@RequestBody @Valid AuthenticationPersonPDTO authenticationPersonPDTO) {
-		log.info("Start - PersonController.register - AuthenticationPersonPDTO: {}",
-				authenticationPersonPDTO);
+		log.info("Start - PersonController.register - AuthenticationPersonPDTO: {}", authenticationPersonPDTO);
 		Response<AuthenticationPersonPDTO> response = new Response<>();
 
 		authenticationPersonPDTO = this.personService.register(authenticationPersonPDTO);
@@ -85,6 +86,18 @@ public class PersonController {
 
 		log.info("End - PersonController.register - AuthenticationPersonPDTO: {}", authenticationPersonPDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
+
+	@PutMapping
+	public ResponseEntity<Response<PersonFPDTO>> edit(@RequestBody @Valid PersonFPDTO personFPDTO) {
+		log.info("Start - PersonController.register - PersonFPDTO: {}", personFPDTO);
+		Response<PersonFPDTO> response = new Response<>();
+
+		personFPDTO = this.personService.edit(personFPDTO);
+		response.setData(personFPDTO);
+
+		log.info("End - PersonController.register - PersonFPDTO: {}", personFPDTO);
+		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping(params = "id")

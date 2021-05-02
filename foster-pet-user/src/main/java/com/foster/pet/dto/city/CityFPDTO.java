@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.foster.pet.dto.state.StateHPDTO;
+import com.foster.pet.dto.IdentificatorDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,5 +28,5 @@ public class CityFPDTO implements Serializable {
 	private String name;
 
 	@NotNull(message = "O campo 'Estado' é obrigatório")
-	private StateHPDTO state;
+	private IdentificatorDTO state;
 }

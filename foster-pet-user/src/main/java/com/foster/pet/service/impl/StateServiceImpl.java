@@ -10,7 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.foster.pet.dto.OptionDTO;
-import com.foster.pet.dto.state.StateFRPDTO;
+import com.foster.pet.dto.state.StateFPDTO;
+import com.foster.pet.dto.state.StateFRDTO;
 import com.foster.pet.dto.state.StateHRDTO;
 import com.foster.pet.dto.state.StatePDTO;
 import com.foster.pet.dto.state.StateRDTO;
@@ -63,24 +64,24 @@ public class StateServiceImpl implements StateService {
 	}
 
 	@Override
-	public StateFRPDTO findById(Long id) {
+	public StateFRDTO findById(Long id) {
 		log.info("Start - StateServiceImpl.findById - Id: {}", id);
 
 		State state = this.stateProcessor.exists(id);
-		StateFRPDTO stateFRDTO = this.mapper.map(state, StateFRPDTO.class);
+		StateFRDTO stateFRDTO = this.mapper.map(state, StateFRDTO.class);
 
-		log.info("End - StateServiceImpl.findById - StateFRPDTO: {}", stateFRDTO);
+		log.info("End - StateServiceImpl.findById - StateFRDTO: {}", stateFRDTO);
 		return stateFRDTO;
 	}
 
 	@Override
-	public StateFRPDTO findByName(String name) {
+	public StateFRDTO findByName(String name) {
 		log.info("Start - StateServiceImpl.findByName - Name: {}", name);
 
 		State state = this.stateProcessor.exists(name);
-		StateFRPDTO stateFRDTO = this.mapper.map(state, StateFRPDTO.class);
+		StateFRDTO stateFRDTO = this.mapper.map(state, StateFRDTO.class);
 
-		log.info("End - StateServiceImpl.findByName - StateFRPDTO: {}", stateFRDTO);
+		log.info("End - StateServiceImpl.findByName - StateFRDTO: {}", stateFRDTO);
 		return stateFRDTO;
 	}
 
@@ -101,19 +102,19 @@ public class StateServiceImpl implements StateService {
 	}
 
 	@Override
-	public StateFRPDTO edit(StateFRPDTO stateFRPDTO) {
-		log.info("Start - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO);
+	public StateFPDTO edit(StateFPDTO stateFPDTO) {
+		log.info("Start - StateServiceImpl.edit - StateFPDTO: {}", stateFPDTO);
 
-		this.countryProcessor.exists(stateFRPDTO.getId());
+		this.stateProcessor.exists(stateFPDTO.getId());
 
-		State state = this.mapper.map(stateFRPDTO, State.class);
+		State state = this.mapper.map(stateFPDTO, State.class);
 		state = this.stateProcessor.merge(state);
 
 		state = this.stateRepository.save(state);
-		stateFRPDTO = this.mapper.map(state, StateFRPDTO.class);
+		stateFPDTO = this.mapper.map(state, StateFPDTO.class);
 
-		log.info("End - StateServiceImpl.edit - StateFRPDTO: {}", stateFRPDTO);
-		return stateFRPDTO;
+		log.info("End - StateServiceImpl.edit - StateFPDTO: {}", stateFPDTO);
+		return stateFPDTO;
 	}
 
 	@Override

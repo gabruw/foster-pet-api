@@ -6,7 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.foster.pet.dto.OptionDTO;
-import com.foster.pet.dto.state.StateFRPDTO;
+import com.foster.pet.dto.state.StateFPDTO;
+import com.foster.pet.dto.state.StateFRDTO;
 import com.foster.pet.dto.state.StateHRDTO;
 import com.foster.pet.dto.state.StatePDTO;
 import com.foster.pet.dto.state.StateRDTO;
@@ -17,13 +18,13 @@ public interface StateService {
 
 	List<OptionDTO<Long>> findOptions(Long countryId);
 
-	StateFRPDTO findById(Long id);
+	StateFRDTO findById(Long id);
 
-	StateFRPDTO findByName(String name);
+	StateFRDTO findByName(String name);
 
 	StateRDTO register(StatePDTO statePDTO);
 
-	StateFRPDTO edit(StateFRPDTO stateFRPDTO);
+	StateFPDTO edit(StateFPDTO stateFPDTO);
 
 	StateHRDTO remove(Long id);
 }

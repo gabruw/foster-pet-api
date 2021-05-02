@@ -20,37 +20,20 @@ public class AuthenticationCompanyPDTOToAuthentication implements Converter<Auth
 		AuthenticationCompanyPDTO source = context.getSource();
 
 		List<Address> addresses = source.getCompany().getAddresses().stream().map(addressPDTO -> {
-			State state = new State();
-			state.setId(addressPDTO.getCity().getState().getId());
+			State state = State.builder().id(addressPDTO.getCity().getState().getId()).build();
+			City city = City.builder().id(addressPDTO.getCity().getId()).state(state).build();
 
-			City city = new City();
-			city.setId(addressPDTO.getCity().getId());
-			city.setState(state);
-
-			Address address = new Address();
-			address.setCep(addressPDTO.getCep());
-			address.setName(addressPDTO.getName());
-			address.setRoad(addressPDTO.getRoad());
-			address.setPhone(addressPDTO.getPhone());
-			address.setNumber(addressPDTO.getNumber());
-			address.setComplement(addressPDTO.getComplement());
-			address.setNeighborhood(addressPDTO.getNeighborhood());
-
-			return address;
+			return Address.builder().cep(addressPDTO.getCep()).name(addressPDTO.getName()).road(addressPDTO.getRoad())
+					.phone(addressPDTO.getPhone()).number(addressPDTO.getNumber())
+					.complement(addressPDTO.getComplement()).neighborhood(addressPDTO.getNeighborhood()).city(city)
+					.build();
 		}).collect(Collectors.toList());
 
-		Company company = new Company();
-		company.setAddresses(addresses);
-		company.setCnpj(source.getCompany().getCnpj());
-		company.setTradeName(source.getCompany().getTradeName());
-		company.setCompanyName(source.getCompany().getCompanyName());
+		Company company = Company.builder().cnpj(source.getCompany().getCnpj())
+				.tradeName(source.getCompany().getTradeName()).companyName(source.getCompany().getCompanyName())
+				.addresses(addresses).build();
 
-		Authentication destination = new Authentication();
-		destination.setCompany(company);
-		destination.setRole(source.getRole());
-		destination.setEmail(source.getEmail());
-		destination.setPassword(source.getPassword());
-
-		return destination;
+		return Authentication.builder().email(source.getEmail()).password(source.getPassword()).role(source.getRole())
+				.company(company).build();
 	}
 }

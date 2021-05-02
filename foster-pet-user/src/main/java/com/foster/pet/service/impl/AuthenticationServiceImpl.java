@@ -98,6 +98,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 		String encodedPassword = Encryptor.encode(authentication.getPassword());
 		authentication.setPassword(encodedPassword);
+		authentication.setIsLocked(false);
+		authentication.setIsEnabled(true);
 
 		authentication = this.authenticationRepository.save(authentication);
 
@@ -110,8 +112,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		log.info("Start - AuthenticationServiceImpl.edit - AuthenticationFRPDTO: {}", authenticationFRPDTO);
 
 		this.authenticationProcessor.exists(authenticationFRPDTO.getEmail());
+		
 		Authentication authentication = this.mapper.map(authenticationFRPDTO, Authentication.class);
-
 		authentication = this.authenticationProcessor.merge(authentication);
 
 		String encodedPassword = Encryptor.encode(authentication.getPassword());

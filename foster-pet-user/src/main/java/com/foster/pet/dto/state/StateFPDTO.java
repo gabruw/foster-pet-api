@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.foster.pet.dto.country.CountryFRPDTO;
+import com.foster.pet.dto.IdentificatorDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StateFRPDTO implements Serializable {
+public class StateFPDTO implements Serializable {
 
-	private static final long serialVersionUID = -110937782251683215L;
+	private static final long serialVersionUID = -7428500508695867819L;
 
 	@NotNull(message = "O campo 'Id' é obrigatório")
 	private Long id;
@@ -28,5 +28,5 @@ public class StateFRPDTO implements Serializable {
 	private String name;
 
 	@NotNull(message = "O campo 'País' é obrigatório")
-	private CountryFRPDTO country;
+	private IdentificatorDTO country;
 }

@@ -5,12 +5,16 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class JwtUser implements UserDetails {
 	private static final long serialVersionUID = -268046329085485932L;
 

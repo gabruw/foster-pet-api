@@ -23,7 +23,7 @@ public interface AddressService {
 
 	AddressFRDTO findById(Long id);
 
-	AddressFRDTO findByName(UserDTO userDTO, String name);
+	AddressFRDTO findByName(String name, UserDTO userDTO);
 
 	AddressRDTO register(AddressUserPDTO addressUserPDTO);
 

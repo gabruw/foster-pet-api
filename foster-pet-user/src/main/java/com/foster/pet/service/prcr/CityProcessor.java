@@ -1,5 +1,6 @@
 package com.foster.pet.service.prcr;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.foster.pet.entity.City;
 import com.foster.pet.entity.State;
 import com.foster.pet.exception.city.CityAlreadyExistsException;
+import com.foster.pet.exception.city.CityNotChangedException;
 import com.foster.pet.exception.city.CityNotFoundException;
 import com.foster.pet.repository.CityRepository;
 
@@ -77,6 +79,11 @@ public class CityProcessor {
 		City original = this.exists(city.getId());
 		city.setState(original.getState());
 		city.setAddresses(original.getAddresses());
+
+		if (Objects.equals(city, original)) {
+			log.error("CityNotChangedException - City: {}", city);
+			throw new CityNotChangedException();
+		}
 
 		log.info("End - CityProcessor.merge - City: {}", city);
 		return city;

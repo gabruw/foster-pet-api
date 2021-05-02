@@ -13,14 +13,12 @@ import com.foster.pet.dto.user.UserDTO;
 import com.foster.pet.entity.Address;
 import com.foster.pet.entity.City;
 import com.foster.pet.entity.Company;
-import com.foster.pet.entity.Country;
 import com.foster.pet.entity.Person;
 import com.foster.pet.entity.State;
 import com.foster.pet.exception.address.AddressAlreadyExistsException;
 import com.foster.pet.exception.address.AddressNotChangedException;
 import com.foster.pet.exception.address.AddressNotFoundException;
 import com.foster.pet.exception.city.CityNotFoundException;
-import com.foster.pet.exception.state.StateNotFoundException;
 import com.foster.pet.exception.user.UserTypeNotRecognizedException;
 import com.foster.pet.repository.AddressRepository;
 
@@ -40,7 +38,7 @@ public class AddressProcessor {
 	private CompanyProcessor companyProcessor;
 
 	@Autowired
-	private CountryProcessor countryProcessor;
+	private StateProcessor stateProcessor;
 
 	@Autowired
 	private AddressRepository addressRepository;
@@ -100,7 +98,7 @@ public class AddressProcessor {
 		address.setNgo(original.getNgo());
 		address.setPerson(original.getPerson());
 		address.setCompany(original.getCompany());
-		
+
 		if (Objects.equals(address, original)) {
 			log.error("AddressNotChangedException - Address: {}", address);
 			throw new AddressNotChangedException();
@@ -114,47 +112,21 @@ public class AddressProcessor {
 		log.info("Start - AddressProcessor.validade - List<Address>: {}", addresses);
 
 		List<Address> vltdAddresses = addresses.stream().map(address -> {
-			Country country = this.countryProcessor.exists(address.getCity().getState().getCountry().getId());
-			address.getCity().getState().setCountry(country);
+			State state = this.stateProcessor.exists(address.getCity().getState().getId());
 
-			State state = this.stateFilter(address.getCity().getState().getId(), country);
-			address.getCity().setState(state);
+			Optional<City> optCity = state.getCity().stream()
+					.filter(city -> city.getId().equals(address.getCity().getId())).findFirst();
+			if (optCity.isEmpty()) {
+				log.error("CityNotFoundException - Id: {}", address.getCity().getId());
+				throw new CityNotFoundException();
+			}
 
-			City city = this.countryFilter(address.getCity().getId(), state);
-			address.setCity(city);
-
+			address.setCity(optCity.get());
 			return address;
 		}).collect(Collectors.toList());
 
 		log.info("End - AddressProcessor.validade - List<Address>: {}", vltdAddresses);
 		return vltdAddresses;
-	}
-
-	private State stateFilter(Long stateId, Country country) {
-		log.info("Start - AddressProcessor.stateFilter - StateId: {}, Country: {}", stateId, country);
-
-		Optional<State> optState = country.getState().stream().filter(state -> state.getId().equals(stateId))
-				.findFirst();
-		if (optState.isEmpty()) {
-			log.error("StateNotFoundException - Id: {}", stateId);
-			throw new StateNotFoundException();
-		}
-
-		log.info("End - AddressProcessor.stateFilter - State: {}", optState.get());
-		return optState.get();
-	}
-
-	private City countryFilter(Long cityId, State state) {
-		log.info("Start - AddressProcessor.stateFilter - CityId: {}, State: {}", cityId, state);
-
-		Optional<City> optCity = state.getCity().stream().filter(city -> city.getId().equals(cityId)).findFirst();
-		if (optCity.isEmpty()) {
-			log.error("CityNotFoundException - Id: {}", cityId);
-			throw new CityNotFoundException();
-		}
-
-		log.info("End - AddressProcessor.stateFilter - City: {}", optCity.get());
-		return optCity.get();
 	}
 
 	public List<Address> getAddresses(UserDTO userDTO) {

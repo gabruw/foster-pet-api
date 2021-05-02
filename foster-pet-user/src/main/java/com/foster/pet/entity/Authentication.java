@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Builder
@@ -42,20 +43,29 @@ public class Authentication implements Serializable {
 	@Size(min = 6, max = 80, message = "O campo 'Email' deve conter entre 6 e 80 caracteres")
 	private String email;
 
+	@ToString.Exclude
 	@Column(name = "password", nullable = false)
-	@Size(min = 8, max = 40, message = "O campo 'Senha' deve conter entre 8 a 40 caracteres")
+	@Size(min = 8, message = "O campo 'Senha' deve conter 8 ou mais caracteres")
 	private String password;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false)
 	private AuthenticationRole role;
 
+	@Column(name = "isLocked", nullable = false)
+	private Boolean isLocked;
+
+	@Column(name = "isEnabled", nullable = false)
+	private Boolean isEnabled;
+
+	@ToString.Exclude
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinTable(name = "person_authentication", joinColumns = {
 			@JoinColumn(name = "person_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "authentication_id", referencedColumnName = "id") })
 	private Person person;
 
+	@ToString.Exclude
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinTable(name = "company_authentication", joinColumns = {
 			@JoinColumn(name = "company_id", referencedColumnName = "id") }, inverseJoinColumns = {

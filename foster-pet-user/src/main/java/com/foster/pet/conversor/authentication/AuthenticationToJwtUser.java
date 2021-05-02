@@ -17,15 +17,10 @@ public class AuthenticationToJwtUser implements Converter<Authentication, JwtUse
 	public JwtUser convert(MappingContext<Authentication, JwtUser> context) {
 		Authentication source = context.getSource();
 
-		JwtUser destination = new JwtUser();
-		destination.setId(source.getId());
-		destination.setEmail(source.getEmail());
-		destination.setPassword(source.getPassword());
-
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(source.getRole().name()));
 
-		destination.setAuthorities(authorities);
-		return destination;
+		return JwtUser.builder().id(source.getId()).email(source.getEmail()).password(source.getPassword())
+				.authorities(authorities).build();
 	}
 }

@@ -20,39 +20,20 @@ public class AuthenticationPersonPDTOToAuthentication implements Converter<Authe
 		AuthenticationPersonPDTO source = context.getSource();
 
 		List<Address> addresses = source.getPerson().getAddresses().stream().map(addressPDTO -> {
-			State state = new State();
-			state.setId(addressPDTO.getCity().getState().getId());
+			State state = State.builder().id(addressPDTO.getCity().getState().getId()).build();
+			City city = City.builder().id(addressPDTO.getCity().getId()).state(state).build();
 
-			City city = new City();
-			city.setId(addressPDTO.getCity().getId());
-			city.setState(state);
-
-			Address address = new Address();
-			address.setCep(addressPDTO.getCep());
-			address.setName(addressPDTO.getName());
-			address.setRoad(addressPDTO.getRoad());
-			address.setPhone(addressPDTO.getPhone());
-			address.setNumber(addressPDTO.getNumber());
-			address.setComplement(addressPDTO.getComplement());
-			address.setNeighborhood(addressPDTO.getNeighborhood());
-
-			return address;
+			return Address.builder().cep(addressPDTO.getCep()).name(addressPDTO.getName()).road(addressPDTO.getRoad())
+					.phone(addressPDTO.getPhone()).number(addressPDTO.getNumber())
+					.complement(addressPDTO.getComplement()).neighborhood(addressPDTO.getNeighborhood()).city(city)
+					.build();
 		}).collect(Collectors.toList());
 
-		Person person = new Person();
-		person.setAddresses(addresses);
-		person.setCpf(source.getPerson().getCpf());
-		person.setCell(source.getPerson().getCell());
-		person.setName(source.getPerson().getName());
-		person.setBirth(source.getPerson().getBirth());
-		person.setGender(source.getPerson().getGender());
+		Person person = Person.builder().cpf(source.getPerson().getCpf()).cell(source.getPerson().getCell())
+				.name(source.getPerson().getName()).birth(source.getPerson().getBirth())
+				.gender(source.getPerson().getGender()).addresses(addresses).build();
 
-		Authentication destination = new Authentication();
-		destination.setPerson(person);
-		destination.setRole(source.getRole());
-		destination.setEmail(source.getEmail());
-		destination.setPassword(source.getPassword());
-
-		return destination;
+		return Authentication.builder().email(source.getEmail()).password(source.getPassword()).role(source.getRole())
+				.person(person).build();
 	}
 }

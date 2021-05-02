@@ -82,8 +82,8 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public AddressFRDTO findByName(UserDTO userDTO, String name) {
-		log.info("Start - AddressServiceImpl.findByName - UserDTO: {}, Name: {}", userDTO, name);
+	public AddressFRDTO findByName(String name, UserDTO userDTO) {
+		log.info("Start - AddressServiceImpl.findByName - Name: {}, UserDTO: {}", name, userDTO);
 
 		List<Address> addresses = this.addressProcessor.getAddresses(userDTO);
 
