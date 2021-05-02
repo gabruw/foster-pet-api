@@ -64,7 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	public TokenFRDTO login(LoginDTO loginDTO) {
 		log.info("Start - AuthenticationServiceImpl.login - LoginDTO: {}", loginDTO);
 
-		Authentication authentication = this.authenticationProcessor.exists(loginDTO.getEmail());
+		Authentication authentication = this.authenticationProcessor.check(loginDTO.getEmail());
 		this.authenticationProcessor.matchPassword(loginDTO.getPassword(), authentication.getPassword());
 
 		String name = this.authenticationProcessor.getName(loginDTO.getUserType(), authentication);

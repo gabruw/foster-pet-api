@@ -18,7 +18,8 @@ public enum ErrorCode {
 	TOKEN_INVALID("O token enviado é inválido"),
 	TOKEN_TYPE_INVALID("O tipo do token é inválido"),
 	
-	// Password
+	// Account
+	LOCKED_ACCOUNT("A conta está banida"),
 	WRONG_PASSWORD("A senha está incorreta"),
 
 	// Not Found

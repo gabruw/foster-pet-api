@@ -11,6 +11,7 @@ import com.foster.pet.entity.Authentication;
 import com.foster.pet.exception.authentication.AuthenticationAlreadyExistsException;
 import com.foster.pet.exception.authentication.AuthenticationNotChangedException;
 import com.foster.pet.exception.authentication.AuthenticationNotFoundException;
+import com.foster.pet.exception.authentication.LockedAccountException;
 import com.foster.pet.exception.authentication.WrongPasswordException;
 import com.foster.pet.exception.user.UserTypeNotRecognizedException;
 import com.foster.pet.repository.AuthenticationRepository;
@@ -69,7 +70,7 @@ public class AuthenticationProcessor {
 		Authentication original = this.exists(authentication.getId());
 		authentication.setPerson(original.getPerson());
 		authentication.setCompany(original.getCompany());
-		original.setPassword(authentication.getPassword());		
+		original.setPassword(authentication.getPassword());
 
 		if (Objects.equals(authentication, original)) {
 			log.error("AuthenticationNotChangedException - Authentication: {}", authentication);
@@ -77,6 +78,24 @@ public class AuthenticationProcessor {
 		}
 
 		log.info("End - AuthenticationProcessor.merge - Authentication: {}", authentication);
+		return authentication;
+	}
+
+	public Authentication check(String email) {
+		log.info("Start - AuthenticationProcessor.check - Email: {}", email);
+
+		Authentication authentication = this.exists(email);
+		if (!authentication.getIsEnabled()) {
+			log.error("AuthenticationNotFoundException - Email: {}", email);
+			throw new AuthenticationNotFoundException();
+		}
+
+		if (authentication.getIsLocked()) {
+			log.error("LockedAccountException - Email: {}", email);
+			throw new LockedAccountException();
+		}
+
+		log.info("End - AuthenticationProcessor.check - Authentication: {}", authentication);
 		return authentication;
 	}
 

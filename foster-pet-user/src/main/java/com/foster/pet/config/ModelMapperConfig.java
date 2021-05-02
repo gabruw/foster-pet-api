@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.foster.pet.conversor.authentication.AuthenticationCompanyPDTOToAuthentication;
 import com.foster.pet.conversor.authentication.AuthenticationPersonPDTOToAuthentication;
-import com.foster.pet.conversor.authentication.AuthenticationToJwtUser;
+import com.foster.pet.conversor.authentication.AuthenticationFRPDTOToJwtUser;
 import com.foster.pet.conversor.state.StateFRPDTOToState;
 import com.foster.pet.conversor.state.StatePDTOToState;
 import com.foster.pet.conversor.state.StateToStateFRPDTO;
@@ -30,7 +30,7 @@ public class ModelMapperConfig {
 		modelMapper.addConverter(new StateFRPDTOToState());
 
 		// Authentication To
-		modelMapper.addConverter(new AuthenticationToJwtUser());
+		modelMapper.addConverter(new AuthenticationFRPDTOToJwtUser());
 		
 		// To Authentication
 		modelMapper.addConverter(new AuthenticationPersonPDTOToAuthentication());
