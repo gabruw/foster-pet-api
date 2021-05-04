@@ -27,11 +27,11 @@ public class CompanyPDTO implements Serializable {
 	@Size(min = 1, max = 200, message = "O campo 'Razão Social' deve conter entre 1 e 200 caracteres")
 	private String companyName;
 
-	@NotNull(message = "O campo 'Nome' é obrigatório")
+	@NotNull(message = "O campo 'Nome Fantasia' é obrigatório")
 	@Size(min = 1, max = 200, message = "O campo 'Nome Fantasia' deve conter entre 1 e 200 caracteres")
 	private String tradeName;
 
-	@NotNull(message = "O campo 'Nome' é obrigatório")
+	@NotNull(message = "O campo 'CNPJ' é obrigatório")
 	@Size(min = 19, max = 19, message = "O campo 'CNPJ' deve conter 19 caracteres")
 	@CNPJ(message = "O campo 'CNPJ' é inválido")
 	private String cnpj;

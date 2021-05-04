@@ -58,7 +58,7 @@ public class SecurityController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping(value = "/lock")
+	@GetMapping(value = "/lock", params = "id")
 	public ResponseEntity<Response<TokenRDTO>> lock(@RequestParam Long id) {
 		log.info("Start - SecurityController.lock - Id: {}", id);
 
@@ -68,7 +68,7 @@ public class SecurityController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping(value = "/unlock")
+	@GetMapping(value = "/unlock", params = "id")
 	public ResponseEntity<Response<TokenRDTO>> unlock(@RequestParam Long id) {
 		log.info("Start - SecurityController.unlock- Id: {}", id);
 
@@ -78,7 +78,7 @@ public class SecurityController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping(value = "/enable")
+	@GetMapping(value = "/enable", params = "id")
 	public ResponseEntity<Response<TokenRDTO>> enable(@RequestParam Long id) {
 		log.info("Start - SecurityController.enable- Id: {}", id);
 
@@ -88,7 +88,7 @@ public class SecurityController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@GetMapping(value = "/unable")
+	@GetMapping(value = "/unable", params = "id")
 	public ResponseEntity<Response<TokenRDTO>> unable(@RequestParam Long id) {
 		log.info("Start - SecurityController.unable- Id: {}", id);
 
